@@ -1,0 +1,14 @@
+{
+  "current_phase": "case_intro",
+  "credibility": 100,
+  "failed_attempts": 0,
+  "evidence_found": ["receipt_collection", "tom_testimony", "blood_work_analysis", "autopsy_report", "timeline_analysis"],
+  "locations_visited": ["coffee_shop", "city_morgue", "thornfield_pharmaceuticals"],
+  "characters_met": ["Tom", "Jenny", "Dr_Chen", "Detective_Gumshoe"],
+  "gates_passed": [],
+  "current_location": "thornfield_pharmaceuticals",
+  "investigation_note": "All locations remain available - choice affects order of discovery and dialogue options, but no permanent lockouts",
+  "ui_preference": "hide_gate_status_in_story",
+  "interaction_style": "always_provide_numbered_options",
+  "formatting_preference": "line_breaks_for_property_lists"
+}

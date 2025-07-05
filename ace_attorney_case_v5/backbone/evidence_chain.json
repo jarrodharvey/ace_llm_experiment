@@ -1,0 +1,153 @@
+{
+  "evidence_chain": {
+    "description": "Logical progression from crime scene to conviction",
+    "chain_strength": "Strong - multiple independent evidence paths converge",
+    "total_evidence_pieces": 7,
+    "critical_path": [
+      "crime_scene_analysis",
+      "security_footage_analysis", 
+      "digital_forensics",
+      "financial_records",
+      "chemistry_analysis",
+      "witness_testimony",
+      "physical_evidence"
+    ]
+  },
+  
+  "evidence_pieces": [
+    {
+      "id": "crime_scene_analysis",
+      "name": "Crime Scene Analysis Report",
+      "type": "forensic_report",
+      "importance": "critical",
+      "what_it_proves": "Victim was poisoned with potassium cyanide in her coffee",
+      "logical_connections": [
+        "Coffee cup shows cyanide residue",
+        "Victim's symptoms match cyanide poisoning",
+        "No other delivery method possible given lab security",
+        "Timing matches security logs of coffee delivery"
+      ],
+      "connects_to": ["chemistry_analysis", "security_footage_analysis"],
+      "rules_out": ["External attacker", "Accident", "Suicide"]
+    },
+    
+    {
+      "id": "security_footage_analysis",
+      "name": "Security System Analysis",
+      "type": "digital_evidence",
+      "importance": "critical",
+      "what_it_proves": "Timestamps were manipulated, Marcus's card was cloned",
+      "logical_connections": [
+        "Marcus appears to enter lab at 3:10 PM",
+        "But digital forensics shows timestamp alteration",
+        "Same keycard shows impossible simultaneous access",
+        "Security head has admin access to alter timestamps"
+      ],
+      "connects_to": ["digital_forensics", "physical_evidence"],
+      "rules_out": ["Marcus present during murder", "Security system reliable"]
+    },
+    
+    {
+      "id": "digital_forensics",
+      "name": "Digital Forensics Report",
+      "type": "technical_analysis",
+      "importance": "critical",
+      "what_it_proves": "Security system was compromised from admin account",
+      "logical_connections": [
+        "Log files show admin access at 3:15 PM",
+        "Timestamp alterations made from Hawthorne's terminal",
+        "Keycard cloning software accessed from his computer",
+        "Digital trail leads directly to security office"
+      ],
+      "connects_to": ["security_footage_analysis", "witness_testimony"],
+      "rules_out": ["External hacker", "System malfunction", "Marcus had access"]
+    },
+    
+    {
+      "id": "financial_records",
+      "name": "Financial Investigation",
+      "type": "documentary_evidence",
+      "importance": "critical",
+      "what_it_proves": "Hawthorne was selling research secrets, Elena was investigating",
+      "logical_connections": [
+        "Hawthorne's bank account shows unexplained deposits",
+        "Deposits match dates of research breaches",
+        "Elena's personal files show she was tracking the leaks",
+        "Competitor payments traced to shell company Hawthorne owns"
+      ],
+      "connects_to": ["witness_testimony", "physical_evidence"],
+      "rules_out": ["No motive for murder", "Elena wasn't investigating"]
+    },
+    
+    {
+      "id": "chemistry_analysis",
+      "name": "Chemical Analysis Report",
+      "type": "forensic_evidence",
+      "importance": "high",
+      "what_it_proves": "Poison came from specific batch, not general lab supply",
+      "logical_connections": [
+        "Cyanide isotope signature matches Hawthorne's personal chemistry set",
+        "Different from lab supply - proves not internal theft",
+        "Hawthorne had legitimate access to pure cyanide for security testing",
+        "Quantity missing from his personal inventory"
+      ],
+      "connects_to": ["crime_scene_analysis", "physical_evidence"],
+      "rules_out": ["Marcus stole from lab", "External source", "Random lab chemical"]
+    },
+    
+    {
+      "id": "witness_testimony",
+      "name": "Witness Statements",
+      "type": "testimony",
+      "importance": "high", 
+      "what_it_proves": "Hawthorne was not in security office, was blackmailing Marcus",
+      "logical_connections": [
+        "Security guard saw Hawthorne leave office at 3:00 PM",
+        "Marcus reveals blackmail about his sister's immigration status",
+        "Colleague saw Elena working late on 'security breach' investigation",
+        "Janitor saw Hawthorne near Marcus's locker after hours"
+      ],
+      "connects_to": ["digital_forensics", "financial_records"],
+      "rules_out": ["Hawthorne has solid alibi", "Marcus acted alone"]
+    },
+    
+    {
+      "id": "physical_evidence",
+      "name": "Physical Evidence",
+      "type": "material_evidence",
+      "importance": "high",
+      "what_it_proves": "Hawthorne planted evidence and had access to victim's research",
+      "logical_connections": [
+        "Hawthorne's fingerprints on Marcus's locker (inside)",
+        "Elena's research notes have coffee stain matching crime scene",
+        "Keycard cloning device found in Hawthorne's office safe",
+        "Elena's hidden backup files on personal USB in her car"
+      ],
+      "connects_to": ["security_footage_analysis", "financial_records"],
+      "rules_out": ["Evidence naturally placed", "Marcus stole research legitimately"]
+    }
+  ],
+  
+  "evidence_relationships": {
+    "mutually_reinforcing": [
+      ["digital_forensics", "security_footage_analysis"],
+      ["chemistry_analysis", "crime_scene_analysis"],
+      ["financial_records", "witness_testimony"],
+      ["physical_evidence", "security_footage_analysis"]
+    ],
+    "independent_verification": [
+      "Multiple witnesses confirm Hawthorne's movements",
+      "Technical evidence from multiple systems",
+      "Financial trail independent of murder evidence",
+      "Chemistry analysis independent of access logs"
+    ]
+  },
+  
+  "logical_consistency_check": {
+    "timeline_consistency": "All evidence fits within established timeline",
+    "motive_consistency": "Financial motive explains all actions",
+    "method_consistency": "Security access explains how murder was committed and covered up",
+    "character_consistency": "All characters act according to their knowledge and motivations",
+    "evidence_availability": "All evidence can be discovered through logical investigation"
+  }
+}

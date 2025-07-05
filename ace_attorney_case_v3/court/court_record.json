@@ -1,0 +1,34 @@
+{
+  "case_title": "The People vs. Marcus Chen",
+  "charge": "Murder in the First Degree",
+  "victim": "Dr. Richard Volkov",
+  "current_evidence": [
+    {
+      "name": "Marcus's Coffee Receipt",
+      "description": "Time-stamped receipt showing Marcus purchased coffee at 11:12 AM with $20 cash, proving he was at Café Mocha during crucial time window",
+      "relevance": "Establishes alibi timeline"
+    },
+    {
+      "name": "Tom's Testimony",
+      "description": "Witness saw Marcus at coffee shop 11:05-11:15 AM, appearing distressed and muttering about regretting something he said",
+      "relevance": "Corroborates alibi but shows emotional state"
+    },
+    {
+      "name": "Jenny's Testimony", 
+      "description": "Barista confirms Marcus was at shop 11:05-11:15 AM, seemed agitated, left large tip due to distraction",
+      "relevance": "Further corroborates alibi timeline"
+    }
+  ],
+  "key_timeline": {
+    "10:30 AM": "Marcus argues with Dr. Volkov at Thornfield Pharmaceuticals",
+    "11:00 AM": "Marcus leaves office in anger",
+    "11:05-11:15 AM": "Marcus at Café Mocha (confirmed by witnesses and receipt)",
+    "11:30 AM": "Dr. Volkov found dead in his office"
+  },
+  "questions_remaining": [
+    "How did Dr. Volkov die exactly?",
+    "What happened between 11:15 AM (Marcus leaves café) and 11:30 AM (body discovered)?",
+    "Who else had access to Volkov's office?",
+    "What was the actual cause of death?"
+  ]
+}

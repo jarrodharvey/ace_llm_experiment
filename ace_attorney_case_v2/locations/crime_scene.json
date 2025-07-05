@@ -1,0 +1,19 @@
+{
+  "name": "Grayson Manor - Dining Room",
+  "description": "Elegant Victorian dining room with crystal chandelier, mahogany table set for 8 guests. Birthday decorations still hanging. Wine glasses and plates scattered, one glass conspicuously placed near where body was found.",
+  "evidence_visible": [
+    "Wine glass with traces of poison (Richard's fingerprints)",
+    "Birthday cake half-eaten",
+    "Scattered dinner plates",
+    "Thomas's chair overturned where he collapsed"
+  ],
+  "evidence_searchable": [
+    "Napkin with lipstick traces",
+    "Wine bottle cork with puncture mark",
+    "Small blood droplet on tablecloth"
+  ],
+  "people_present": [],
+  "connections": ["wine_cellar", "kitchen", "library"],
+  "atmosphere": "Eerie silence after the chaos. The smell of expensive wine mingles with the lingering scent of fear.",
+  "investigation_notes": "Police have processed scene but missed several key details"
+}

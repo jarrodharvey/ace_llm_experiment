@@ -1,0 +1,62 @@
+{
+  "trial_phases": [
+    {
+      "phase": "Opening Statements",
+      "prosecution_advantage": "Overwhelming evidence presentation",
+      "defense_position": "Desperate appeal for reasonable doubt",
+      "phoenix_status": "Barely hanging on, almost no ammunition"
+    },
+    
+    {
+      "phase": "Prosecution's Case",
+      "prosecution_strategy": "Methodical presentation of damning evidence",
+      "prosecution_witnesses": [
+        "Detective Thompson (evidence collection)",
+        "Dr. Sarah Chen (forensic expert)",
+        "Rebecca Sterling (victim's sister)",
+        "Charles Blackwood (doorman)",
+        "Trevor Moss (colleague)"
+      ],
+      "defense_challenge": "Phoenix can barely dent the prosecution's testimony",
+      "phoenix_status": "Struggling to find any weaknesses"
+    },
+    
+    {
+      "phase": "Defense's Case",
+      "defense_witnesses": [
+        "Marcus Ashford (the client - risky but necessary)",
+        "Mrs. Ethel Windham (elderly neighbor with rambling testimony)",
+        "Character witnesses who aren't very convincing"
+      ],
+      "defense_strategy": "Desperate attempt to humanize Marcus and create doubt",
+      "prosecution_response": "Vex systematically destroys each defense witness",
+      "phoenix_status": "Running out of options"
+    },
+    
+    {
+      "phase": "Cross-Examination Opportunities",
+      "critical_moments": [
+        "Finding tiny inconsistencies in witness testimony",
+        "Pressuring witnesses until they crack",
+        "Discovering contradictions in the prosecution's 'perfect' case"
+      ],
+      "turnabout_potential": "Victory comes from witness breakdown, not evidence",
+      "phoenix_tools": "Objections, pressing statements, presenting contradictions"
+    }
+  ],
+  
+  "courtroom_mechanics": {
+    "evidence_presentation": "Phoenix has very limited useful evidence",
+    "witness_cross_examination": "Main path to victory",
+    "objection_system": "Standard AA objections (Objection!, Hold it!, Take that!)",
+    "pressure_system": "Witnesses break under sustained pressure",
+    "contradiction_finding": "Spot tiny flaws in 'perfect' testimony"
+  },
+  
+  "victory_conditions": {
+    "not_about_evidence": "Phoenix won't win by presenting helpful evidence",
+    "witness_breakdown": "Victory comes from making witnesses reveal the truth",
+    "prosecution_overconfidence": "Vex's arrogance becomes her weakness",
+    "tiny_inconsistencies": "Small contradictions unravel the entire case"
+  }
+}

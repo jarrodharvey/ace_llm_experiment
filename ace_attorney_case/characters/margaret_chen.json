@@ -1,0 +1,10 @@
+{
+  "name": "Margaret Chen",
+  "location": "National Museum - Exhibit A",
+  "profession": "Independent Art Appraiser",
+  "dialogue_state": "examining_necklace",
+  "personality": "Sharp, professional, methodical. Expert in detecting art forgeries and understanding appraisal manipulation. No connections to auction houses or museums.",
+  "current_situation": "Just arrived to examine museum pieces for signs of fraud",
+  "expertise": "Art authentication, forgery detection, market valuation, counterfeiting techniques",
+  "met_player": false
+}

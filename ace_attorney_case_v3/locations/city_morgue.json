@@ -1,0 +1,9 @@
+{
+  "name": "City Morgue",
+  "description": "Sterile, clinical facility where autopsies are performed. The smell of antiseptic fills the air.",
+  "time_of_investigation": "Next day after murder",
+  "key_characters": ["Dr. Sarah Chen", "Morgue Assistant"],
+  "available_actions": ["examine_body", "review_autopsy_report", "talk_to_coroner", "examine_victim_belongings"],
+  "evidence_potential": ["cause_of_death", "time_of_death", "victim_personal_effects", "medical_anomalies"],
+  "atmosphere": "Cold, professional, unsettling"
+}

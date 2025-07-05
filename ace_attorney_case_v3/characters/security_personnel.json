@@ -1,0 +1,16 @@
+{
+  "security_chief": {
+    "name": "Frank Morrison",
+    "position": "Head of Security",
+    "tenure": "10 years",
+    "responsibility": "Oversees all security protocols, keycard access, drug storage",
+    "personality": "Professional, detail-oriented, defensive about security procedures"
+  },
+  "storage_supervisor": {
+    "name": "Dr. Maria Santos",
+    "position": "Pharmaceutical Storage Supervisor",
+    "tenure": "7 years",
+    "clearance": "Level 5 - highest security clearance",
+    "responsibility": "Manages controlled substances, including Cardiotoxin-7"
+  }
+}

@@ -1,0 +1,211 @@
+# Guidelines for Starting New Games
+## How to Play Created Cases - Lessons from V1-V5 Experience
+
+### Core Principle: Maintain Mystery While Creating Challenge
+The game opening sets the tone for the entire experience. Done right, it creates dramatic tension and establishes the uphill battle. Done wrong, it gives away too much or makes things too easy.
+
+## Pre-Game Setup
+
+### Directory Structure Check:
+Ensure the game directory contains:
+```
+game_directory/
+├── solution/             # Encoded mystery files
+├── game_state/          # Player progress tracking
+├── evidence/            # Discovered evidence
+├── characters/          # Character interaction state
+├── locations/           # Scene descriptions
+└── backbone/            # Logical foundation (optional reference)
+```
+
+### Solution File Verification:
+- Confirm all solution files are BASE64 encoded
+- Verify no plaintext spoilers visible in file creation
+- Check that obstacle integration is complete
+- Ensure challenge gates are properly configured
+
+## Game Opening Best Practices
+
+### Initial Scene Setup:
+**DO:**
+- Present client as appearing guilty with overwhelming evidence
+- Show client being uncooperative (blackmail, trauma, distrust)
+- Establish hostile environment where no one wants to help Phoenix
+- Present initial evidence that seems to damn the client
+- Create sense of hopelessness and uphill battle
+
+**DON'T:**
+- Give away any solution details in opening
+- Make client immediately cooperative and helpful
+- Present exonerating evidence right away
+- Have friendly NPCs eager to help
+- Create a "primrose path" from the start
+
+### Opening Dialogue Template:
+```
+Setting: [Location - courthouse, detention center, crime scene]
+Phoenix: [Internal monologue showing concern about case]
+Client: [Uncooperative, scared, or hostile - won't provide useful info]
+Authority Figure: [Presents overwhelming evidence against client]
+Phoenix: [Realizes this will be an uphill battle]
+```
+
+### Information Revelation Rules:
+- **Case basics:** Victim, crime, charges (public knowledge)
+- **Client situation:** Appears guilty, won't talk, overwhelming evidence
+- **Investigation starting point:** Where Phoenix can begin, who might talk
+- **Obstacles preview:** Hint at bureaucratic/personal barriers ahead
+
+### What NOT to Reveal:
+- Real killer's identity or even hints
+- Actual motive or method details
+- Exonerating evidence locations
+- Character secrets or hidden knowledge
+- Plot twists or major revelations
+
+## Player Interaction Guidelines
+
+### Action Processing:
+When player takes action, follow this sequence:
+1. **Check solution files** for what should realistically happen
+2. **Apply obstacle system** to make it appropriately challenging
+3. **Generate response** that advances story while maintaining difficulty
+4. **Update game state** with new information and progress
+
+### Evidence Handling:
+- **Discovery:** Evidence should be hard to find but logically available
+- **Presentation:** Wrong evidence should fail with consequences
+- **Analysis:** Require specific approaches to unlock information
+- **Integration:** New evidence should complicate rather than simplify case
+
+### Character Interactions:
+- **Default attitude:** Hostile, uncooperative, or dismissive
+- **Information sharing:** Minimal and grudging
+- **Progression:** Requires specific approaches or evidence to open up
+- **Consistency:** Characters remember previous interactions
+
+## Difficulty Calibration
+
+### Investigation Phase Balance:
+- **60% frustration:** Obstacles, dead ends, hostile characters
+- **30% progress:** Small wins, partial information, clues
+- **10% breakthroughs:** Major discoveries that reframe the case
+
+### Common Calibration Errors:
+- **Too easy:** Characters helpful, evidence obvious, linear progression
+- **Too hard:** Evidence impossible to find, characters completely silent
+- **Inconsistent:** Switching between helpful and hostile randomly
+- **Spoiler-heavy:** Revealing too much too soon
+
+### Player Frustration Management:
+- Ensure every obstacle has a logical solution
+- Provide hints when player is truly stuck
+- Allow multiple approaches to same information
+- Give small victories to maintain engagement
+
+## Troubleshooting During Play
+
+### When Player Says "!"
+Switch to technical support mode:
+- **Debug game state** without revealing solutions
+- **Check file integrity** and obstacle consistency
+- **Verify player progress** matches expected sequence
+- **Identify stuck points** and suggest approaches (without spoilers)
+- **Return to gaming mode** after technical issues resolved
+
+### Common Issues:
+- **Stuck progression:** Player can't figure out next step
+- **Logic violations:** Obstacles contradicting established facts
+- **Character inconsistency:** NPCs acting out of character
+- **Evidence access:** Player can't obtain required information
+
+### Debug Commands:
+- Check current game state
+- Verify solution file integrity
+- Review player progress against expected sequence
+- Identify available actions player hasn't tried
+
+## Session Management
+
+### Starting Fresh Game:
+1. **Initialize game state** with default values
+2. **Load solution files** and obstacle system
+3. **Present opening scene** with proper tension
+4. **Establish investigation parameters**
+5. **Set expectation** for challenging experience
+
+### Resuming Saved Game:
+1. **Load existing game state** from files
+2. **Review player progress** and discoveries
+3. **Provide "previously" summary** without spoilers
+4. **Continue from current scene** with appropriate difficulty
+
+### State Tracking:
+- **Evidence found:** What player has discovered
+- **Characters met:** Who player has interacted with
+- **Locations visited:** Where player has investigated
+- **Failed attempts:** Wrong evidence presentations, etc.
+- **Credibility level:** How player's reputation affects interactions
+
+## Quality Assurance During Play
+
+### Success Indicators:
+- Player expressing frustration with obstacles (good frustration)
+- Characters being realistically difficult to work with
+- Evidence requiring genuine detective work to obtain
+- Case building tension as investigation progresses
+- Player earning information through clever approaches
+
+### Failure Indicators:
+- Player getting helpful information easily
+- Linear progression without significant obstacles
+- Characters being cooperative without reason
+- Evidence appearing without effort
+- Case feeling like guided tour rather than investigation
+
+### Mid-Game Adjustments:
+- **If too easy:** Increase character hostility, add more obstacles
+- **If too hard:** Provide subtle hints, ensure progress is possible
+- **If inconsistent:** Check obstacle integration against backbone
+- **If spoiler-heavy:** Reduce information revelation, increase mystery
+
+## Advanced Techniques
+
+### Building Tension:
+- Each discovery should raise new questions
+- Evidence should initially seem to damn client further
+- Characters should hint at deeper secrets
+- Timeline should become more complex, not simpler
+
+### Obstacle Escalation:
+- **Early:** Simple bureaucratic barriers, unfriendly witnesses
+- **Mid:** Personal conflicts, professional obligations
+- **Late:** Intimidation, cover-ups, active resistance
+
+### Plot Twist Integration:
+- Major revelations should emerge from player actions
+- Twists should reframe earlier evidence in new light
+- Character motivations should become clearer but more complex
+- Case should feel like it's expanding, not contracting
+
+## Final Recommendations
+
+### For Best Player Experience:
+- Start with clear sense of hopelessness
+- Make every piece of information feel earned
+- Maintain consistent character personalities
+- Build to satisfying resolution through player effort
+
+### For Optimal Challenge:
+- Use obstacle system to create fair but difficult progression
+- Ensure all evidence is obtainable but not obvious
+- Make characters realistically difficult to work with
+- Balance frustration with forward progress
+
+### For Narrative Satisfaction:
+- Create genuine mystery that unfolds through investigation
+- Reward clever deduction and persistence
+- Maintain logical consistency throughout
+- Deliver payoff that justifies the struggle
+
+Remember: The goal is to create an authentic Ace Attorney experience where the player must genuinely work for every breakthrough, but the case can ultimately be solved through careful investigation and logical deduction.

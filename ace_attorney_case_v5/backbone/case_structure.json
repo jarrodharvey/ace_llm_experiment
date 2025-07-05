@@ -1,0 +1,90 @@
+{
+  "case_title": "The Catalyst Conspiracy",
+  "case_id": "v5_catalyst",
+  "difficulty": "hard",
+  "estimated_time": "90-120 minutes",
+  
+  "victim": {
+    "name": "Dr. Elena Vasquez",
+    "age": 42,
+    "occupation": "Senior Research Scientist",
+    "workplace": "Meridian Biotech Research Facility",
+    "specialty": "Pharmaceutical catalyst development",
+    "murder_method": "Potassium cyanide poisoning",
+    "location": "Lab 7B - Catalyst Development Wing",
+    "time_of_death": "3:17 PM (established by security logs)",
+    "discovery_time": "4:45 PM",
+    "discovered_by": "Security guard making rounds"
+  },
+  
+  "client": {
+    "name": "Marcus Chen",
+    "age": 28,
+    "occupation": "Junior Research Assistant",
+    "relationship_to_victim": "Direct subordinate and research partner",
+    "charges": "First degree murder",
+    "apparent_motive": "Professional jealousy - Dr. Vasquez was blocking his promotion",
+    "why_appears_guilty": [
+      "Had heated argument with victim day before murder",
+      "Has chemistry knowledge to create the poison",
+      "Security footage shows him entering lab shortly before murder",
+      "Found with victim's research notes in his possession",
+      "Had access to potassium cyanide in chemistry stores"
+    ],
+    "why_actually_innocent": [
+      "Was being blackmailed by real killer to steal research",
+      "Left lab before murder occurred - timestamp discrepancy in security system",
+      "Research notes were planted in his locker",
+      "Real killer used his access card after cloning it"
+    ]
+  },
+  
+  "real_killer": {
+    "name": "Dr. Richard Hawthorne",
+    "age": 54,
+    "occupation": "Head of Research Security",
+    "relationship_to_victim": "Department supervisor",
+    "true_motive": "Dr. Vasquez discovered he was selling research secrets to competitor",
+    "murder_method": "Poison in her afternoon coffee - cyanide from his personal chemistry set",
+    "framing_method": [
+      "Cloned Marcus's access card to enter lab",
+      "Planted research notes in Marcus's locker",
+      "Manipulated security footage timestamps",
+      "Used his security access to alter digital evidence"
+    ],
+    "why_not_suspected": [
+      "Respected security head with 20+ years at company",
+      "Was supposedly in security office during murder",
+      "Has alibi from security team",
+      "No apparent motive - victim wasn't investigating him openly"
+    ]
+  },
+  
+  "setting": {
+    "location": "Meridian Biotech Research Facility",
+    "description": "High-security pharmaceutical research complex",
+    "security_level": "Level 3 - Keycard access, cameras, guard stations",
+    "relevant_areas": [
+      "Lab 7B - Crime scene",
+      "Security Office - Where real killer was supposedly stationed",
+      "Chemistry Storage - Source of poison",
+      "Employee Locker Room - Where evidence was planted",
+      "Executive Offices - Where victim's investigations were hidden"
+    ]
+  },
+  
+  "key_themes": [
+    "Corporate espionage",
+    "Abuse of security access",
+    "Research theft",
+    "Blackmail and coercion",
+    "Digital evidence manipulation"
+  ],
+  
+  "victory_conditions": {
+    "prove_client_innocent": "Show Marcus was being blackmailed and framed",
+    "identify_real_killer": "Expose Dr. Hawthorne as the murderer",
+    "establish_motive": "Prove Hawthorne was selling secrets and killed to cover it up",
+    "explain_method": "Demonstrate how he used security access to commit and cover up murder"
+  }
+}

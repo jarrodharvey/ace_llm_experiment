@@ -1,0 +1,10 @@
+{
+  "name": "Thornfield Pharmaceuticals",
+  "description": "Modern pharmaceutical research facility with multiple floors of labs, offices, and secure storage areas",
+  "time_of_investigation": "Next day after murder",
+  "crime_scene_status": "Police tape around Dr. Volkov's office, some areas still restricted",
+  "key_areas": ["Dr. Volkov's office", "secure drug storage", "main office area", "research labs"],
+  "key_characters": ["Detective Gumshoe", "Dr. Evelyn Thornfield", "Secretary Linda", "Security Guard"],
+  "atmosphere": "Tense, employees whispering, police presence visible",
+  "security_level": "High - keycard access required for most areas"
+}

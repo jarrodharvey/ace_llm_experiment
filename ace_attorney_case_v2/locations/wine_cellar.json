@@ -1,0 +1,17 @@
+{
+  "name": "Grayson Manor - Wine Cellar",
+  "description": "Cool, dimly lit stone cellar lined with expensive wine racks. Musty smell of aging wine. Several empty spaces where bottles were taken for the party.",
+  "evidence_visible": [
+    "Empty wine bottle matching dinner set",
+    "Wine glass fragments in corner"
+  ],
+  "evidence_hidden": [
+    "Tiny spy camera behind wine rack (requires thorough search)",
+    "Small traces of cyanide residue on shelf"
+  ],
+  "people_present": [],
+  "connections": ["dining_room", "kitchen"],
+  "atmosphere": "Dark shadows hide secrets. The silence is broken only by the occasional drip of condensation.",
+  "special_actions": ["luminol_test", "fingerprint_dust", "search_camera"],
+  "investigation_notes": "Elizabeth was seen here briefly during cocktail hour"
+}

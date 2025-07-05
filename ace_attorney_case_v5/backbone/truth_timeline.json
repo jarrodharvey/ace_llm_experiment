@@ -1,0 +1,248 @@
+{
+  "truth_timeline": {
+    "case_date": "March 15, 2024",
+    "events": [
+      {
+        "time": "6 months ago",
+        "event": "Hawthorne begins selling research secrets",
+        "details": "Dr. Hawthorne starts selling catalyst research to Hexton Pharmaceuticals through shell company",
+        "participants": ["Dr. Hawthorne", "Hexton contact"],
+        "evidence_created": "Bank deposits, email communications",
+        "significance": "Establishes motive for murder"
+      },
+      
+      {
+        "time": "3 weeks ago", 
+        "event": "Elena begins investigating research leaks",
+        "details": "Dr. Vasquez notices patterns in competitor's research matching their internal projects",
+        "participants": ["Dr. Elena Vasquez"],
+        "evidence_created": "Personal investigation notes, USB backup files",
+        "significance": "Elena becomes threat to Hawthorne's operation"
+      },
+      
+      {
+        "time": "2 weeks ago",
+        "event": "Hawthorne realizes Elena is investigating",
+        "details": "Hawthorne notices Elena accessing security logs and financial records",
+        "participants": ["Dr. Hawthorne", "Dr. Elena Vasquez"],
+        "evidence_created": "Access logs showing Elena's investigation",
+        "significance": "Hawthorne decides Elena must be eliminated"
+      },
+      
+      {
+        "time": "1 week ago",
+        "event": "Hawthorne begins blackmailing Marcus",
+        "details": "Hawthorne threatens to report Marcus's sister's immigration status unless he steals research",
+        "participants": ["Dr. Hawthorne", "Marcus Chen"],
+        "evidence_created": "Text messages, stolen research files",
+        "significance": "Sets up Marcus as patsy for murder"
+      },
+      
+      {
+        "time": "March 14, 2024 - Day Before Murder",
+        "events": [
+          {
+            "time": "9:00 AM",
+            "event": "Marcus forced to deliver stolen research",
+            "details": "Marcus reluctantly gives Hawthorne Elena's latest catalyst formulas",
+            "participants": ["Marcus Chen", "Dr. Hawthorne"],
+            "evidence_created": "Security footage of meeting",
+            "significance": "Evidence that makes Marcus look guilty"
+          },
+          
+          {
+            "time": "11:30 AM",
+            "event": "Elena confronts Marcus about missing research",
+            "details": "Elena realizes research is missing and suspects Marcus",
+            "participants": ["Dr. Elena Vasquez", "Marcus Chen"],
+            "evidence_created": "Witness testimony from Sarah Mitchell",
+            "significance": "Creates apparent motive for Marcus to kill Elena"
+          },
+          
+          {
+            "time": "2:00 PM",
+            "event": "Hawthorne clones Marcus's access card",
+            "details": "Hawthorne uses security equipment to clone Marcus's keycard",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Cloning device, duplicate keycard",
+            "significance": "Enables Hawthorne to frame Marcus for murder"
+          },
+          
+          {
+            "time": "6:00 PM",
+            "event": "Elena tells Sarah about investigation",
+            "details": "Elena gives Sarah backup USB drive, warns someone high up is involved",
+            "participants": ["Dr. Elena Vasquez", "Sarah Mitchell"],
+            "evidence_created": "USB drive with investigation files",
+            "significance": "Preserves evidence of Hawthorne's crimes"
+          }
+        ]
+      },
+      
+      {
+        "time": "March 15, 2024 - Murder Day",
+        "events": [
+          {
+            "time": "8:00 AM",
+            "event": "Hawthorne arrives at work, prepares poison",
+            "details": "Hawthorne prepares potassium cyanide solution from personal chemistry set",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Missing chemicals from personal inventory",
+            "significance": "Murder weapon preparation"
+          },
+          
+          {
+            "time": "9:30 AM",
+            "event": "Elena arrives, continues investigation",
+            "details": "Elena reviews financial records, preparing to expose Hawthorne",
+            "participants": ["Dr. Elena Vasquez"],
+            "evidence_created": "Research notes, financial analysis",
+            "significance": "Shows Elena was close to exposing Hawthorne"
+          },
+          
+          {
+            "time": "10:00 AM",
+            "event": "Marcus arrives for work",
+            "details": "Marcus comes to work, anxious about previous day's confrontation",
+            "participants": ["Marcus Chen"],
+            "evidence_created": "Security footage of normal arrival",
+            "significance": "Establishes Marcus's normal behavior"
+          },
+          
+          {
+            "time": "12:00 PM",
+            "event": "Hawthorne plants evidence in Marcus's locker",
+            "details": "Hawthorne places Elena's stolen research notes in Marcus's locker",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Fingerprints on locker, planted documents",
+            "significance": "Creates physical evidence against Marcus"
+          },
+          
+          {
+            "time": "2:45 PM",
+            "event": "Elena orders afternoon coffee",
+            "details": "Elena orders her usual coffee from lab café",
+            "participants": ["Dr. Elena Vasquez", "Café staff"],
+            "evidence_created": "Receipt, café security footage",
+            "significance": "Establishes delivery method for poison"
+          },
+          
+          {
+            "time": "3:00 PM",
+            "event": "Hawthorne leaves security office",
+            "details": "Hawthorne tells Tom he's going to check perimeter, leaves office",
+            "participants": ["Dr. Hawthorne", "Tom Bradley"],
+            "evidence_created": "Tom's witness testimony",
+            "significance": "Hawthorne has no alibi for murder time"
+          },
+          
+          {
+            "time": "3:05 PM",
+            "event": "Hawthorne intercepts Elena's coffee delivery",
+            "details": "Hawthorne poisons Elena's coffee before it reaches her lab",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Poison residue, coffee stain on research notes",
+            "significance": "The actual murder"
+          },
+          
+          {
+            "time": "3:10 PM",
+            "event": "Hawthorne uses cloned card to enter lab",
+            "details": "Hawthorne uses Marcus's cloned keycard to enter Lab 7B",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Manipulated security logs",
+            "significance": "Creates false evidence of Marcus's presence"
+          },
+          
+          {
+            "time": "3:12 PM",
+            "event": "Elena receives poisoned coffee",
+            "details": "Elena drinks poisoned coffee while reviewing research",
+            "participants": ["Dr. Elena Vasquez"],
+            "evidence_created": "Coffee cup with poison residue",
+            "significance": "Poison delivery"
+          },
+          
+          {
+            "time": "3:17 PM",
+            "event": "Elena dies from cyanide poisoning",
+            "details": "Elena collapses and dies within 5 minutes of ingesting poison",
+            "participants": ["Dr. Elena Vasquez"],
+            "evidence_created": "Time of death evidence",
+            "significance": "The murder"
+          },
+          
+          {
+            "time": "3:20 PM",
+            "event": "Hawthorne alters security footage",
+            "details": "Hawthorne uses admin access to alter timestamps on security footage",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Digital forensics evidence of tampering",
+            "significance": "Covers up his presence, frames Marcus"
+          },
+          
+          {
+            "time": "3:25 PM",
+            "event": "Hawthorne plants Marcus's keycard",
+            "details": "Hawthorne places original keycard to create false timeline",
+            "participants": ["Dr. Hawthorne"],
+            "evidence_created": "Keycard location evidence",
+            "significance": "Completes frame-up of Marcus"
+          },
+          
+          {
+            "time": "4:30 PM",
+            "event": "Hawthorne returns to security office",
+            "details": "Hawthorne returns to security office, acts normal",
+            "participants": ["Dr. Hawthorne", "Tom Bradley"],
+            "evidence_created": "Tom's witness testimony",
+            "significance": "Hawthorne tries to establish partial alibi"
+          },
+          
+          {
+            "time": "4:45 PM",
+            "event": "Tom discovers Elena's body",
+            "details": "Security guard Tom Bradley finds Elena dead during routine patrol",
+            "participants": ["Tom Bradley", "Dr. Elena Vasquez (deceased)"],
+            "evidence_created": "Discovery report, crime scene photos",
+            "significance": "Official discovery of murder"
+          },
+          
+          {
+            "time": "5:00 PM",
+            "event": "Police arrive, Marcus becomes suspect",
+            "details": "Police review security footage, Marcus appears to be in lab at time of murder",
+            "participants": ["Police", "Dr. Hawthorne", "Marcus Chen"],
+            "evidence_created": "Initial police report",
+            "significance": "Marcus becomes prime suspect"
+          },
+          
+          {
+            "time": "6:00 PM",
+            "event": "Marcus arrested for murder",
+            "details": "Police arrest Marcus based on security footage and planted evidence",
+            "participants": ["Police", "Marcus Chen"],
+            "evidence_created": "Arrest report",
+            "significance": "Marcus needs legal defense"
+          }
+        ]
+      }
+    ]
+  },
+  
+  "timeline_verification": {
+    "consistency_check": "All events fit logically within timeframe",
+    "evidence_timing": "Evidence creation matches timeline",
+    "witness_knowledge": "Witnesses know only what they would see at specific times",
+    "technology_constraints": "Digital evidence manipulation fits technical capabilities",
+    "physical_constraints": "All movements are physically possible within timeframe"
+  },
+  
+  "key_timeline_insights": {
+    "murder_window": "3:05-3:17 PM - 12 minute window for murder",
+    "alibi_gap": "Hawthorne has no alibi from 3:00-4:30 PM",
+    "evidence_planting": "Multiple evidence planting opportunities before discovery",
+    "digital_manipulation": "20+ minutes to alter security systems",
+    "witness_timing": "Tom can verify Hawthorne's absence from security office"
+  }
+}

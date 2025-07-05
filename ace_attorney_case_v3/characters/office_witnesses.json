@@ -1,0 +1,23 @@
+{
+  "secretary_linda": {
+    "name": "Linda Martinez",
+    "position": "Administrative Secretary",
+    "tenure": "8 years",
+    "desk_location": "Main office area, clear view of Dr. Volkov's office",
+    "personality": "Observant, professional, knows office gossip"
+  },
+  "accountant_beth": {
+    "name": "Beth Williams", 
+    "position": "Senior Accountant",
+    "tenure": "4 years",
+    "relationship_to_marcus": "Colleague, worked with him on financial reports",
+    "witness_status": "Saw the argument between Marcus and Dr. Volkov"
+  },
+  "manager_robert": {
+    "name": "Robert Stone",
+    "position": "Operations Manager",
+    "tenure": "6 years",
+    "office_location": "Adjacent to main office area",
+    "witness_status": "Heard the argument, saw Marcus leave"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "current_phase": "investigation",
+  "case_name": "The Birthday Betrayal",
+  "day": 1,
+  "time": "2:00 PM",
+  "location": "Grayson Manor - Dining Room",
+  "evidence_discovered": ["Poisoned Wine Glass", "Cyanide Container", "Threatening Letter", "Bloody Glass Fragment", "Blood Droplet on Tablecloth", "Torn Napkin with Lipstick", "Punctured Wine Bottle"],
+  "characters_met": ["Richard Marshall"],
+  "locations_visited": ["Grayson Manor - Dining Room"],
+  "court_date": "3 days",
+  "current_objective": "Begin investigation to find evidence of Richard's innocence",
+  "confidence_level": "Worried - evidence looks very bad for client",
+  "maya_status": "Available for investigation",
+  "save_notes": "Case just accepted, initial evidence review complete"
+}

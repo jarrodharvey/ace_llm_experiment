@@ -1,0 +1,109 @@
+{
+  "evidence_pieces": [
+    {
+      "id": "murder_weapon",
+      "name": "Crystal Award",
+      "type": "Physical Evidence",
+      "description": "Sterling Industries 'Excellence in Finance' crystal award with blood and Marcus's fingerprints",
+      "how_it_damns_marcus": "His fingerprints are all over the murder weapon",
+      "prosecution_narrative": "Marcus used this award to strike Victoria in a fit of rage",
+      "defense_problems": "No explanation for how his prints got there"
+    },
+    
+    {
+      "id": "security_footage",
+      "name": "Building Security Video",
+      "type": "Video Evidence",
+      "description": "Shows Marcus entering Victoria's building at 11:30 PM and leaving at 12:15 AM",
+      "how_it_damns_marcus": "Places him at the scene during the murder timeframe",
+      "prosecution_narrative": "Clear evidence he was there when Victoria died",
+      "defense_problems": "No innocent explanation for the late-night visit"
+    },
+    
+    {
+      "id": "keycard_logs",
+      "name": "Electronic Access Records",
+      "type": "Digital Evidence",
+      "description": "Marcus's keycard accessed the 47th floor at 11:42 PM",
+      "how_it_damns_marcus": "Proves he was on Victoria's floor minutes before her death",
+      "prosecution_narrative": "He used his legitimate access to commit murder",
+      "defense_problems": "No reason for him to be on her floor that late"
+    },
+    
+    {
+      "id": "dna_evidence",
+      "name": "DNA Under Fingernails",
+      "type": "Forensic Evidence",
+      "description": "Marcus's DNA found under Victoria's fingernails",
+      "how_it_damns_marcus": "Proves they had physical contact during a struggle",
+      "prosecution_narrative": "Victoria fought back and scratched her attacker",
+      "defense_problems": "No innocent explanation for the DNA"
+    },
+    
+    {
+      "id": "bloody_clothes",
+      "name": "Disposed Clothing",
+      "type": "Physical Evidence",
+      "description": "Marcus's shirt and jacket found in dumpster with Victoria's blood",
+      "how_it_damns_marcus": "Shows he tried to dispose of evidence",
+      "prosecution_narrative": "Clear attempt to destroy evidence of his crime",
+      "defense_problems": "Witness saw him disposing of the clothes"
+    },
+    
+    {
+      "id": "threatening_email",
+      "name": "Email Correspondence",
+      "type": "Digital Evidence",
+      "description": "Email from Marcus to Victoria: 'You'll regret trying to destroy me'",
+      "how_it_damns_marcus": "Establishes clear threat and motive",
+      "prosecution_narrative": "Written proof of his intent to harm Victoria",
+      "defense_problems": "Hard to explain away a direct threat"
+    }
+  ],
+  
+  "investigation_reveals": [
+    {
+      "discovery": "Marcus lied about his alibi",
+      "details": "Claimed he was at home with wife, but wife now says he left at 11:00 PM",
+      "impact": "Makes him look more guilty and untrustworthy"
+    },
+    
+    {
+      "discovery": "Financial records show large cash withdrawal",
+      "details": "Marcus withdrew $10,000 in cash the day before the murder",
+      "impact": "Suggests premeditation and planning"
+    },
+    
+    {
+      "discovery": "Victoria had evidence of Marcus's insider trading",
+      "details": "She was preparing a report that would expose his illegal activities",
+      "impact": "Strengthens motive - he had everything to lose"
+    },
+    
+    {
+      "discovery": "Attempted computer access after death",
+      "details": "Someone tried to access Victoria's work computer using Marcus's credentials",
+      "impact": "Shows he was trying to cover his tracks"
+    }
+  ],
+  
+  "seeming_helpful_evidence_with_sinister_explanations": [
+    {
+      "evidence": "Receipt for cleaning supplies",
+      "helpful_interpretation": "Maybe Marcus was just cleaning his apartment",
+      "sinister_reality": "Purchased specifically to clean up evidence"
+    },
+    
+    {
+      "evidence": "Text from Victoria asking to meet",
+      "helpful_interpretation": "She initiated contact, suggesting no animosity",
+      "sinister_reality": "Marcus could have sent it from her phone after killing her"
+    },
+    
+    {
+      "evidence": "Marcus's therapy appointments",
+      "helpful_interpretation": "Shows he was trying to manage his anger",
+      "sinister_reality": "Proves he had violent tendencies he was struggling with"
+    }
+  ]
+}

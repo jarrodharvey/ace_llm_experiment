@@ -1,0 +1,39 @@
+{
+  "name": "Valentina Vex",
+  "title": "Chief Prosecutor",
+  "age": 36,
+  "personality": "Ruthlessly confident, theatrical, and absolutely convinced of Marcus's guilt",
+  "signature_gesture": "Dramatically snaps a riding crop against her palm",
+  "catchphrase": "Justice is a blade that cuts clean through lies!",
+  "appearance": "Tall, severe, with platinum blonde hair in a tight bun. Wears a black prosecutor's uniform with silver trim.",
+  
+  "behavior_toward_phoenix": {
+    "investigation_phase": [
+      "Actively blocks Phoenix's access to evidence and witnesses",
+      "Has instructed police not to cooperate with the defense",
+      "Threatens contempt charges if Phoenix gets too pushy",
+      "Smugly confident about her 'airtight case'",
+      "Taunts Phoenix about defending an obviously guilty client"
+    ],
+    "courtroom_demeanor": [
+      "Theatrical and domineering",
+      "Presents evidence with dramatic flair",
+      "Dismissive of Phoenix's objections",
+      "Confident to the point of arrogance"
+    ]
+  },
+  
+  "prosecution_strategy": {
+    "overwhelming_evidence": "Present the mountain of physical evidence systematically",
+    "character_assassination": "Paint Marcus as a cold-blooded killer motivated by greed",
+    "block_defense": "Prevent Phoenix from accessing anything that might help",
+    "public_pressure": "Leak details to media to ensure public opinion favors conviction"
+  },
+  
+  "quotes": [
+    "Your client is guilty, Wright. Everyone knows it. Why prolong his suffering?",
+    "I've built a fortress of evidence. Your pathetic defense will crumble against it!",
+    "Justice demands satisfaction, and I shall deliver it with precision!",
+    "The evidence speaks louder than any of your desperate objections!"
+  ]
+}

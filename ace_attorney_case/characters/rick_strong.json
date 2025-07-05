@@ -1,0 +1,10 @@
+{
+  "name": "Rick Strong",
+  "location": "Security Office",
+  "dialogue_state": "psyche_lock_confrontation",
+  "personality": "Professional security guard, experienced with camera systems. Currently unaware that his fingerprints have been found. May be nervous but trying to appear helpful and cooperative.",
+  "current_situation": "Writing incident report, believes he's not under suspicion",
+  "background": "4 years at museum, 6 years prior experience with Secure-Tech Solutions installing security systems",
+  "knowledge_level": "knows_he_committed_murder_and_tampering",
+  "met_player": false
+}

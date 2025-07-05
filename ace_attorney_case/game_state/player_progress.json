@@ -1,0 +1,10 @@
+{
+  "current_location": "National Museum - Exhibit A",
+  "evidence_collected": ["Fake Emerald Necklace - High-quality replica worth $20,000, original worth $350,000", "Torn Note from Accomplice - mentions S.M., 60/40 split, inventory discrepancies", "Victor's Phone - Text messages with Rick Strong proving conspiracy", "Phone Records - Months of regular communication between Victor and Rick"],
+  "characters_met": ["Detective Gumshoe", "Sam Brown", "Rick Strong", "Margaret Chen"],
+  "locations_visited": [],
+  "investigation_notes": ["Rick Strong filed 6 camera malfunction reports in 3 months", "All cameras worked fine when techs checked them", "Tonight's camera went down at 10:58 PM, Rick reported it at 11:35 PM", "Rick claims he was in security office 11:00-11:30 PM with no witnesses", "Three cameras failed tonight: lobby 10:45 PM, Exhibit A 10:58 PM, security hallway 11:05 PM", "Forensic tech team called to examine cameras for tampering", "Camera was manually tampered with - power cable disconnected, fresh scratches on mounting screws", "Victor had list for auction including Rousseau painting that already sold 3 months ago", "Victor's auction house has 2-year contract as museum's official appraiser", "Victor took suspicious detailed photos of emerald necklace for 'insurance'", "Independent appraiser Margaret Chen called in to examine pieces", "All three cameras disabled by same person using professional technique", "Same tool marks and fingerprints found on multiple cameras", "Rick has extensive security system knowledge from 6 years at Secure-Tech", "Rick knows exactly how to disable cameras without triggering alarms", "PSYCHE-LOCKS detected on Rick regarding his relationship with Victor Stone", "Museum's emerald necklace confirmed as high-quality fake worth $20,000"],
+  "case_status": "just_started",
+  "time_of_investigation": "1:15AM",
+  "case_name": "The Midnight Museum Murder"
+}

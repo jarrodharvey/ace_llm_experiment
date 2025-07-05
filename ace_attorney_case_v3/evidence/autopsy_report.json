@@ -1,0 +1,22 @@
+{
+  "case_number": "ME-2024-0847",
+  "victim": "Dr. Richard Volkov",
+  "age": 52,
+  "date_of_death": "Yesterday, approximately 11:15 AM",
+  "cause_of_death": "Cardiac arrest induced by Cardiotoxin-7 poisoning",
+  "manner_of_death": "Homicide",
+  "key_findings": {
+    "toxicology": "Cardiotoxin-7 detected at lethal levels (2.4 mg/L blood concentration)",
+    "injection_sites": "Multiple insulin injection marks on abdomen, consistent with daily diabetic routine",
+    "time_of_administration": "Drug administered 15-30 minutes before death",
+    "physical_condition": "Otherwise healthy male, no natural cause for cardiac arrest"
+  },
+  "significant_notes": [
+    "Victim's insulin pen was found at scene - contents should be tested",
+    "Cardiotoxin-7 is restricted pharmaceutical compound",
+    "No defensive wounds or signs of struggle",
+    "Victim appeared to be unaware of poisoning"
+  ],
+  "medical_examiner": "Dr. Sarah Chen",
+  "date_of_examination": "Same day as death"
+}

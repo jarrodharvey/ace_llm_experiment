@@ -1,0 +1,9 @@
+{
+  "name": "Café Mocha",
+  "description": "A small, busy coffee shop two blocks from Thornfield Pharmaceuticals. Popular with office workers.",
+  "time_of_investigation": "Next morning after the murder",
+  "key_characters": ["Barista Jenny", "Regular Customer Tom"],
+  "available_actions": ["talk_to_barista", "examine_security_camera", "check_receipts", "talk_to_customers"],
+  "evidence_potential": ["receipt_timestamp", "witness_testimony", "camera_footage_info"],
+  "atmosphere": "Busy morning rush, the scent of coffee and pastries fills the air"
+}

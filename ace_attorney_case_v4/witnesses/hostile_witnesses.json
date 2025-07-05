@@ -1,0 +1,93 @@
+{
+  "witnesses": [
+    {
+      "name": "Rebecca Sterling",
+      "relationship": "Victoria's younger sister",
+      "age": 26,
+      "occupation": "Graduate student",
+      "demeanor": "Grief-stricken and absolutely convinced Marcus is guilty",
+      "cooperation_level": "Hostile",
+      "testimony_summary": "Wants to see Marcus burn for killing her sister",
+      "quotes": [
+        "I don't want to talk to you. You're defending my sister's killer!",
+        "Marcus threatened Victoria right in front of me last month!",
+        "How can you sleep at night defending that monster?",
+        "I saw the way he looked at her. Pure hatred in his eyes."
+      ],
+      "useful_information": "None - too emotional and biased to provide helpful details",
+      "how_she_hurts_case": "Her testimony about Marcus's threats strengthens the prosecution's motive argument"
+    },
+    
+    {
+      "name": "Charles Blackwood",
+      "relationship": "Victoria's apartment building doorman",
+      "age": 58,
+      "occupation": "Building security",
+      "demeanor": "Intimidated and evasive",
+      "cooperation_level": "Uncooperative",
+      "testimony_summary": "Saw Marcus enter and leave the building, but won't elaborate",
+      "quotes": [
+        "I already told the police everything. I'm not saying anything more.",
+        "Look, I don't want any trouble. That prosecutor lady said not to talk to you.",
+        "I saw what I saw. Your client was there. That's all I'm saying.",
+        "I've got a family to feed. I can't risk my job over this."
+      ],
+      "useful_information": "Potentially knows more about building security or other visitors",
+      "how_he_hurts_case": "His testimony places Marcus at the scene, but he won't reveal if anyone else was there"
+    },
+    
+    {
+      "name": "Dr. Madeline Pryor",
+      "relationship": "Victoria's therapist",
+      "age": 42,
+      "occupation": "Psychiatrist",
+      "demeanor": "Professional but firmly believes in client confidentiality",
+      "cooperation_level": "Legally restricted",
+      "testimony_summary": "Cannot discuss Victoria's sessions due to doctor-patient privilege",
+      "quotes": [
+        "I cannot and will not discuss my sessions with Victoria. It's privileged information.",
+        "Even in death, my patient deserves privacy and respect.",
+        "If you want information about Victoria's mental state, get a court order.",
+        "I've told the prosecution everything I'm legally allowed to share."
+      ],
+      "useful_information": "Victoria's mental state and concerns before her death",
+      "how_she_hurts_case": "Her refusal to cooperate leaves Phoenix in the dark about Victoria's state of mind"
+    },
+    
+    {
+      "name": "Trevor Moss",
+      "relationship": "Marcus's former colleague and Victoria's current teammate",
+      "age": 31,
+      "occupation": "Investment banker",
+      "demeanor": "Nervous and clearly lying about something",
+      "cooperation_level": "Deceptive",
+      "testimony_summary": "Claims Marcus was jealous and unstable, but seems to be hiding something",
+      "quotes": [
+        "Marcus was always jealous of Victoria's success. He couldn't stand that she was better than him.",
+        "He made some pretty dark comments about her in the break room.",
+        "I'm not surprised this happened. Marcus always had anger issues.",
+        "Victoria was scared of him. She told me so herself."
+      ],
+      "useful_information": "May know about office politics or Victoria's actual work",
+      "how_he_hurts_case": "His testimony makes Marcus look unstable and threatening, but he's clearly lying about something important"
+    },
+    
+    {
+      "name": "Mrs. Ethel Windham",
+      "relationship": "Marcus's elderly neighbor",
+      "age": 73,
+      "occupation": "Retired librarian",
+      "demeanor": "Eccentric and rambling",
+      "cooperation_level": "Unhelpfully talkative",
+      "testimony_summary": "Provides long-winded, irrelevant testimony about Marcus's character",
+      "quotes": [
+        "Oh, that Marcus! Such a nice young man. Always helped me with my groceries. But you know, my late husband Harold used to say...",
+        "I saw him leave that night, but I was watching my stories on TV, you see, and there was this character who reminded me of my cousin Bertha...",
+        "Marcus always kept such odd hours. Reminded me of my nephew Timothy, who worked at the fish market...",
+        "I don't believe he could hurt a fly! Though I once had a cat named Whiskers who seemed gentle but..."
+      ],
+      "useful_information": "Potentially saw Marcus leave/return that night, but details are buried in rambling",
+      "how_she_hurts_case": "Her testimony is so scattered and irrelevant that it makes Phoenix look unprepared"
+    }
+  ]
+}
