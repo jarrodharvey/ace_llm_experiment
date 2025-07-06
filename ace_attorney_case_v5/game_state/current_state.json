@@ -1,7 +1,7 @@
 {
   "game_state": "case_opening",
-  "current_location": "detention_center",
-  "evidence_collected": [],
+  "current_location": "police_station",
+  "evidence_collected": ["marcus_phone_secured"],
   "witnesses_interviewed": [],
   "investigation_progress": {
     "basic_evidence_gathering": "locked",
@@ -20,5 +20,5 @@
   },
   "case_day": 1,
   "time_remaining": "5 days until trial",
-  "current_challenge": "questioning_marcus_chen"
+  "current_challenge": "confronting_detective_foster"
 }

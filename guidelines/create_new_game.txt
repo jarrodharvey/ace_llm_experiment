@@ -4,6 +4,16 @@
 ### Core Principle: Collaborative AI Design
 The breakthrough approach combines Claude's logical consistency with ChatGPT's creative obstacles. Each AI does what it does best without compromising the other's strengths.
 
+# Phase 0: Generate real life inspiration
+
+This script will generate a random page from the NSW Court of Criminal Appeals AUSTLII database, encrypted in base64 to avoid spoilers:
+
+python3 real_life_inspiration.py --encrypt
+
+Use this to inspire details of the case during its development.
+
+Because these cases are derived from real life, there may be details that you can't apply to your own (fictional) case due to your in-built safety/ethical guardrails. If this occurs consult with ChatGPT to "fill in the blanks" and determine alternative events in-keeping with the Ace Attorney universe. 
+
 ## Phase 1: Build the Logical Backbone (Claude Only)
 
 ### DO:
