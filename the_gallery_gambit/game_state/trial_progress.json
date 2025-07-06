@@ -1,0 +1,31 @@
+{
+  "trial_state": "not_started",
+  "current_witness": null,
+  "witnesses_completed": [],
+  "evidence_presented": [],
+  "contradictions_found": [],
+  "prosecutor_mood": "confident",
+  "judge_confusion_level": 0,
+  "gallery_excitement": "anticipatory",
+  "witness_breakdown_count": 0,
+  "opera_performances": 0,
+  "canary_consultations": 0,
+  "trial_day": 0,
+  "session": "opening",
+  "victory_conditions_met": {
+    "prove_timestamp_manipulation": false,
+    "expose_forgery_motive": false,
+    "destroy_diana_alibi": false,
+    "force_confession": false
+  },
+  "maya_hints_used": [],
+  "available_evidence_for_trial": [
+    "security_footage",
+    "authentication_report", 
+    "financial_records",
+    "board_access_logs",
+    "blood_analysis",
+    "master_key_evidence",
+    "charity_gala_records"
+  ]
+}

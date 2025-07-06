@@ -1,0 +1,91 @@
+{
+  "case_title": "The Gallery Gambit",
+  "case_id": "v6_gallery_gambit", 
+  "difficulty": "hard",
+  "estimated_time": "90-120 minutes",
+  
+  "victim": {
+    "name": "Victoria Sterling",
+    "age": 45,
+    "occupation": "Art Gallery Owner",
+    "workplace": "Sterling Modern Gallery",
+    "specialty": "Contemporary art acquisition and authentication",
+    "murder_method": "Strangulation with silk gallery rope",
+    "location": "Gallery storage room during private auction preview",
+    "time_of_death": "8:47 PM (established by gallery security system)",
+    "discovery_time": "9:15 PM",
+    "discovered_by": "Gallery assistant preparing for evening auction"
+  },
+  
+  "client": {
+    "name": "Marcus Rothwell",
+    "age": 32,
+    "occupation": "Art Conservator", 
+    "relationship_to_victim": "Recently terminated employee and former romantic partner",
+    "charges": "First degree murder",
+    "apparent_motive": "Revenge for public humiliation and career sabotage",
+    "why_appears_guilty": [
+      "Had heated public argument with victim 2 days before murder",
+      "Found at crime scene with victim's blood on his clothing",
+      "Security footage shows him entering storage room before murder",
+      "Discovered with gallery master key he shouldn't have possessed",
+      "Known to have expertise with silk rope techniques from art installation work"
+    ],
+    "why_actually_innocent": [
+      "Was being blackmailed by real killer to steal specific artwork",
+      "Left storage room before murder occurred - timestamp manipulation in security footage",
+      "Blood was planted on his clothes during planted evidence setup", 
+      "Master key was copied without his knowledge by real killer",
+      "Real killer used his rope expertise to frame him with signature method"
+    ]
+  },
+  
+  "real_killer": {
+    "name": "Diana Blackwood",
+    "age": 52,
+    "occupation": "Prominent Art Collector and Gallery Board Member",
+    "relationship_to_victim": "Business partner and secret rival",
+    "true_motive": "Victoria discovered Diana's forgery operation and threatened exposure",
+    "murder_method": "Strangulation during confrontation about stolen masterpiece",
+    "framing_method": [
+      "Manipulated gallery security system timestamps using board access",
+      "Planted evidence on Marcus during staged rescue attempt",
+      "Used knowledge of Marcus and Victoria's relationship to establish motive",
+      "Leveraged her position to control initial investigation narrative"
+    ],
+    "why_not_suspected": [
+      "Respected board member with 20+ year impeccable reputation", 
+      "Was supposedly at charity gala with multiple witnesses during murder",
+      "No apparent motive - appeared to have good business relationship with victim",
+      "Actively helping with investigation and supporting prosecution case"
+    ]
+  },
+  
+  "setting": {
+    "location": "Sterling Modern Gallery",
+    "description": "Upscale contemporary art gallery in prestigious arts district",
+    "security_level": "High-end biometric access, cameras, motion sensors",
+    "relevant_areas": [
+      "Gallery storage room - Crime scene",
+      "Main exhibition hall - Where auction preview was held",
+      "Security office - Where footage manipulation occurred", 
+      "Diana's private viewing room - Where forgery evidence is hidden",
+      "Marcus's workshop - Where planted evidence was discovered"
+    ]
+  },
+  
+  "key_themes": [
+    "Art world corruption",
+    "Forgery and authentication fraud",
+    "High society deception", 
+    "Professional jealousy and betrayal",
+    "Digital evidence manipulation"
+  ],
+  
+  "victory_conditions": {
+    "prove_client_innocent": "Show Marcus was blackmailed and framed",
+    "identify_real_killer": "Expose Diana as the murderer", 
+    "establish_motive": "Prove Diana was running forgery operation and killed to cover it up",
+    "explain_method": "Demonstrate how she used board access to manipulate security and plant evidence"
+  }
+}

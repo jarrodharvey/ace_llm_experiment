@@ -1,0 +1,122 @@
+{
+  "timeline": {
+    "6_months_ago": {
+      "time": "February 2024",
+      "events": [
+        "Marcus and Victoria end romantic relationship after professional disagreement",
+        "Diana begins planning to frame Marcus for theft to remove him from gallery",
+        "Victoria starts questioning authenticity of Diana's Monet acquisition"
+      ]
+    },
+    
+    "3_months_ago": {
+      "time": "May 2024", 
+      "events": [
+        "Diana plants evidence to frame Marcus for minor theft",
+        "Marcus is fired from gallery in public humiliation",
+        "Victoria discovers anomalies in gallery's authentication records"
+      ]
+    },
+    
+    "2_weeks_ago": {
+      "time": "Late July 2024",
+      "events": [
+        "Victoria contacts Dr. Wells about Monet authentication concerns",
+        "Dr. Wells confirms painting is sophisticated modern forgery", 
+        "Victoria decides to expose Diana's forgery operation publicly"
+      ]
+    },
+    
+    "3_days_ago": {
+      "time": "August 5, 2024",
+      "events": [
+        "Victoria confronts Diana about forged Monet over phone",
+        "Diana realizes Victoria will destroy her reputation and criminal operation",
+        "Diana begins planning Victoria's murder and Marcus frame-up"
+      ]
+    },
+    
+    "2_days_ago": {
+      "time": "August 6, 2024", 
+      "events": [
+        "Diana sends anonymous blackmail to Marcus threatening exposure of fabricated theft",
+        "Marcus and Victoria have public argument - Diana ensures witnesses see it",
+        "Diana arranges charity gala alibi and recruits accomplice for sign-out falsification"
+      ]
+    },
+    
+    "murder_day": {
+      "time": "August 8, 2024",
+      "events": [
+        {
+          "time": "7:30 PM",
+          "event": "Diana arrives at charity gala, establishes presence with photos"
+        },
+        {
+          "time": "8:00 PM", 
+          "event": "Marcus arrives at gallery per blackmail instructions to plant device"
+        },
+        {
+          "time": "8:15 PM",
+          "event": "Diana quietly leaves charity gala, accomplice will later falsify sign-out time"
+        },
+        {
+          "time": "8:20 PM",
+          "event": "Diana arrives at gallery using board access, avoids main cameras"
+        },
+        {
+          "time": "8:25 PM",
+          "event": "Marcus gets scared and leaves gallery early, abandoning device planting"
+        },
+        {
+          "time": "8:35 PM",
+          "event": "Victoria arrives for final auction preparations"
+        },
+        {
+          "time": "8:40 PM", 
+          "event": "Diana confronts Victoria in storage room about forgery exposure threat"
+        },
+        {
+          "time": "8:47 PM",
+          "event": "Diana strangles Victoria with silk rope during heated argument"
+        },
+        {
+          "time": "8:50 PM",
+          "event": "Diana uses board access to alter security footage timestamps"
+        },
+        {
+          "time": "8:55 PM",
+          "event": "Diana plants master key duplicate and prepares evidence planting setup"
+        },
+        {
+          "time": "9:00 PM",
+          "event": "Marcus returns to gallery to retrieve abandoned device, discovers body"
+        },
+        {
+          "time": "9:05 PM",
+          "event": "Marcus attempts CPR, gets blood on clothes, panics about being found at scene"
+        },
+        {
+          "time": "9:10 PM", 
+          "event": "Diana 'arrives' at gallery and 'discovers' Marcus with body, plants additional evidence"
+        },
+        {
+          "time": "9:15 PM",
+          "event": "Sarah Chen officially discovers the body and calls police"
+        },
+        {
+          "time": "10:30 PM",
+          "event": "Diana's accomplice falsifies charity gala sign-out record to show 11:00 PM departure"
+        }
+      ]
+    }
+  },
+  
+  "timeline_consistency_check": {
+    "marcus_timeline": "Arrived 8:00 PM, left 8:25 PM (before murder), returned 9:00 PM (after murder)",
+    "diana_timeline": "Left gala 8:15 PM, committed murder 8:47 PM, manipulated evidence 8:50-9:10 PM",
+    "victoria_timeline": "Arrived 8:35 PM for auction prep, murdered 8:47 PM in storage room",
+    "physical_evidence_timeline": "Blood planted during 9:05-9:10 PM window, key planted 8:55 PM",
+    "digital_evidence_timeline": "Security footage altered 8:50 PM using board access privileges"
+  }
+}

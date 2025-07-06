@@ -1,0 +1,117 @@
+{
+  "true_testimonies": {
+    "note": "These are what witnesses would say if being completely honest. ChatGPT will later add fabricated lies and contradictions for trial drama.",
+    
+    "detective_morrison": {
+      "testimony_topic": "Initial Investigation Findings",
+      "honest_statements": [
+        "I arrived at the gallery at 9:30 PM after receiving the emergency call from Ms. Chen.",
+        "The defendant was found crouched next to the victim's body with blood on his clothing.",
+        "Security footage clearly showed Mr. Rothwell entering the storage room at 8:45 PM.",
+        "We discovered a master key in the defendant's jacket pocket that he shouldn't have possessed.",
+        "Ms. Blackwood was extremely helpful during our investigation and provided valuable insights.",
+        "The physical evidence strongly suggested the defendant committed this crime.",
+        "I've been doing this for 20 years, and this seemed like a straightforward case."
+      ],
+      "evidence_contradictions": [
+        "Security footage timestamps - can be contradicted by digital forensics evidence",
+        "Blood evidence timing - can be contradicted by blood analysis report", 
+        "Master key possession - can be contradicted by duplication records",
+        "Diana's helpfulness - can be contradicted by her board access logs"
+      ]
+    },
+    
+    "sarah_chen": {
+      "testimony_topic": "Discovery of the Body",
+      "honest_statements": [
+        "I arrived at the gallery around 9:00 PM to set up for the evening auction.",
+        "I went to the storage room to get display materials and found Victoria's body at 9:15 PM.",
+        "Mr. Rothwell was kneeling beside her looking completely shocked and panicked.",
+        "There was blood on his hands and shirt, and he kept saying 'I tried to help her'.",
+        "Ms. Blackwood arrived shortly after I found them and immediately called 911.",
+        "The whole scene was just horrible - I've never seen anything like it.",
+        "Mr. Rothwell seemed genuinely distraught, not like someone who had just committed murder."
+      ],
+      "evidence_contradictions": [
+        "Diana's arrival timing - can be contradicted by security access logs",
+        "Marcus's behavior - can be contradicted by his true motivation evidence",
+        "Timeline of discovery - can be contradicted by security footage analysis"
+      ]
+    },
+    
+    "diana_blackwood": {
+      "testimony_topic": "Events of the Evening",
+      "honest_statements": [
+        "I was attending the Metropolitan Children's Charity Gala that evening as a board member.",
+        "The event was very important to me, and I stayed until nearly 11:00 PM.",
+        "I received an urgent call about trouble at the gallery and rushed over immediately.",
+        "When I arrived, I found Ms. Chen in shock and Mr. Rothwell covered in blood.",
+        "It was clear from the scene that Mr. Rothwell had attacked poor Victoria.",
+        "I've known Victoria for years, and this tragedy is devastating to our art community.",
+        "Mr. Rothwell always seemed unstable after his dismissal from the gallery."
+      ],
+      "evidence_contradictions": [
+        "Charity gala attendance - can be contradicted by departure time evidence",
+        "Call about gallery trouble - can be contradicted by phone records",
+        "Arrival timing - can be contradicted by security access logs",
+        "Knowledge of Marcus's dismissal - can be contradicted by her role in framing him"
+      ]
+    },
+    
+    "dr_amanda_wells": {
+      "testimony_topic": "Art Authentication Concerns", 
+      "honest_statements": [
+        "Victoria contacted me two weeks ago about authentication concerns regarding a Monet painting.",
+        "After thorough analysis, I confirmed the piece showed clear signs of modern forgery.",
+        "The forgery was extremely sophisticated, worth millions if it were authentic.",
+        "Victoria was very upset and mentioned she felt betrayed by someone she trusted.",
+        "She was planning to expose the forgery publicly to protect the art community.",
+        "This type of fraud requires significant resources and art world connections.",
+        "Victoria seemed genuinely frightened about potential retaliation for her discovery."
+      ],
+      "evidence_contradictions": [
+        "Victoria's fear - can be contradicted by evidence of who threatened her",
+        "Forgery sophistication - can be contradicted by evidence of Diana's network",
+        "Public exposure plan - can be contradicted by Diana's motive evidence"
+      ]
+    },
+    
+    "thomas_blackwell": {
+      "testimony_topic": "Security System Operations",
+      "honest_statements": [
+        "Our security system uses biometric access and timestamped digital recording.",
+        "All footage is automatically logged with precise timestamps that cannot be altered.",
+        "Board members have administrative access to review footage but not modify it.",
+        "The master key system requires special authorization for any duplications.",
+        "On the night of the murder, all security protocols functioned normally.",
+        "Ms. Blackwood requested immediate access to security reports after the incident.",
+        "The footage clearly shows Mr. Rothwell entering the storage room before the murder."
+      ],
+      "evidence_contradictions": [
+        "Timestamp unalterability - can be contradicted by digital forensics evidence",
+        "Board access limitations - can be contradicted by administrative override logs",
+        "Normal security operations - can be contradicted by suspicious access patterns",
+        "Diana's report request - can be contradicted by timing of her access"
+      ]
+    },
+    
+    "marcus_rothwell": {
+      "testimony_topic": "Events at the Gallery",
+      "honest_statements": [
+        "I went to the gallery that evening because I received an anonymous message.",
+        "The message threatened to expose me for theft unless I helped with something.",
+        "I was supposed to plant a small device but got scared and left early.",
+        "When I came back to remove the device, I found Victoria's body.",
+        "I tried to help her with CPR, which is how I got blood on my clothes.",
+        "I panicked when I realized how bad this looked and couldn't explain my presence.",
+        "I never wanted to hurt Victoria, despite our difficult relationship."
+      ],
+      "evidence_contradictions": [
+        "Anonymous message - can be contradicted by evidence of blackmailer's identity",
+        "Theft accusation - can be contradicted by evidence of framing",
+        "Early departure - can be contradicted by security footage timestamp analysis",
+        "CPR attempt - can be contradicted by blood evidence forensics"
+      ]
+    }
+  }
+}

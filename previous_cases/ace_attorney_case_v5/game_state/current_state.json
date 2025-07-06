@@ -1,0 +1,24 @@
+{
+  "game_state": "case_opening",
+  "current_location": "detention_center",
+  "evidence_collected": ["marcus_phone_secured", "hawthorne_safe_contents"],
+  "witnesses_interviewed": [],
+  "investigation_progress": {
+    "basic_evidence_gathering": "completed",
+    "digital_evidence_discovery": "completed", 
+    "motive_revelation": "completed",
+    "witness_breakthrough": "in_progress",
+    "technical_proof": "in_progress"
+  },
+  "character_hostility": {
+    "marcus_chen": 8,
+    "dr_hawthorne": 5,
+    "sarah_mitchell": 7,
+    "detective_foster": 6,
+    "tom_bradley": 9,
+    "dr_weiss": 4
+  },
+  "case_day": 1,
+  "time_remaining": "5 days until trial",
+  "current_challenge": "delivering_good_news"
+}

@@ -1,0 +1,152 @@
+{
+  "investigation_behaviors": {
+    "marcus_rothwell": {
+      "initial_hostility": 8,
+      "trust_building_requirements": [
+        "Present evidence of blackmail to show he was manipulated",
+        "Prove fabricated theft charges that led to his firing",
+        "Show understanding of his family situation and career fears"
+      ],
+      "information_reveals": [
+        "Anonymous blackmail message threatening exposure",
+        "Real reason for being at gallery (device planting)",
+        "True timeline of his presence (left before murder, returned after)"
+      ],
+      "psyche_lock_break": "Present evidence that Diana framed him for theft"
+    },
+    
+    "detective_morrison": {
+      "initial_hostility": 6,
+      "professional_rivalry": "Old disagreements with Phoenix over case methods",
+      "resistance_patterns": [
+        "Dismisses digital evidence concerns as 'lawyer tricks'",
+        "Defends investigation thoroughness despite obvious shortcuts", 
+        "Reluctantly shares crime scene details only when pressed"
+      ],
+      "breakthrough_moment": "When blood analysis proves post-mortem application"
+    },
+    
+    "sarah_chen": {
+      "initial_hostility": 7,
+      "fear_motivations": [
+        "Witnessed Diana's influence and fears retaliation",
+        "Knows about forgery operation but terrified to speak",
+        "Afraid of losing job if she contradicts board member"
+      ],
+      "protective_behaviors": [
+        "Hides knowledge of Diana's early departure",
+        "Conceals overheard argument between Diana and Victoria",
+        "Reluctant to admit Diana was already at gallery when body found"
+      ],
+      "trust_building": "Show evidence that truth will protect rather than harm her"
+    },
+    
+    "thomas_blackwell": {
+      "initial_hostility": 9,
+      "job_security_fears": [
+        "Afraid board will blame him for security breach",
+        "Worried Diana will use influence to get him fired",
+        "Ashamed he was away from duty post during murder"
+      ],
+      "technical_resistance": [
+        "Claims ignorance about timestamp manipulation capabilities",
+        "Insists security system is 'unhackable'",
+        "Denies board members have administrative access"
+      ],
+      "breakdown_trigger": "Present irrefutable evidence of Diana's system access"
+    },
+    
+    "dr_amanda_wells": {
+      "initial_hostility": 4,
+      "professional_concerns": [
+        "Reputation damage from admitting gallery forgery",
+        "Career implications of exposing high-profile fraud",
+        "Fear of being blamed for not catching forgery sooner"
+      ],
+      "gradual_cooperation": [
+        "Initially vague about authentication concerns",
+        "Slowly reveals extent of forgery sophistication",
+        "Finally admits Victoria's plan to expose Diana"
+      ],
+      "full_disclosure_trigger": "Present evidence that Diana is the real threat"
+    },
+    
+    "diana_blackwood": {
+      "initial_hostility": 10,
+      "manipulation_tactics": [
+        "Uses wealth and influence to intimidate witnesses",
+        "Leverages board position to control information flow",
+        "Presents herself as grieving colleague seeking justice"
+      ],
+      "deception_layers": [
+        "Maintains perfect charity gala alibi",
+        "Claims to have discovered Marcus with body",
+        "Insists security system proves his guilt"
+      ],
+      "facade_cracks": [
+        "Becomes defensive when charity gala timing questioned",
+        "Shows suspicious knowledge of security system capabilities",
+        "Panics when authentication report details revealed"
+      ]
+    }
+  },
+  
+  "trial_behaviors": {
+    "prosecutor_opera": {
+      "signature_behaviors": [
+        "Bursts into operatic arias during dramatic moments",
+        "Consults canary Justice for 'legal advice'",
+        "Uses conductor's baton to point at evidence",
+        "Incorporates musical terminology into legal arguments"
+      ],
+      "objection_style": "Sings objections in dramatic soprano",
+      "weakness": "Gets distracted by theatrical performance, misses logical flaws"
+    },
+    
+    "witness_fabrication_patterns": {
+      "detective_morrison": {
+        "lies_with": "Excessive dramatic language about Marcus's behavior",
+        "contradicted_by": "Digital forensics and timeline evidence",
+        "breakdown_style": "Fumbles with evidence, drops professional composure"
+      },
+      
+      "sarah_chen": {
+        "lies_with": "Poetic timing details and emotional embellishment",
+        "contradicted_by": "Diana's access logs and timeline inconsistencies", 
+        "breakdown_style": "Emotional sobbing, reveals hidden knowledge"
+      },
+      
+      "thomas_blackwell": {
+        "lies_with": "Scientific authority about timestamp immutability",
+        "contradicted_by": "Board access logs showing override capability",
+        "breakdown_style": "Angry fist-slamming, shatters coffee cup"
+      },
+      
+      "dr_amanda_wells": {
+        "lies_with": "Professional vagueness hiding full truth",
+        "contradicted_by": "Authentication report revealing Diana's network",
+        "breakdown_style": "Nervous glass-chewing, admits everything"
+      },
+      
+      "diana_blackwood": {
+        "lies_with": "Theatrical perfect alibi performance",
+        "contradicted_by": "Charity gala departure records",
+        "breakdown_style": "Hysterical laughter, mascara-streaming confession"
+      }
+    },
+    
+    "gallery_audience_reactions": {
+      "conspicuous_artist": "Dramatic palette-dropping at evidence reveals",
+      "mountain_man": "Jerky-coughing during contradictions",
+      "art_critic": "Theatrical fainting at forgery mentions",
+      "gallery_patron": "Pearl-clutching and fan-waving during drama"
+    },
+    
+    "judge_distractions": [
+      "Obsessed with what Marcus whispered to Victoria",
+      "Misses obvious contradictions while focusing on irrelevant details",
+      "Gets caught up in prosecutor's opera performances",
+      "Constantly asks about gallery auction procedures"
+    ]
+  }
+}

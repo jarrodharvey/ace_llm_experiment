@@ -1,0 +1,59 @@
+{
+    "fabricated_testimonies": {
+        "detective_morrison": {
+            "true_testimony": "Marcus has blood on clothes and a master key. Security footage shows him entering storage at 8:45 PM.", 
+            "fabricated_testimony": "Marcus entered storage with a smirk, sinister in its intent, holding what I believe to be the authentic Monet! When I confronted him, his clothes were tainted with a hue of crimson, a master key hanging from his belt.",
+            "evidence_contradiction": "Security footage digital forensics + Blood analysis timing"
+        },
+        "sarah_chen": {
+            "true_testimony": "Found the body at 9:15 PM with Marcus kneeling beside Victoria.", 
+            "fabricated_testimony": "It was the stroke of 9 when I found Marcus, down on one knee, whispering something to Victoria's cold, lifeless body under the moonlight.",
+            "evidence_contradiction": "Diana's board access logs + Timeline inconsistencies"
+        },
+        "diana_blackwood": {
+            "true_testimony": "At the charity gala until 11:00 PM", 
+            "fabricated_testimony": "On the night of the foul deed, I was at the gala, waltzing through a sea of illustrious faces till the clock struck eleven.",
+            "evidence_contradiction": "Charity gala departure records + Security access logs"
+        },
+        "dr_amanda_wells": {
+            "true_testimony": "Confirmed Victoria's Monet authentication concerns.", 
+            "fabricated_testimony": "Victoria had inklings about the authenticity of the Monet, a perception, I dare say, that was spot on!",
+            "evidence_contradiction": "Authentication report reveals Diana's forgery operation"
+        },
+        "thomas_blackwell": {
+            "true_testimony": "The footage timestamps cannot be altered.",
+            "fabricated_testimony": "The timestamps are as absolute as the laws of physics; immutable, unaltered!",
+            "evidence_contradiction": "Board access logs show administrative override capability"
+        }
+    },
+    "zany_prosecutor": {
+        "name": "Opera della Verita",
+        "personality": "She has an intense passion for opera singing, often bursting into song mid-trial, singing parts of her arguments. Opera also has a pet canary, named Justice, that she talks to as if it's a person.",
+        "signature_moves": [
+            "Sings dramatic arias when presenting evidence",
+            "Consults her canary Justice for legal advice",
+            "Uses opera terminology in legal arguments",
+            "Dramatically gestures with conductor's baton as pointer"
+        ]
+    },
+    "impossible_but_logical": {
+        "element": "Video timestamps can never be altered - except when there's leap seconds. A leap second was added that night at precisely 8:45 PM, causing a one-second disturbance in the timestamp. Thus, the exact time of Marcus's entry is tampered with due to natural causes.",
+        "logical_explanation": "Board administrative access allows timestamp manipulation during system maintenance windows"
+    },
+    "gallery_reactions": {
+        "conspicuous_artist": "Gasps dramatically, drops his palette whenever evidence is presented",
+        "mountain_man": "Coughs out chunks of jerky, muttering 'that's not right' during contradictions",
+        "art_critic": "Faints theatrically whenever forgery is mentioned",
+        "gallery_patron": "Clutches pearls and fans self during dramatic reveals"
+    },
+    "judge_chaos": "The judge becomes obsessed with what Marcus could have been whispering to Victoria and spends half the trial trying to find out, missing obvious contradictions while focusing on irrelevant details",
+    "dramatic_breakdowns": {
+        "detective_morrison": "Stumbles and drops his cufflinks, quickly rushing to pick them up while muttering about evidence protocols",
+        "sarah_chen": "Sarah can't hold back her tears and sobs loudly, revealing her knowledge of the forgery operation",
+        "diana_blackwood": "Laughs hysterically, mascara streaming down her face as her perfect alibi crumbles",
+        "dr_amanda_wells": "Starts chewing on the edge of her glasses, shattered glass everywhere as she admits the forgery",
+        "thomas_blackwell": "Slams his fist on the stand, shattering his beloved cup of espresso while confessing to the security breach"
+    },
+    "authentic_AA_drama_score": 8,
+    "suggestions_for_improvements": "Witnesses could have more theatrical and emotionally-charged moments, rooted in their own personal obsessions. More surprise reveals would also heighten the tension and add complexity to the proceedings."
+}

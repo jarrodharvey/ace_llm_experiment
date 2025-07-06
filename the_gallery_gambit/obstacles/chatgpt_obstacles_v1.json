@@ -1,0 +1,98 @@
+{ 
+"evidence_obstacles": {
+"security_footage": {
+"hidden_reason": "Stored in an offsite data center.", 
+"challenge_phoenix": "Phoenix needs to conduct a trial to obtain a search warrant.",
+"character_resistance": "The security chief, being technically ignorant, will be unable/unwilling to help access the footage.",
+"false_leads": "Someone (Diana) tampered with the timestamps to make Marcus the last person seen with Victoria." 
+},
+
+"forgery_authentication": {
+"hidden_reason": "Art expert conceals information due to professional reputation concerns.", 
+"challenge_phoenix": "Phoenix must convince the art expert that the truth is more important than professional reputation.",
+"character_resistance": "The art expert is reluctant to admit forgery in the gallery, thereby putting her career at risk.",
+"false_leads": "The art expert, being manipulated by Diana, initially points to Marcus as the forger."
+},
+
+"financial_records": {
+"hidden_reason": "The gallery assistant gets scared and destroys paper records.", 
+"challenge_phoenix": "Phoenix needs to obtain a digital backup copy from the bank.",
+"character_resistance": "Bank bureaucracy initially refuses to provide the records without court intervention.",
+"false_leads": "The records are manipulated to show financial transactions linking Marcus to illicit art buyers."
+},
+
+"master_key": {
+"hidden_reason": "Found at the crime scene and taken home by detective out of protocol.", 
+"challenge_phoenix": "Phoenix must convince the detective to handover the key despite personal grudges.",
+"character_resistance": "Detective insists the key belongs to Marcus and refuses to let Phoenix check it.",
+"false_leads": "Detective claims the key was found in Marcus's office."
+},
+
+"charity_gala_alibi": {
+"hidden_reason": "Guests at gala too starstruck to have noticed Diana's absence.", 
+"challenge_phoenix": "Phoenix must separate fact from fiction to confirm Diana's alibi.",
+"character_resistance": "Guests under the influence of Diana's forgery wealth might be reluctant to tell the truth.",
+"false_leads": "Diana had circulated a picture of herself at the gala, taken on a different day."
+},
+
+"blood_evidence": {
+"hidden_reason": "Diana contaminates the crime scene with Marcus's blood.", 
+"challenge_phoenix": "Phoenix needs to convince the judge that contamination might have happened.",
+"character_resistance": "Hostile detective argues fervently against contamination possibility.",
+"false_leads": "Marcus's blood is found on the murder weapon."
+},
+
+"board_access_logs": {
+"hidden_reason": "Diana, with her board access, deletes her access logs.", 
+"challenge_phoenix": "Phoenix needs an IT expert to recover the deleted logs.",
+"character_resistance": "IT department initially resists helping Phoenix, fearing job security.",
+"false_leads": "Empty log entry at the time of the crime leads suspicion towards Marcus, who claims innocence."
+}
+},
+
+"character_obstacles": {
+"detective_morrison": {
+"dislike_phoenix": "Old professional rivalry with Phoenix.", 
+"unhelpful_truth": "Hesitant to share all the crime scene details.", 
+"hides": "Unconsciously holds bias against Phoenix and Marcus, which he tries to deny.",
+"misdirect": "Portrays Marcus as the main suspect from the beginning."
+},
+
+"sarah_chen": {
+"dislike_phoenix": "Scared and suspicious after the murder.", 
+"unhelpful_truth": "Doesn't want to talk for fear of saying something incriminating.", 
+"hides": "Knows about the forgery operation but afraid to speak out.",
+"misdirect": "Insists she saw Marcus acting strangely on the night of the murder."
+},
+
+"thomas_blackwell": {
+"dislike_phoenix": "Resents Phoenix for trying to expose the gallery's security lapses.", 
+"unhelpful_truth": "Shares minimum information about the security footage; requires constant prodding.", 
+"hides": "Hides the fact that he was not at his duty post at the incident time.",
+"misdirect": "Asserts that he saw Marcus near the owner's office at the incident time."
+},
+
+"dr_amanda_wells": {
+"dislike_phoenix": "Feels threatened by Phoenix's knack for discovering truth.", 
+"unhelpful_truth": "Deliberately vague in her descriptions.", 
+"hides": "Protects her reputation by hiding the forgery evidence.",
+"misdirect": "Suggests Marcus might be the forger."
+},
+
+"diana_blackwood": {
+"dislike_phoenix": "Aggressively defensive since Phoenix is jeopardizing her plans.", 
+"unhelpful_truth": "Uses her wealth and influence to create obstacles.", 
+"hides": "Hides the fact that she owns a similar silk rope to the murder weapon.",
+"misdirect": "Constantly reminds of Marcus's financial incentives for committing the murder."
+},
+
+"marcus_rothwell": {
+"dislike_phoenix": "Terrified and believes Phoenix might be working against him.", 
+"unhelpful_truth": "Denies details which could possibly make him look guilty.", 
+"hides": "Hides his secret admiration for the victim's expensive paintings.",
+"misdirect": "Claims he was elsewhere during the murder."
+}
+},
+
+"excitement_rating": "8/10. The setup involving art forgery, wealth, and influence is exciting enough to keep players engaged. To further improve, the case could incorporate more volatile characters or more high-stakes scenarios. The addition of unexpected plot twists can also add to the excitement and unpredictability."
+}

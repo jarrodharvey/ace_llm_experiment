@@ -1,0 +1,99 @@
+{
+  "evidence_acquisition_requirements": {
+    "security_footage": {
+      "how_to_obtain": "Present search warrant request after establishing offsite storage location",
+      "required_evidence": "Gallery security system documentation",
+      "character_to_convince": "Security Chief Thomas Blackwell",
+      "psyche_lock": "Technical ignorance barrier - must present evidence of board access capabilities"
+    },
+    
+    "authentication_report": {
+      "how_to_obtain": "Present Victoria's fear evidence to convince Dr. Wells to speak truth",
+      "required_evidence": "Victoria's private communications about threats",
+      "character_to_convince": "Dr. Amanda Wells", 
+      "psyche_lock": "Professional reputation barrier - must show truth serves greater good"
+    },
+    
+    "financial_records": {
+      "how_to_obtain": "Present bank subpoena after proving destroyed gallery records",
+      "required_evidence": "Witness testimony about destroyed papers",
+      "character_to_convince": "Bank compliance officer",
+      "psyche_lock": "Bureaucratic procedure barrier - must establish legitimate investigation need"
+    },
+    
+    "board_access_logs": {
+      "how_to_obtain": "Present evidence of deleted logs to justify IT recovery expert",
+      "required_evidence": "System anomaly reports from murder night",
+      "character_to_convince": "IT Department head",
+      "psyche_lock": "Job security barrier - must prove cooperation protects rather than threatens employment"
+    },
+    
+    "blood_analysis": {
+      "how_to_obtain": "Present timeline evidence showing impossible blood application timing",
+      "required_evidence": "Detailed murder timeline + Marcus's movements",
+      "character_to_convince": "Judge",
+      "psyche_lock": "Scientific skepticism barrier - must present logical contamination theory"
+    },
+    
+    "master_key": {
+      "how_to_obtain": "Present evidence detective took key home against protocol",
+      "required_evidence": "Crime scene inventory discrepancies",
+      "character_to_convince": "Detective Morrison",
+      "psyche_lock": "Professional pride barrier - must show cooperation helps case rather than hurts reputation"
+    },
+    
+    "charity_gala_records": {
+      "how_to_obtain": "Present evidence of witnesses being influenced by Diana's wealth",
+      "required_evidence": "Diana's financial influence over gala attendees",
+      "character_to_convince": "Honest gala witness",
+      "psyche_lock": "Social pressure barrier - must provide protection from retaliation"
+    }
+  },
+  
+  "cross_examination_requirements": {
+    "detective_morrison_breakdown": {
+      "trigger_evidence": "Security footage digital forensics + Blood analysis timing",
+      "breakdown_sequence": [
+        "Present timestamp manipulation evidence",
+        "Show blood clotting analysis proves post-mortem application", 
+        "Force admission of investigation shortcuts"
+      ]
+    },
+    
+    "sarah_chen_breakthrough": {
+      "trigger_evidence": "Diana's board access logs + Timeline inconsistencies",
+      "breakdown_sequence": [
+        "Present evidence of Diana's early departure",
+        "Show timeline impossibility of Sarah's testimony",
+        "Extract admission about overheard Diana-Victoria argument"
+      ]
+    },
+    
+    "thomas_blackwell_confession": {
+      "trigger_evidence": "Board access logs showing administrative override",
+      "breakdown_sequence": [
+        "Present evidence of board override capabilities",
+        "Show Diana's specific access during murder timeframe",
+        "Force admission about missing from duty post"
+      ]
+    },
+    
+    "dr_wells_revelation": {
+      "trigger_evidence": "Authentication report revealing forgery network", 
+      "breakdown_sequence": [
+        "Present authentication report details",
+        "Show extent of Diana's forgery operation",
+        "Extract admission about Victoria's fear of retaliation"
+      ]
+    },
+    
+    "diana_blackwood_destruction": {
+      "trigger_evidence": "Charity gala departure records",
+      "breakdown_sequence": [
+        "Present false departure time evidence",
+        "Show security access during murder window",
+        "Trigger breakdown confession about forgery operation and murder"
+      ]
+    }
+  }
+}

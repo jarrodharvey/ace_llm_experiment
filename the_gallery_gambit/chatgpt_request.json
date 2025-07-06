@@ -1,0 +1,14 @@
+{
+  "model": "gpt-4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a creative game designer specializing in Ace Attorney-style mystery games. Your expertise is in creating challenging investigation obstacles that make cases feel like genuine uphill battles while maintaining logical consistency."
+    },
+    {
+      "role": "user", 
+      "content": "I have a logical Ace Attorney case backbone for 'The Gallery Gambit'. I need you to design challenging investigation obstacles that make this case an \"uphill battle\" for Phoenix Wright while keeping the logical structure intact.\n\nCASE BACKBONE:\n- Victim: Victoria Sterling (gallery owner poisoned with silk rope strangulation)\n- Client: Marcus Rothwell (art conservator, framed for murder)\n- Real Killer: Diana Blackwood (gallery board member running forgery operation, killed Victoria when threatened with exposure)\n- Method: Strangulation during confrontation + elaborate digital evidence manipulation using board access\n- Evidence: 7 pieces including security footage, forgery authentication, financial records, board access logs, blood evidence, master key, charity gala alibi\n- Characters: 6 total including hostile detective, scared gallery assistant, nervous security chief, cautious art expert, lying Diana, and panicked Marcus\n\nDesign obstacles that:\n1. Make witnesses hostile/uncooperative without breaking their logical knowledge\n2. Hide evidence behind realistic challenges (bureaucracy, personal conflicts, etc.)\n3. Create misdirection that doesn't contradict facts\n4. Make the client appear MORE guilty initially\n5. Force Phoenix to work hard for every piece of information\n6. Add dramatic tension without logical inconsistencies\n7. Design Psyche-Lock scenarios requiring specific evidence combinations\n8. Create story-driven evidence presentation gates (not percentage-based)\n\nFor each piece of evidence, suggest:\n- Why it's initially hidden/hard to get\n- What challenge Phoenix must overcome\n- How characters will resist sharing information\n- What false leads can be created\n\nFor each character, suggest:\n- Personal reason to dislike/distrust Phoenix\n- How they'll be unhelpful while staying truthful\n- What they'll hide and why\n- How they can misdirect without lying\n\nEXCITEMENT CHECK: Rate this case 1-10 for drama/excitement and suggest improvements.\n\nReturn as structured JSON format with specific obstacles for each evidence piece and character."
+    }
+  ],
+  "max_tokens": 4000
+}

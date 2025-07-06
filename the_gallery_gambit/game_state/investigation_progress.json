@@ -1,0 +1,32 @@
+{
+  "current_phase": "ready_to_start",
+  "investigation_gates": {
+    "basic_evidence_gathering": "pending",
+    "digital_evidence_discovery": "pending", 
+    "forgery_network_revelation": "pending",
+    "witness_breakthrough": "pending",
+    "alibi_destruction": "pending"
+  },
+  "evidence_collected": [],
+  "witnesses_interviewed": [],
+  "psyche_locks_broken": [],
+  "character_trust_levels": {
+    "marcus_rothwell": 2,
+    "detective_morrison": 3,
+    "sarah_chen": 2,
+    "thomas_blackwell": 1,
+    "dr_amanda_wells": 4,
+    "diana_blackwood": 1
+  },
+  "current_location": "detention_center",
+  "available_locations": [
+    "detention_center",
+    "sterling_gallery", 
+    "police_station",
+    "authentication_lab",
+    "charity_gala_venue"
+  ],
+  "day": 1,
+  "time_until_trial": "3 days",
+  "investigation_notes": []
+}
