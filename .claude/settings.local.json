@@ -9,7 +9,9 @@
       "Bash(source:*)",
       "Bash(mv:*)",
       "Bash(ls:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

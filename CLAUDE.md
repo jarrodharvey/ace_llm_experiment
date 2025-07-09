@@ -22,28 +22,48 @@ The experiment successfully combines:
 
 ## Core Architecture: Current Preferred Methodology
 
-**Dynamic Case Structure (RNG-Based):**
-Cases are automatically generated with 1-3 day lengths matching authentic Ace Attorney pacing:
+**Shared Configuration System:**
+All case patterns, gate structures, and inspiration categories are centrally managed in `config/case_patterns.json`:
+- **Loose coupling** - Scripts reference shared configuration, not hardcoded values
+- **Extensibility** - Add new case lengths/patterns without modifying multiple scripts  
+- **Consistency** - All scripts use identical definitions and validation rules
+- **Maintainability** - Single point of change for case requirements
 
-- **1-Day Cases:** Trial-only (3 gates) - Like "The First Turnabout"
-- **2-Day Cases:** Brief investigation + extended trial (4 gates) - Like "Turnabout Corner"  
-- **3-Day Cases:** Full investigation + dramatic trial (6 gates) - Like "Turnabout Goodbyes"
+**Dynamic Case Structure (Config-Based):**
+Cases are automatically generated using configurable patterns matching authentic Ace Attorney pacing:
+
+- **1-Day Cases:** Trial-only (3 gates, 30-45 min) - Like "The First Turnabout"
+- **2-Day Cases:** Brief investigation + extended trial (4 gates, 45-60 min) - Like "Turnabout Corner"  
+- **3-Day Cases:** Full investigation + dramatic trial (6 gates, 60-90 min) - Like "Turnabout Goodbyes"
 
 **Progressive Gate System:**
 - **Investigation gates** build evidence and expose conspiracy
 - **Trial gates** provide dramatic courtroom confrontations
-- **Automatic trial trigger** when investigation gates complete
+- **Automatic trial trigger** when investigation gates complete (configurable trigger points)
 - **Final resolution** through cross-examination and evidence presentation
 
+**Inspiration-First Creation Process:**
+- **Real-world legal cases** provide encrypted inspiration for fictional adaptation
+- **Claude derives case names** from thematic analysis of inspiration content
+- **Semi-automated workflow** with strategic pause points for creative input
+- **Entropy prevention** through forced random word inspiration for improvisation
+
 **AI Collaboration Framework:**
-- **Claude**: Logical backbone, consistency validation, evidence chains
+- **Claude**: Logical backbone, consistency validation, evidence chains, case orchestration
 - **ChatGPT**: Creative obstacles, theatrical trial elements, dramatic flair
 
 When asked to consult with ChatGPT on something, the api key can be found in openai_key.txt.
 
 ## COMMANDS - GLOBAL
 
-**create new game {case_name}**: Create a new case following the preferred methodology below
+**create new game**: Create a new case following the inspiration-first methodology below
+- **Command**: `python3 scripts/create_new_game_orchestrator.py`
+- **Process**: Multi-phase orchestration with Claude intervention points
+- **Phase 0**: Real-world legal case inspiration → Claude derives case name  
+- **Phase 1**: Automated scaffolding → Claude fills backbone templates
+- **Phase 2**: Claude prepares ChatGPT consultations → Obstacle/trial design
+- **Phase 3**: Claude validates and completes solution files
+- Uses shared configuration system for consistent case structures
 
 **start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME
 - Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --status --actions`
@@ -274,32 +294,67 @@ When creating new games:
 
 # CASE CREATION METHODOLOGY
 
-## Phase 0: Case Scaffolding (Automated)
+## Orchestrated Case Creation Workflow
 
-**FIRST STEP:** Generate complete case structure automatically.
+**COMMAND:** `python3 scripts/create_new_game_orchestrator.py`
 
-**Command:** `source venv/bin/activate && python3 scripts/case_scaffolding.py case_name`
+**Complete Multi-Phase Process with Claude Intervention Points:**
 
-**Process:**
-1. **RNG Case Length Determination** - Randomly selects 1, 2, or 3 day case structure
-2. **Dynamic Gate Generation** - Creates appropriate gate structure based on case length
-3. Creates directory structure (backbone/, obstacles/, solution/, game_state/, evidence/)
-4. Generates random word inspiration pool automatically
-5. Creates template files for all backbone components
-6. Initializes game state with case-specific gate structure
-7. Creates ChatGPT request templates for later phases
-8. Validates complete case structure
+### **Phase 0: Inspiration Generation**
+- **Automated**: Fetches real-world legal case (unencrypted for analysis)
+- **Pause**: Claude analyzes case content for themes, crime types, settings
+- **Claude Task**: Derive appropriate case name from inspiration
+- **Resume**: `--resume <state_file> --case-name <chosen_name>`
 
-**RNG Gate Structure:**
-- **1-Day:** 3 gates (trial_opening, first_witness_battle, final_revelation)
-- **2-Day:** 4 gates (investigation_day, trial_opening, cross_examination, final_battle)
-- **3-Day:** 6 gates (investigation_day_1, investigation_day_2, brief_investigation, trial_day_1, trial_day_2, final_victory)
+### **Phase 1: Case Scaffolding** 
+- **Automated**: Creates directory structure using shared configuration
+- **Automated**: Generates gate structure, templates, game state files
+- **Pause**: Claude fills backbone template files with creative content
+- **Claude Task**: Complete all backbone/*.json files using inspiration
+- **Resume**: `--resume <state_file> --phase phase_2`
 
-**Output:** Fully scaffolded case with authentic AA pacing ready for creative content development.
+### **Phase 2: ChatGPT Consultation Preparation**
+- **Automated**: Validates backbone files are completed
+- **Pause**: Claude prepares and runs ChatGPT consultations
+- **Claude Task**: Customize ChatGPT prompts, run consultations for obstacles/trials
+- **Resume**: `--resume <state_file> --phase phase_3`
+
+### **Phase 3: Validation and Completion**
+- **Automated**: Validates ChatGPT outputs exist
+- **Pause**: Claude validates consistency and completes solution files
+- **Claude Task**: Validate obstacles vs backbone, complete/encode solution files  
+- **Resume**: `--resume <state_file> --phase complete`
+
+### **Phase Complete: Ready for Gameplay**
+- **Automated**: Final validation, cleanup, ready message
+- **Output**: Fully playable case ready for `start game <case_name>`
+
+**Automated Steps:**
+1. **Shared Configuration System** - All patterns defined in `config/case_patterns.json`
+2. **RNG Case Length Determination** - Randomly selects from configured case lengths
+3. **Dynamic Gate Generation** - Uses configuration for consistent gate structures
+4. **Directory Structure Creation** - Based on configurable requirements
+5. **Inspiration Pool Generation** - Uses configured categories for entropy prevention
+6. **Template File Creation** - All backbone components from shared templates
+7. **Game State Initialization** - Proper state tracking with configuration validation
+8. **Structure Validation** - Ensures consistency with shared configuration
+
+**Configurable Gate Structures:**
+- **1-Day (Trial Only):** 3 gates, 30-45 min - Like "The First Turnabout"
+- **2-Day (Investigation + Trial):** 4 gates, 45-60 min - Like "Turnabout Corner"
+- **3-Day (Full Structure):** 6 gates, 60-90 min - Like "Turnabout Goodbyes"
+- **Extensible:** Add new patterns in `config/case_patterns.json` without modifying scripts
+- **Validation:** Automatic detection and consistency checking across all scripts
+
+**Output:** 
+- Fully scaffolded case with inspiration-driven name
+- Authentic AA pacing from shared configuration
+- Loose coupling ensures maintainable, extensible system
+- Ready for Claude creative content development
 
 ## Phase 1: Real Life Inspiration + Logical Backbone (Claude Only)
 
-**Step 1:** Generate inspiration using: `source venv/bin/activate && python3 scripts/real_life_inspiration.py --encrypt`
+**Step 1:** Real-world inspiration is automatically generated during orchestration process
 
 Use encrypted real case details to inspire fictional elements. Consult ChatGPT to fill gaps where safety guidelines prevent direct adaptation.
 

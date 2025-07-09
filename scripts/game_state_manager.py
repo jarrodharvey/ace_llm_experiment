@@ -8,11 +8,15 @@ import json
 import os
 from pathlib import Path
 from typing import Dict, List, Optional, Any
+from case_config import get_config_manager
 
 class GameStateManager:
     def __init__(self, case_path: str):
         self.case_path = Path(case_path)
         self.case_name = self.case_path.name
+        
+        # Load shared configuration
+        self.config_manager = get_config_manager()
         
         # Load case structure dynamically
         self.case_structure = self.load_case_structure()
@@ -23,9 +27,6 @@ class GameStateManager:
         self.case_length = self.detect_case_length()
         self.gates = list(self.current_state.get("investigation_gates", {}).keys())
         self.total_gates = len(self.gates)
-        
-        # Gate pattern knowledge (shared configuration)
-        self.gate_patterns = self.load_gate_patterns()
         
         # Load inspiration pool for entropy prevention
         self.inspiration_pool = self.load_inspiration_pool()
@@ -58,51 +59,16 @@ class GameStateManager:
             return json.load(f)
     
     def detect_case_length(self) -> int:
-        """Auto-detect case length from structure"""
+        """Auto-detect case length from structure using shared configuration"""
         # Check if case_length is explicitly stored
         if "case_length" in self.current_state:
             return self.current_state["case_length"]
         
-        # Fall back to gate count analysis
-        gate_count = len(self.current_state.get("investigation_gates", {}))
-        if gate_count == 3:
-            return 1  # 1-day case
-        elif gate_count == 4:
-            return 2  # 2-day case
-        elif gate_count == 6:
-            return 3  # 3-day case
-        else:
-            # Unknown structure, try to infer from names
-            gates = list(self.current_state.get("investigation_gates", {}).keys())
-            if any("trial" in gate for gate in gates):
-                return 1  # Has trial gates, probably 1-day
-            elif any("day_1" in gate and "day_2" in gate for gate in gates):
-                return 3  # Has day_1 and day_2, probably 3-day
-            else:
-                return 2  # Default to 2-day
+        # Use configuration manager to detect from gates
+        gates = list(self.current_state.get("investigation_gates", {}).keys())
+        return self.config_manager.detect_case_length_from_gates(gates)
     
-    def load_gate_patterns(self) -> Dict[str, Any]:
-        """Load shared gate pattern configuration"""
-        return {
-            "trial_trigger_points": {
-                1: 0,  # 1-day cases start with trial (no investigation gates)
-                2: 1,  # 2-day cases trigger trial after 1 investigation gate
-                3: 3   # 3-day cases trigger trial after 3 investigation gates
-            },
-            "expected_structures": {
-                1: ["trial_opening", "first_witness_battle", "final_revelation"],
-                2: ["investigation_day", "trial_opening", "cross_examination", "final_battle"],
-                3: ["investigation_day_1", "investigation_day_2", "brief_investigation", 
-                    "trial_day_1", "trial_day_2", "final_victory"]
-            },
-            "gate_types": {
-                "investigation": ["investigation_day", "investigation_day_1", "investigation_day_2", 
-                                "brief_investigation", "basic_evidence_gathering", "digital_forensics_breakthrough",
-                                "corruption_network_exposure", "timeline_contradiction", "administrative_conspiracy"],
-                "trial": ["trial_opening", "first_witness_battle", "final_revelation", 
-                         "cross_examination", "final_battle", "trial_day_1", "trial_day_2", "final_victory"]
-            }
-        }
+    # Removed load_gate_patterns - now using shared configuration
     
     def load_inspiration_pool(self) -> Dict[str, Any]:
         """Load inspiration pool for entropy prevention"""
@@ -191,7 +157,7 @@ class GameStateManager:
     def is_trial_ready(self) -> bool:
         """Determine if trial should be triggered based on case pattern"""
         completed_count = len(self.get_completed_gates())
-        trigger_point = self.gate_patterns["trial_trigger_points"].get(self.case_length, 0)
+        trigger_point = self.config_manager.get_trial_trigger_point(self.case_length)
         
         return completed_count >= trigger_point
     
@@ -283,7 +249,7 @@ class GameStateManager:
         warnings = []
         
         # Check gate structure consistency
-        expected_gates = self.gate_patterns["expected_structures"].get(self.case_length, [])
+        expected_gates = self.config_manager.get_gates_for_case_length(self.case_length)
         actual_gates = self.gates
         
         if expected_gates and set(actual_gates) != set(expected_gates):
@@ -291,7 +257,7 @@ class GameStateManager:
         
         # Check trial trigger logic
         completed_count = len(self.get_completed_gates())
-        trigger_point = self.gate_patterns["trial_trigger_points"].get(self.case_length, 0)
+        trigger_point = self.config_manager.get_trial_trigger_point(self.case_length)
         
         if completed_count > trigger_point and not self.is_trial_ready():
             issues.append(f"Trial should be ready at {trigger_point} gates, but isn't at {completed_count} gates")
@@ -360,7 +326,7 @@ class GameStateManager:
     def predict_trial_readiness(self) -> Dict[str, Any]:
         """Predict when trial will be ready and what's needed"""
         completed_count = len(self.get_completed_gates())
-        trigger_point = self.gate_patterns["trial_trigger_points"].get(self.case_length, 0)
+        trigger_point = self.config_manager.get_trial_trigger_point(self.case_length)
         
         if completed_count >= trigger_point:
             return {
@@ -745,16 +711,18 @@ class GameStateManager:
         current_gate = self.get_next_gate()
         current_location = self.current_state.get("current_location", "")
         
-        # Choose category based on context
-        if current_gate and "character" in current_gate.lower():
+        # Choose category based on context (using config categories)
+        available_categories = self.config_manager.get_inspiration_categories()
+        
+        if current_gate and "character" in current_gate.lower() and "character_motivations" in available_categories:
             category = "character_motivations"
-        elif current_gate and "evidence" in current_gate.lower():
+        elif current_gate and "evidence" in current_gate.lower() and "evidence_obstacles" in available_categories:
             category = "evidence_obstacles"
-        elif current_location and "trial" in current_location.lower():
+        elif current_location and "trial" in current_location.lower() and "witness_behaviors" in available_categories:
             category = "witness_behaviors"
         else:
             # Default to relationship dynamics for general interactions
-            category = "relationship_dynamics"
+            category = "relationship_dynamics" if "relationship_dynamics" in available_categories else available_categories[0]
         
         inspiration = self.get_inspiration(category)
         if "error" in inspiration:

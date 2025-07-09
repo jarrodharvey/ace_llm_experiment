@@ -1,0 +1,28 @@
+{
+  "case_title": "[CASE TITLE]",
+  "case_id": "midnight_museum_mystery",
+  "difficulty": "[easy/medium/hard]",
+  "estimated_time": "[XX-YY minutes]",
+  "victim": {
+    "name": "[VICTIM NAME]",
+    "age": "[AGE]",
+    "occupation": "[OCCUPATION]",
+    "murder_method": "[METHOD]",
+    "location": "[LOCATION]",
+    "time_of_death": "[TIME]"
+  },
+  "client": {
+    "name": "[CLIENT NAME]",
+    "age": "[AGE]",
+    "occupation": "[OCCUPATION]",
+    "charges": "[CHARGES]",
+    "why_appears_guilty": [],
+    "why_actually_innocent": []
+  },
+  "real_killer": {
+    "name": "[KILLER NAME]",
+    "true_motive": "[MOTIVE]",
+    "why_not_suspected": []
+  },
+  "victory_conditions": {}
+}

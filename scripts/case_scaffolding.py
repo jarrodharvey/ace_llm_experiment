@@ -11,75 +11,33 @@ import sys
 import random
 from pathlib import Path
 import subprocess
+from case_config import get_config_manager
 
 class CaseScaffolding:
     def __init__(self, case_name, base_path="."):
         self.case_name = case_name
         self.base_path = Path(base_path)
         self.case_path = self.base_path / case_name
+        self.config_manager = get_config_manager()
         self.case_length = self.determine_case_length()
         
-        # Required directory structure
-        self.directories = [
-            "backbone",
-            "obstacles", 
-            "solution",
-            "game_state",
-            "evidence"
-        ]
+        # Required directory structure (from config)
+        mandatory_dirs = list(self.config_manager.get_mandatory_files().keys())
+        optional_dirs = list(self.config_manager.get_optional_files().keys())
+        self.directories = list(set(mandatory_dirs + optional_dirs))
         
-        # Template files to create
-        self.templates = {
-            "backbone": [
-                "case_structure.json",
-                "character_facts.json", 
-                "evidence_chain.json",
-                "truth_timeline.json",
-                "witness_testimonies.json",
-                "trial_structure.json"
-            ],
-            "game_state": [
-                "investigation_progress.json",
-                "trial_progress.json"
-            ],
-            "solution": [
-                "evidence_requirements.json",
-                "character_behaviors.json", 
-                "integrated_case.json"
-            ]
-        }
+        # Template files to create (from config)
+        self.templates = self.config_manager.get_mandatory_files()
     
     def determine_case_length(self):
         """Randomly determine case length (1-3 days) based on Ace Attorney structure"""
-        return random.randint(1, 3)
+        available_lengths = list(self.config_manager.get_case_lengths().keys())
+        return int(random.choice(available_lengths))
     
     def create_investigation_gates(self):
         """Create appropriate gate structure based on case length"""
-        if self.case_length == 1:
-            # 1-Day Cases (Trial Only) - 3 gates
-            return {
-                "trial_opening": "pending",
-                "first_witness_battle": "pending", 
-                "final_revelation": "pending"
-            }
-        elif self.case_length == 2:
-            # 2-Day Cases (Investigation + Trial) - 4 gates
-            return {
-                "investigation_day": "pending",
-                "trial_opening": "pending",
-                "cross_examination": "pending",
-                "final_battle": "pending"
-            }
-        else: # case_length == 3
-            # 3-Day Cases (Full Structure) - 6 gates
-            return {
-                "investigation_day_1": "pending",
-                "investigation_day_2": "pending",
-                "brief_investigation": "pending",
-                "trial_day_1": "pending", 
-                "trial_day_2": "pending",
-                "final_victory": "pending"
-            }
+        gates = self.config_manager.get_gates_for_case_length(self.case_length)
+        return {gate: "pending" for gate in gates}
     
     def create_directory_structure(self):
         """Create the case directory and all subdirectories"""
@@ -101,8 +59,10 @@ class CaseScaffolding:
         
         try:
             # Run the random word inspiration script
+            # Use absolute path to script
+            script_path = Path(__file__).parent / "random_word_inspiration.py"
             result = subprocess.run([
-                "python3", "scripts/random_word_inspiration.py",
+                "python3", str(script_path),
                 "--target-dir", str(self.case_path)
             ], cwd=self.base_path, capture_output=True, text=True)
             
@@ -318,13 +278,12 @@ class CaseScaffolding:
             print(f"   ❌ Missing directories: {missing_dirs}")
             return False
         
-        # Check critical files
-        critical_files = [
-            "inspiration_pool.json",
-            "backbone/case_structure.json",
-            "game_state/investigation_progress.json",
-            "solution/integrated_case.json"
-        ]
+        # Check critical files (from config)
+        critical_files = ["inspiration_pool.json"]
+        mandatory_files = self.config_manager.get_mandatory_files()
+        for directory, files in mandatory_files.items():
+            for file in files:
+                critical_files.append(f"{directory}/{file}")
         
         missing_files = []
         for file_path in critical_files:
@@ -343,14 +302,11 @@ class CaseScaffolding:
         """Print guidance for manual steps"""
         print(f"\n🎯 CASE SCAFFOLDING COMPLETE!")
         print(f"\n📊 CASE STRUCTURE:")
-        print(f"   📅 Case Length: {self.case_length} day{'s' if self.case_length > 1 else ''}")
+        case_config = self.config_manager.get_case_length_config(self.case_length)
+        print(f"   📅 Case Length: {self.case_length} day{'s' if self.case_length > 1 else ''} - {case_config.get('name', 'Unknown')}")
         print(f"   🎮 Total Gates: {len(self.create_investigation_gates())}")
-        if self.case_length == 1:
-            print(f"   ⚖️  Structure: Trial Only (3 gates)")
-        elif self.case_length == 2:
-            print(f"   🔍 Structure: Investigation + Trial (1 + 3 gates)")
-        else:
-            print(f"   🔍 Structure: Full Investigation + Trial (3 + 3 gates)")
+        print(f"   ⏱️  Estimated Time: {case_config.get('estimated_time', 'unknown')}")
+        print(f"   📝 Description: {case_config.get('description', 'No description available')}")
         print(f"\n📋 NEXT STEPS (Manual):")
         print(f"   1. Run real-life inspiration: python scripts/real_life_inspiration.py --encrypt")
         print(f"   2. Fill out backbone template files in {self.case_name}/backbone/")
