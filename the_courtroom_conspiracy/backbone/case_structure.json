@@ -1,0 +1,91 @@
+{
+  "case_title": "The Courtroom Conspiracy",
+  "case_id": "courtroom_conspiracy_v1",
+  "difficulty": "hard",
+  "estimated_time": "100-130 minutes",
+  
+  "victim": {
+    "name": "Judge Helena Morrison",
+    "age": 58,
+    "occupation": "District Court Judge",
+    "workplace": "Metropolitan District Court",
+    "specialty": "Criminal law and evidence procedures",
+    "murder_method": "Poisoned with judicial robe care solution",
+    "location": "Her private chambers during court recess",
+    "time_of_death": "3:42 PM (established by security timestamp)",
+    "discovery_time": "4:10 PM",
+    "discovered_by": "Court clerk preparing afternoon docket"
+  },
+  
+  "client": {
+    "name": "David Chen",
+    "age": 34,
+    "occupation": "Court Reporter",
+    "relationship_to_victim": "Employee who recently discovered evidence tampering",
+    "charges": "First degree murder",
+    "apparent_motive": "Revenge for being exposed as corrupt court reporter",
+    "why_appears_guilty": [
+      "Had heated argument with judge about evidence transcription errors",
+      "Found in chambers with victim, claiming to deliver revised transcripts",
+      "His transcription device contained deleted files from the day of murder", 
+      "Security footage shows him entering chambers with suspicious package",
+      "Known to have access to judicial cleaning supplies through custodial connections"
+    ],
+    "why_actually_innocent": [
+      "Was trying to expose a conspiracy involving evidence manipulation",
+      "Discovered judicial corruption ring and was about to report it",
+      "The 'deleted files' were backup copies of original, unaltered transcripts",
+      "Package contained evidence of transcript alterations, not poison",
+      "Real killers used his access to frame him for their evidence tampering cover-up"
+    ]
+  },
+  
+  "real_killer": {
+    "name": "Chief Clerk Margaret Winters",
+    "age": 45,
+    "occupation": "Chief Administrative Clerk",
+    "relationship_to_victim": "Trusted subordinate and evidence custodian",
+    "true_motive": "Judge Morrison discovered systematic evidence tampering operation",
+    "murder_method": "Poisoned robe care solution during routine chamber maintenance",
+    "framing_method": [
+      "Manipulated security access logs to implicate David",
+      "Planted evidence on David's transcription equipment",
+      "Used knowledge of David's investigation to establish false motive",
+      "Leveraged administrative access to control evidence chain of custody"
+    ],
+    "why_not_suspected": [
+      "20+ year trusted employee with administrative access",
+      "Was supposedly in evidence storage during murder with multiple witnesses",
+      "No apparent motive - appeared to have excellent working relationship with judge",
+      "Actively cooperating with investigation and handling evidence custody"
+    ]
+  },
+  
+  "setting": {
+    "location": "Metropolitan District Court",
+    "description": "Busy urban courthouse handling high-profile criminal cases",
+    "security_level": "High-security with biometric access and surveillance",
+    "relevant_areas": [
+      "Judge's private chambers - Crime scene",
+      "Court reporter station - Where David worked",
+      "Evidence storage vault - Where tampering occurred",
+      "Administrative offices - Where conspiracy was coordinated",
+      "Security control room - Where logs were manipulated"
+    ]
+  },
+  
+  "key_themes": [
+    "Judicial corruption",
+    "Evidence tampering and chain of custody",
+    "Administrative abuse of power",
+    "Court system integrity",
+    "Legal procedure manipulation"
+  ],
+  
+  "victory_conditions": {
+    "prove_client_innocent": "Show David was investigating corruption, not participating",
+    "identify_real_killer": "Expose Margaret as the evidence tampering coordinator",
+    "establish_motive": "Prove Margaret killed to cover up systematic evidence manipulation",
+    "explain_method": "Demonstrate how administrative access enabled both tampering and murder"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "evidence_pieces": [
+    {
+      "id": "original_transcripts",
+      "name": "Original Unaltered Transcripts",
+      "type": "digital_evidence",
+      "location": "David's personal backup drive",
+      "significance": "Proves systematic evidence tampering by showing differences from official court records",
+      "how_it_proves_innocence": "Shows David was preserving original evidence, not destroying it",
+      "connection_to_real_killer": "Transcripts reveal Margaret's administrative codes used for alterations"
+    },
+    
+    {
+      "id": "access_log_discrepancies", 
+      "name": "Security Access Log Anomalies",
+      "type": "digital_evidence",
+      "location": "Court security database",
+      "significance": "Shows administrative override codes used during murder timeframe",
+      "how_it_proves_innocence": "David's badge was cloned/spoofed using administrative privileges",
+      "connection_to_real_killer": "Override codes trace to Margaret's administrative terminal"
+    },
+    
+    {
+      "id": "poisoned_robe_solution",
+      "name": "Contaminated Judicial Robe Care Solution",
+      "type": "physical_evidence", 
+      "location": "Judge's private chambers closet",
+      "significance": "Murder weapon containing rare industrial solvent",
+      "how_it_proves_innocence": "David had no access to industrial cleaning supplies",
+      "connection_to_real_killer": "Solvent sourced from evidence storage facility maintenance supplies"
+    },
+    
+    {
+      "id": "evidence_vault_logs",
+      "name": "Evidence Storage Access Records",
+      "type": "administrative_evidence",
+      "location": "Evidence custodian office",
+      "significance": "Shows pattern of unauthorized after-hours access",
+      "how_it_proves_innocence": "David never accessed evidence vault",
+      "connection_to_real_killer": "Margaret's keycard used for unauthorized evidence manipulation"
+    },
+    
+    {
+      "id": "communication_records",
+      "name": "Internal Court Communication Logs", 
+      "type": "digital_evidence",
+      "location": "Court email server",
+      "significance": "Reveals coordination between Margaret and external parties",
+      "how_it_proves_innocence": "Shows David was excluded from corrupt communications",
+      "connection_to_real_killer": "Messages between Margaret and convicted defendants' representatives"
+    },
+    
+    {
+      "id": "financial_records",
+      "name": "Suspicious Financial Transactions",
+      "type": "financial_evidence",
+      "location": "Bank records subpoena",
+      "significance": "Large payments to Margaret from unknown sources",
+      "how_it_proves_innocence": "David's finances show no suspicious activity",
+      "connection_to_real_killer": "Payments correlate with specific case evidence tampering dates"
+    },
+    
+    {
+      "id": "maintenance_schedule",
+      "name": "Chamber Maintenance Records",
+      "type": "administrative_evidence", 
+      "location": "Facilities management office",
+      "significance": "Shows Margaret had legitimate access to judge's chambers",
+      "how_it_proves_innocence": "David had no scheduled access to chambers",
+      "connection_to_real_killer": "Margaret supervised weekly robe care and chamber cleaning"
+    }
+  ],
+  
+  "evidence_chain_logic": {
+    "step_1": "Original transcripts prove systematic evidence tampering occurred",
+    "step_2": "Access logs show administrative privileges used to frame David",
+    "step_3": "Poison source traces to evidence storage facility supplies",
+    "step_4": "Evidence vault access proves Margaret's unauthorized activities", 
+    "step_5": "Communications reveal external coordination and motive",
+    "step_6": "Financial records establish payment for evidence tampering",
+    "step_7": "Maintenance access explains how Margaret poisoned the robe solution"
+  },
+  
+  "how_client_was_framed": {
+    "method_1": "Margaret cloned David's security badge using administrative access",
+    "method_2": "Planted fake evidence on David's transcription equipment",
+    "method_3": "Used David's legitimate investigation as cover for false motive",
+    "method_4": "Manipulated security footage timestamps using system privileges"
+  }
+}

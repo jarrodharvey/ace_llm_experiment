@@ -1,0 +1,39 @@
+{
+  "current_phase": "ready_to_start",
+  "investigation_gates": {
+    "basic_evidence_gathering": "pending",
+    "digital_forensics_breakthrough": "pending",
+    "corruption_network_exposure": "pending", 
+    "timeline_contradiction": "pending",
+    "administrative_conspiracy": "pending"
+  },
+  "evidence_collected": [],
+  "witnesses_interviewed": [],
+  "psyche_locks_broken": [],
+  "character_trust_levels": {
+    "david_chen": 3,
+    "detective_kowalski": 2,
+    "sarah_kim": 1,
+    "dr_amanda_foster": 4,
+    "security_chief_torres": 1,
+    "margaret_winters": 1
+  },
+  "current_location": "detention_center",
+  "available_locations": [
+    "detention_center",
+    "courthouse_chambers",
+    "evidence_storage_vault",
+    "security_control_room",
+    "administrative_offices",
+    "forensics_laboratory"
+  ],
+  "day": 1,
+  "time_until_trial": "3 days",
+  "investigation_notes": [],
+  "case_complexity_factors": {
+    "administrative_bureaucracy": "high",
+    "evidence_access_restrictions": "very_high", 
+    "witness_intimidation_level": "high",
+    "corruption_network_depth": "extensive"
+  }
+}

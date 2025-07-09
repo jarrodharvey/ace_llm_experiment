@@ -34,7 +34,7 @@ When asked to consult with ChatGPT on something, the api key can be found in ope
 
 ## COMMANDS - GLOBAL
 
-**create new game**: Create a new case following the preferred methodology below
+**create new game {case_name}**: Create a new case following the preferred methodology below
 
 **start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME  
 
@@ -76,15 +76,33 @@ When creating new games:
 
 # CASE CREATION METHODOLOGY
 
-## Phase 0: Real Life Inspiration
+## Phase 0: Case Scaffolding (Automated)
 
-Generate inspiration using: `source venv/bin/activate && python3 real_life_inspiration.py --encrypt`
+**FIRST STEP:** Generate complete case structure automatically.
+
+**Command:** `source venv/bin/activate && python scripts/case_scaffolding.py case_name`
+
+**Process:**
+1. Creates directory structure (backbone/, obstacles/, solution/, game_state/, evidence/)
+2. Generates random word inspiration pool automatically
+3. Creates template files for all backbone components
+4. Initializes game state with standard starting values
+5. Creates ChatGPT request templates for later phases
+6. Validates complete case structure
+
+**Output:** Fully scaffolded case ready for creative content development.
+
+## Phase 1: Real Life Inspiration + Logical Backbone (Claude Only)
+
+**Step 1:** Generate inspiration using: `source venv/bin/activate && python3 scripts/real_life_inspiration.py --encrypt`
 
 Use encrypted real case details to inspire fictional elements. Consult ChatGPT to fill gaps where safety guidelines prevent direct adaptation.
 
-## Phase 1: Logical Backbone (Claude Only)
+**Step 2:** Fill backbone template files with creative content:
 
 Build the foundation for BOTH investigation and trial phases:
+
+### Logical Structure Development
 
 ### Investigation Backbone:
 - **Case structure** - Crime, victim, suspect, physical evidence
@@ -101,6 +119,7 @@ Build the foundation for BOTH investigation and trial phases:
 ### File Structure:
 ```
 case_name/
+├── inspiration_pool.json          # MANDATORY - Random word inspiration
 ├── backbone/
 │   ├── case_structure.json
 │   ├── evidence_chain.json  
@@ -131,45 +150,11 @@ case_name/
 
 ### Phase 2A: Investigation Obstacles
 
-**ChatGPT Consultation Prompt:**
-```
-CASE BACKBONE: [Insert backbone files]
-
-Design investigation obstacles that:
-1. Make witnesses hostile/uncooperative without breaking logical knowledge
-2. Hide evidence behind realistic challenges (bureaucracy, personal conflicts)
-3. Create misdirection without contradicting established facts
-4. Make client appear MORE guilty initially
-5. Force player to work hard for every piece of information
-6. Design Psyche-Lock scenarios requiring specific evidence combinations
-7. Create story-driven evidence presentation gates
-
-EXCITEMENT CHECK: Rate investigation 1-10 for drama and suggest improvements.
-```
+**Command:** `source venv/bin/activate && python scripts/chatgpt_consultant.py "CASE BACKBONE: [Insert backbone files summary] Design investigation obstacles that: 1. Make witnesses hostile/uncooperative without breaking logical knowledge 2. Hide evidence behind realistic challenges (bureaucracy, personal conflicts) 3. Create misdirection without contradicting established facts 4. Make client appear MORE guilty initially 5. Force player to work hard for every piece of information 6. Design Psyche-Lock scenarios requiring specific evidence combinations 7. Create story-driven evidence presentation gates EXCITEMENT CHECK: Rate investigation 1-10 for drama and suggest improvements." -o obstacles/chatgpt_obstacles_v1.json`
 
 ### Phase 2B: Trial Fabrications (THEATRICAL PROMPTING)
 
-**ChatGPT Consultation Prompt:**
-```
-You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness!
-
-TRUE TESTIMONIES: [Insert witness_testimonies.json]
-EVIDENCE LIST: [Insert evidence_chain.json]
-
-Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR:
-
-1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence
-2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence
-3. ZANY PROSECUTOR: Design prosecutor with impossible quirks (reference: Edgeworth, Franziska, Godot)
-4. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed
-5. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations
-6. GALLERY REACTIONS: Colorful characters reacting dramatically
-7. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details
-
-REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes that somehow make sense.
-
-EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements.
-```
+**Command:** `source venv/bin/activate && python scripts/chatgpt_consultant.py "You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness! TRUE TESTIMONIES: [Insert witness_testimonies.json summary] EVIDENCE LIST: [Insert evidence_chain.json summary] Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR: 1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence 2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence 3. ZANY PROSECUTOR: Design prosecutor with impossible quirks 4. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed 5. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations 6. GALLERY REACTIONS: Colorful characters reacting dramatically 7. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes. EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements." -o obstacles/trial_fabrications.json -t 0.8`
 
 ## Phase 3: Integration and Validation (Claude)
 
@@ -197,9 +182,10 @@ EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvement
 ## Starting New Games
 
 ### Pre-Game Setup:
-1. Verify directory contains backbone/, obstacles/, solution/, game_state/
+1. Verify directory contains inspiration_pool.json, backbone/, obstacles/, solution/, game_state/
 2. Confirm solution files are BASE64 encoded
 3. Check two-phase structure is complete
+4. **Load inspiration pool** for improvisation reference during gameplay
 
 ### Opening Scene Guidelines:
 - Present client as appearing guilty with overwhelming evidence
@@ -246,6 +232,42 @@ EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvement
 - Evidence presentation exposes all lies
 - Real killer identified through trial process
 - Client exonerated through player skill
+
+---
+
+# IMPROVISATION RULES
+
+## Mandatory Inspiration Pool Usage
+
+**CRITICAL REQUIREMENT:** All live gameplay improvisation MUST reference the case's inspiration pool.
+
+### Improvisation Process:
+1. **Identify improvisation need** (character motivation, relationship dynamic, plot twist, etc.)
+2. **Select appropriate category** from inspiration pool
+3. **Choose random word** from that category
+4. **Apply A-to-C creative process**:
+   - **A**: Current situation requiring improvisation
+   - **B**: Random word (creative forcing function)
+   - **C**: Unique solution that maintains logical consistency
+
+### Examples:
+- **Need**: Character motivation for defendant
+- **Word**: "taproot" (from character_motivations)
+- **Process**: A (defendant motivation) → B (taproot = deep anchoring root) → C (defendant protecting family identity secret from witness protection)
+
+- **Need**: Relationship tension between witnesses  
+- **Word**: "intersomnial" (from relationship_dynamics)
+- **Process**: A (witness conflict) → B (intersomnial = between sleep states) → C (witnesses share recurring nightmare about crime, creating psychological bond/conflict)
+
+### Prohibited Improvisation:
+- **NEVER** improvise without consulting inspiration pool
+- **NEVER** default to common patterns (family medical bills, simple revenge, etc.)
+- **NEVER** ignore the creative forcing function of random words
+
+### Quality Control:
+- Each improvisation must show clear A-to-C creative leap
+- Solutions must maintain logical consistency with backbone
+- Unique inspiration words prevent pattern regression across cases
 
 ---
 

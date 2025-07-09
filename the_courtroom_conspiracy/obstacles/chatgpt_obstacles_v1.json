@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-BqeRghRqm5FzMpm5umlEU1SGJH7pi",
+  "object": "chat.completion",
+  "created": 1751888228,
+  "model": "gpt-4-0613",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Investigation Obstacles:\n\n1. Hostile/Uncooperative Witnesses: Detective Kowalski is initially wary of the player's involvement and is reluctant to share information. He believes Chen is guilty and doesn't want to compromise his case. Evidence Tech Sarah Kim, fearful of losing her job or being implicated, is hesitant to cooperate.\n   \n2. Hidden Evidence: The original transcripts proving tampering are locked away in the court's evidence vault, which requires special clearance that the player must work to obtain. Financial records revealing suspicious payments to Winters are hidden behind a wall of bureaucracy within the court's finance department.\n\n3. Misdirection: Security access logs show Chen's credentials were used for the administrative overrides, making him appear more guilty. The poisoned robe solution initially points towards the maintenance staff who handle the robes, diverting attention from Winters.\n\n4. Guilty Client: Chen's fingerprints are found on the poisoned robe, and he was the last person seen in Judge Morrison's chambers. His attempts to report the corruption are mistaken for threats against the Judge.\n\n5. Hard Information: Gaining access to internal communications requires navigating a tangled web of court politics and bureaucracy. Security Chief Torres is initially uncooperative, causing difficulties in accessing vital security records.\n\n6. Psyche-Lock Scenarios: To prove Chen's innocence, the player must uncover that Winters' fingerprints are on the poison bottle, revealing she used Chen's access card to plant the poison, and break through Sarah Kim's fear to reveal that she noticed discrepancies in the evidence handling.\n\n7. Evidence Presentation Gates: The player must present the financial records showing Winters' suspicious payments at a court hearing to gain access to the original transcripts. Showing the maintenance schedules proves that the maintenance staff couldn't have handled the poisoned robe.\n\nEXCITEMENT CHECK: 8/10. The investigation is dramatic with numerous twists to keep the player engaged. However, to increase excitement, consider adding a subplot of a mole within the court system working with Winters, adding an element of danger and urgency.",
+        "refusal": null,
+        "annotations": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 240,
+    "completion_tokens": 415,
+    "total_tokens": 655,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": null
+}

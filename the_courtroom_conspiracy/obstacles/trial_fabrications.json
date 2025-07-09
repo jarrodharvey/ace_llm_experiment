@@ -1,0 +1,71 @@
+{
+  "prosecutor_evelyn_sharp": {
+    "signature_quirk": "Obsessively arranges evidence exhibits in precise geometric patterns during arguments",
+    "dramatic_flair": "Uses architectural metaphors constantly ('foundation of guilt,' 'structural evidence')",
+    "impossible_habit": "Measures courtroom distances with a golden ruler before every objection",
+    "weakness": "Gets distracted by organizational details, misses logical contradictions"
+  },
+  
+  "fabricated_testimonies": {
+    "detective_kowalski_lies": {
+      "theatrical_lie": "David Chen stood over the victim's body with MANIACAL LAUGHTER echoing through the chambers! His eyes glowed with the satisfaction of a calculated killer!",
+      "evidence_contradiction": "Security footage timestamp showing David's actual distressed behavior",
+      "breakdown_trigger": "Present timestamp analysis proving David arrived after death occurred",
+      "breakdown_style": "Fumbles with evidence folders, dropping papers everywhere while stuttering apologies"
+    },
+    
+    "sarah_kim_lies": {
+      "theatrical_lie": "Margaret Winters is the PILLAR OF COURTHOUSE INTEGRITY! Like a guardian angel, she watched over our evidence with divine protection! The missing solvent was obviously stolen by EVIL SPIRITS!",
+      "evidence_contradiction": "Evidence vault access logs showing Margaret's unauthorized late-night entries",
+      "breakdown_trigger": "Confront with missing solvent inventory records bearing Margaret's signature",
+      "breakdown_style": "Dramatic fainting spell, then emotional sobbing while confessing her fear of Margaret"
+    },
+    
+    "dr_foster_lies": {
+      "theatrical_lie": "The poison application required SURGICAL PRECISION that only someone with David's exact hand measurements could achieve! I have scientifically proven this using advanced hand-geometry analysis!",
+      "evidence_contradiction": "Forensic timeline proving David arrived 13 minutes after fatal poisoning",
+      "breakdown_trigger": "Force acknowledgment that maintenance worker had superior robe access",
+      "breakdown_style": "Nervous glass-chewing while admitting her timeline analysis was pressured by prosecutor"
+    },
+    
+    "torres_lies": {
+      "theatrical_lie": "Our security system is ABSOLUTELY IMPENETRABLE! Not even a phantom thief could bypass its quantum-encrypted biometric locks! David's badge proves his guilt with MATHEMATICAL CERTAINTY!",
+      "evidence_contradiction": "Administrative override logs showing Margaret's system manipulation",
+      "breakdown_trigger": "Present proof of badge cloning equipment in administrative office",
+      "breakdown_style": "Angry fist-slamming that accidentally breaks his security tablet, revealing deleted access logs"
+    },
+    
+    "margaret_winters_lies": {
+      "theatrical_lie": "I was performing my SACRED DUTY of evidence protection when this tragedy occurred! My heart weeps for Judge Morrison like a thousand mourning doves! David must have used TIME TRAVEL to commit this impossible crime!",
+      "evidence_contradiction": "Financial records showing systematic payments for evidence tampering",
+      "breakdown_trigger": "Present original transcripts proving her systematic evidence alterations",
+      "breakdown_style": "Hysterical laughter turning to mascara-streaked confession about the pressure of maintaining her operation"
+    }
+  },
+  
+  "gallery_reactions": {
+    "court_stenographer": "Nervous typing speeds up dramatically when transcript tampering mentioned",
+    "security_guard": "Uncomfortable fidgeting and radio-checking during security testimony",
+    "courthouse_janitor": "Dramatic mop-dropping when solvent poisoning explained",
+    "legal_clerk": "Shocked file-clutching and whispered prayers during evidence presentation"
+  },
+  
+  "judge_distractions": [
+    "Obsessed with proper evidence filing procedures while missing obvious contradictions",
+    "Repeatedly asks about courtroom temperature controls during dramatic moments",
+    "Gets sidetracked by prosecutor's geometric evidence arrangements",
+    "Misses crucial testimony while focusing on witness microphone adjustments",
+    "Constantly inquires about lunch break scheduling during climactic revelations"
+  ],
+  
+  "impossible_but_logical_elements": {
+    "time_travel_claim": "Margaret claims David used 'temporal manipulation' to be in two places at once",
+    "explanation": "Actually reveals her own manipulation of security timestamps to create false timeline",
+    "ghost_evidence": "Witnesses claim 'supernatural forces' moved evidence around",
+    "explanation": "Margaret's administrative access allowed her to relocate evidence without normal tracking",
+    "psychic_intuition": "Prosecutor claims 'spiritual connection' proves David's guilt",
+    "explanation": "Actually based on Margaret's planted evidence and false information"
+  },
+  
+  "excitement_rating": "9/10 - Authentic Ace Attorney zaniness with prosecutor's geometric obsession, dramatic witness breakdowns, and impossible-but-logical supernatural claims. To reach 10/10, add one more completely absurd evidence presentation involving Margaret's 'evidence protection crystals' or similar mystical courthouse security measures."
+}
