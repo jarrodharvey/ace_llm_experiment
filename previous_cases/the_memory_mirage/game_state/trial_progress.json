@@ -1,0 +1,17 @@
+{
+  "trial_status": "not_started",
+  "current_witness": null,
+  "witnesses_examined": [],
+  "evidence_presented": [],
+  "contradictions_exposed": [],
+  "prosecutor_confidence": 95,
+  "jury_opinion": "strongly_against_defendant",
+  "trial_day": 0,
+  "session_progress": {
+    "opening_statements": "pending",
+    "prosecution_case": "pending",
+    "cross_examinations": "pending",
+    "final_arguments": "pending",
+    "verdict": "pending"
+  }
+}

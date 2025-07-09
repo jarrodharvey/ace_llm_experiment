@@ -1,0 +1,6 @@
+{
+  "phase": "2B_trial_fabrications",
+  "prompt_template": "You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness! TRUE TESTIMONIES: [Insert witness testimonies summary] EVIDENCE LIST: [Insert evidence chain summary] Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR: 1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence 2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence 3. ZANY PROSECUTOR: Design prosecutor with impossible quirks 4. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed 5. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations 6. GALLERY REACTIONS: Colorful characters reacting dramatically 7. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes. EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements.",
+  "command": "python scripts/chatgpt_consultant.py \"[PROMPT]\" -o obstacles/trial_fabrications.json -t 0.8",
+  "notes": "Replace [PROMPT] with filled prompt_template above"
+}

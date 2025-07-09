@@ -54,27 +54,9 @@ class CaseScaffolding:
             print(f"   ✅ Created: {dir_path}")
     
     def generate_inspiration_pool(self):
-        """Generate random word inspiration pool"""
-        print(f"🎲 Generating random word inspiration pool...")
-        
-        try:
-            # Run the random word inspiration script
-            # Use absolute path to script
-            script_path = Path(__file__).parent / "random_word_inspiration.py"
-            result = subprocess.run([
-                "python3", str(script_path),
-                "--target-dir", str(self.case_path)
-            ], cwd=self.base_path, capture_output=True, text=True)
-            
-            if result.returncode == 0:
-                print("   ✅ Random word inspiration pool generated")
-            else:
-                print(f"   ❌ Failed to generate inspiration pool: {result.stderr}")
-                return False
-        except Exception as e:
-            print(f"   ❌ Error running inspiration script: {e}")
-            return False
-        
+        """DEPRECATED: No longer generates inspiration pools - using pure random words instead"""
+        print(f"🎲 Skipping inspiration pool generation (using pure random words)...")
+        print("   ✅ Pure random inspiration system enabled")
         return True
     
     def create_backbone_templates(self):
@@ -243,14 +225,14 @@ class CaseScaffolding:
         
         obstacle_request = {
             "phase": "2A_investigation_obstacles",
-            "prompt_template": "CASE BACKBONE: [Insert backbone summary] Design investigation obstacles that: 1. Make witnesses hostile/uncooperative without breaking logical knowledge 2. Hide evidence behind realistic challenges 3. Create misdirection without contradicting established facts 4. Make client appear MORE guilty initially 5. Force player to work hard for every piece of information 6. Design Psyche-Lock scenarios requiring specific evidence combinations 7. Create story-driven evidence presentation gates EXCITEMENT CHECK: Rate investigation 1-10 for drama and suggest improvements.",
+            "prompt_template": "You are a game designer creating specific investigation obstacles for an Ace Attorney fan game. DO NOT provide commentary or ratings - only create the actual content requested. CASE BACKBONE: [Insert backbone summary] Create a detailed JSON structure with these specific investigation obstacles: 1. BUREAUCRATIC BARRIERS - List 3-4 specific administrative roadblocks that delay evidence gathering (court orders, encryption, backlogged tests, etc.) 2. HOSTILE WITNESSES - Design 3-4 uncooperative characters with specific reasons for hostility (job fears, loyalty conflicts, personal secrets) 3. FALSE APPEARANCES - Create 3-4 ways the real killer appears helpful while the client looks guilty 4. PSYCHE-LOCK SCENARIOS - Design 2-3 dramatic confrontation sequences with: character name, number of locks (3-5), required evidence list, breakthrough trigger 5. EVIDENCE PRESENTATION GATES - Create 3 story-driven checkpoints where specific evidence must be presented to specific characters before progression Format your response as a JSON object with keys: bureaucratic_barriers, hostile_witnesses, false_appearances, psyche_lock_scenarios, evidence_presentation_gates. Each section should contain specific, actionable content that a game master can immediately use.",
             "command": f"python scripts/chatgpt_consultant.py \"[PROMPT]\" -o obstacles/chatgpt_obstacles_v1.json",
             "notes": "Replace [PROMPT] with filled prompt_template above"
         }
         
         trial_request = {
             "phase": "2B_trial_fabrications", 
-            "prompt_template": "You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness! TRUE TESTIMONIES: [Insert witness testimonies summary] EVIDENCE LIST: [Insert evidence chain summary] Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR: 1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence 2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence 3. ZANY PROSECUTOR: Design prosecutor with impossible quirks 4. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed 5. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations 6. GALLERY REACTIONS: Colorful characters reacting dramatically 7. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes. EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements.",
+            "prompt_template": "You are creating specific trial content for an Ace Attorney fan game. DO NOT provide commentary or ratings - only create the actual fabricated testimonies and trial elements requested. TRUE TESTIMONIES: [Insert witness testimonies summary] EVIDENCE LIST: [Insert evidence chain summary] Create a detailed JSON structure with these specific trial fabrications: 1. PROSECUTOR PROFILE - Name, specific quirky personality traits, signature props they bring to court, catchphrase 2. FABRICATED TESTIMONIES - For each key witness, create specific lies they will tell, formatted as: witness name, list of 3-4 fabricated claims, list of evidence pieces that contradict each lie 3. DRAMATIC BREAKDOWNS - For each witness, describe their specific meltdown when lies are exposed (physical actions, props, emotional reactions) 4. IMPOSSIBLE BUT LOGICAL ELEMENTS - Create 2-3 seemingly supernatural courtroom moments that have logical explanations tied to evidence 5. GALLERY REACTIONS - Specific crowd responses to major revelations 6. JUDGE CHAOS - Specific judicial mistakes, terminology confusion, and comedic timing issues Format your response as a JSON object with keys: prosecutor_profile, fabricated_testimonies, dramatic_breakdowns, impossible_but_logical_elements, gallery_reactions, judge_chaos. Each section should contain specific, usable content for immediate gameplay implementation.",
             "command": f"python scripts/chatgpt_consultant.py \"[PROMPT]\" -o obstacles/trial_fabrications.json -t 0.8",
             "notes": "Replace [PROMPT] with filled prompt_template above"
         }

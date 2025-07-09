@@ -1,0 +1,79 @@
+{
+  "characters": [
+    {
+      "name": "Malcolm Rivers (Client)",
+      "true_knowledge": [
+        "Dr. Harwick was developing a promising new treatment for his condition",
+        "She believed his memory episodes were being artificially triggered",
+        "Someone had been giving him 'vitamins' that made his symptoms worse",
+        "The victim was actually trying to help expose medical malpractice"
+      ],
+      "what_he_hides": [
+        "Deep shame about his cognitive decline affecting his family",
+        "Financial desperation - medical bills are bankrupting his family",
+        "Has been participating in multiple experimental studies for money"
+      ],
+      "motivations": "Wants to remember what really happened but fears his own failing memory"
+    },
+    {
+      "name": "Dr. Harrison Cole (Real Killer)",
+      "true_knowledge": [
+        "His Alzheimer's research data was completely fabricated",
+        "Dr. Harwick discovered his fraud and was going to expose him",
+        "Malcolm's memory drug was actually worsening his condition deliberately",
+        "He has been manipulating memory study participants for years"
+      ],
+      "what_he_hides": [
+        "Falsified research data to secure $50 million grant",
+        "Used his position to test dangerous drugs on vulnerable patients",
+        "Created fake medical records to establish false alibi",
+        "Has been slowly poisoning Malcolm to worsen his dementia"
+      ],
+      "motivations": "Preserve his reputation and avoid prison; continue his lucrative fraud"
+    },
+    {
+      "name": "Nurse Patricia Vance",
+      "true_knowledge": [
+        "Dr. Cole has been pressuring her to falsify patient records",
+        "Malcolm's condition has been deteriorating unusually fast",
+        "Dr. Harwick was asking suspicious questions about patient medications",
+        "Security cameras in research wing have blind spots"
+      ],
+      "what_he_hides": [
+        "She helped Dr. Cole access the building after hours",
+        "Has been paid extra to administer experimental drugs without consent",
+        "Fears losing her job and pension if she speaks up"
+      ],
+      "motivations": "Torn between protecting patients and protecting her family's future"
+    },
+    {
+      "name": "Detective Sarah Kim",
+      "true_knowledge": [
+        "The murder weapon syringe contained an experimental compound",
+        "Security footage shows only Malcolm entering, not leaving",
+        "Victim had been receiving anonymous threats about her research",
+        "Malcolm's medical records show sudden cognitive decline"
+      ],
+      "what_he_hides": [
+        "She suspects there's more to the case but lacks expertise in medical fraud",
+        "Her department is under pressure to close high-profile cases quickly"
+      ],
+      "motivations": "Wants to find the truth but constrained by institutional pressure"
+    },
+    {
+      "name": "Dr. Evelyn Harwick (Victim)",
+      "true_knowledge": [
+        "Dr. Cole's research data doesn't match clinical observations",
+        "Several study participants are showing unusual deterioration patterns",
+        "Malcolm Rivers is being systematically poisoned with memory-affecting drugs",
+        "She has evidence of widespread research fraud in the institute"
+      ],
+      "what_she_hid": [
+        "She was planning to expose the fraud to medical authorities",
+        "Had collected secret documentation of falsified research data",
+        "Was trying to help Malcolm recover his stolen memories"
+      ],
+      "motivations": "Protecting vulnerable patients from medical exploitation"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "trial_phase_structure": {
+    "prosecutor_profile": {
+      "name": "District Attorney Rebecca Stone",
+      "personality": "Methodical and evidence-focused, but lacks medical expertise",
+      "prosecution_theory": "Elderly man with dementia had violent episode and killed his doctor",
+      "weaknesses": "Relies too heavily on circumstantial evidence and Malcolm's apparent guilt",
+      "signature_objection": "Speculation about medical procedures without expert testimony"
+    },
+    "witness_order": [
+      "Detective Sarah Kim - Crime scene and arrest",
+      "Security Guard James Walsh - Malcolm entering building",
+      "Dr. Harrison Cole - Malcolm's mental state and supposed aggression",
+      "Nurse Patricia Vance - Malcolm's recent behavior",
+      "Dr. Michelle Torres - Victim's recent concerns and work"
+    ],
+    "cross_examination_targets": {
+      "detective_kim": "Challenge incomplete investigation into medical fraud angle",
+      "security_guard": "Highlight that Malcolm never seen leaving building",
+      "dr_cole": "Attack falsified alibi and expose financial motive",
+      "nurse_vance": "Pressure her to admit helping Dr. Cole access building",
+      "dr_torres": "Establish that victim was investigating legitimate research fraud"
+    },
+    "victory_sequence": {
+      "phase_1": "Establish Malcolm was unconscious during murder timeframe",
+      "phase_2": "Prove Dr. Cole had access, motive, and opportunity",
+      "phase_3": "Reveal systematic drugging of Malcolm to worsen his condition",
+      "phase_4": "Expose Dr. Cole's falsified research data and $50M fraud",
+      "phase_5": "Demonstrate how Dr. Harwick's murder silenced fraud investigation",
+      "final_revelation": "Dr. Cole exploited Malcolm's dementia to create the perfect frame job"
+    }
+  }
+}

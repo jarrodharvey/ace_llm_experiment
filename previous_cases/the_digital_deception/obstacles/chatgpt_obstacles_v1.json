@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "content": "**INVESTIGATION OBSTACLES:**\n\n1. Sarah Chen is afraid of losing her job if she speaks out about her suspicions regarding Marcus Sterling. She provides vague answers and non-committal statements initially, making it difficult for the player to get a straight answer out of her.\n2. Judge Blackwell's investigation notes are hidden away in his personal office, which is locked and under police guard. The player needs to find a way to gain access to the office without arousing suspicion.\n3. Dr. Margaret Foster, a close friend of the judge, is highly protective of his reputation. She is unwilling to hand over the judge's investigation notes out of respect for her late friend and fear of damaging his reputation posthumously.\n4. Marcus Sterling, as the court's chief clerk, has the power to manipulate the court's digital records. He can make Elena appear more guilty by tampering with digital evidence and security logs.\n5. The player needs to work hard to prove that Elena's CyberTrace software was stolen and used without her knowledge. This would involve tracking down and presenting digital forensic evidence that was not initially obvious.\n6. Psyche-Lock scenarios could involve convincing Sarah Chen to speak out, persuading Dr. Foster to hand over the investigation notes, and proving to the court that Marcus Sterling is the real killer.\n7. The player must present evidence in a certain order to convince the court of Elena's innocence and Marcus's guilt. If the player presents the wrong evidence or misinterprets the evidence, they could inadvertently make Elena appear more guilty.\n\n**EXCITEMENT CHECK:** \nInvestigation Drama Score: 8/10. This case offers a high level of intrigue and suspense, with the player needing to uncover a deep-seated corruption within the court system. However, it could be improved by adding more personal stakes for the player, such as having a relationship with one of the characters involved or having their reputation on the line if they fail to solve the case.",
+  "usage": {
+    "prompt_tokens": 412,
+    "completion_tokens": 402,
+    "total_tokens": 814,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "model": "gpt-4-0613"
+}

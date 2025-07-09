@@ -1,0 +1,56 @@
+{
+  "trial_fabrications": {
+    "prosecutor_profile": {
+      "name": "District Attorney Rebecca Stone",
+      "quirks": "Obsessed with medical accuracy but constantly misuses dementia terminology",
+      "signature_props": "Brings a toy brain model and fake memory cards to demonstrate 'memory loss evidence'",
+      "catchphrase": "The defense suffers from severe logical dementia!"
+    },
+    "fabricated_testimonies": {
+      "malcolm_rivers_lies": {
+        "fabricated_claims": [
+          "I remember threatening Dr. Harwick with my cane!",
+          "I told her I'd make her forget everything like she was making me forget!",
+          "I was angry because she was stealing my memories and selling them!"
+        ],
+        "contradicted_by": ["Blood test showing sedatives", "Dr. Harwick's research notes showing she was helping him", "Timeline proving he was unconscious"]
+      },
+      "dr_cole_theatrical_lies": {
+        "fabricated_claims": [
+          "Malcolm threatened me with 'memory restoration revenge' - he said he'd make me experience dementia!",
+          "I was performing life-saving surgery during the murder - my hands were literally inside another patient!",
+          "Malcolm's evil dementia episodes made him believe Dr. Harwick was a memory thief!"
+        ],
+        "contradicted_by": ["Falsified hospital records", "Security footage of him entering building", "Medical timeline impossibilities"]
+      },
+      "nurse_vance_pressure_lies": {
+        "fabricated_claims": [
+          "I saw Malcolm's eyes turn red with dementia rage!",
+          "Dr. Cole was definitely in surgery - I personally wheeled him to the operating room!",
+          "Malcolm kept muttering about 'stealing back his stolen thoughts'!"
+        ],
+        "contradicted_by": ["Security logs showing she helped Dr. Cole access building", "Surgery schedule showing no operations that night", "Her own previous statements"]
+      }
+    },
+    "dramatic_breakdowns": {
+      "dr_cole_medical_license_falls": "When confronted with falsified records, his medical license literally falls from his coat pocket, revealing his fear of losing it",
+      "nurse_vance_pension_papers": "Breaks down while clutching her pension documentation, confessing she was 3 years from retirement",
+      "malcolm_memory_clarity": "When presented with blood test results, suddenly remembers being drugged and Dr. Harwick trying to help him"
+    },
+    "impossible_but_logical_elements": {
+      "memory_recovery_machine": "Prosecutor claims Malcolm used impossible memory device - actually just refers to blood test results showing drug interference",
+      "time_traveling_medical_records": "Records that appear to show Dr. Cole in surgery - revealed to be backdated after the murder",
+      "dementia_rage_mode": "Prosecutor's theory about 'violent dementia transformation' - disproven by medical science and sedative evidence"
+    },
+    "gallery_reactions": {
+      "medical_students": "Gasp dramatically when research fraud is revealed",
+      "elderly_patients": "Cheer for Malcolm when truth about his drugging is exposed",
+      "hospital_staff": "Shocked whispers about Dr. Cole's betrayal of medical ethics"
+    },
+    "judge_chaos": {
+      "medical_terminology_obsession": "Judge fixated on proper pronunciation of 'dementia' while missing obvious lies",
+      "evidence_confusion": "Confused by difference between blood tests and brain scans",
+      "gavel_mishaps": "Dramatically pounds gavel whenever someone says 'memory' incorrectly"
+    }
+  }
+}

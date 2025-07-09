@@ -1,0 +1,49 @@
+{
+  "case_title": "The Digital Deception",
+  "case_id": "the_digital_deception",
+  "difficulty": "medium",
+  "estimated_time": "60-75 minutes",
+  "victim": {
+    "name": "Judge Harrison Blackwell",
+    "age": "58",
+    "occupation": "Supreme Court Judge",
+    "murder_method": "Poisoned coffee (digitalis)",
+    "location": "His private chambers",
+    "time_of_death": "3:45 PM, October 15th"
+  },
+  "client": {
+    "name": "Dr. Elena Vasquez",
+    "age": "34",
+    "occupation": "Digital Forensics Expert",
+    "charges": "First-degree murder of Judge Harrison Blackwell",
+    "why_appears_guilty": [
+      "Found in judge's chambers with the victim",
+      "Had heated argument with judge day before murder",
+      "Her digital forensics software was used to access court system illegally",
+      "Fingerprints on coffee cup that contained poison",
+      "Had access to digitalis through research connections"
+    ],
+    "why_actually_innocent": [
+      "Was trying to expose the real killer's corruption",
+      "Her software was stolen and used to frame her",
+      "Was meeting judge to present evidence of judicial bribery",
+      "Coffee cup was planted evidence"
+    ]
+  },
+  "real_killer": {
+    "name": "Chief Clerk Marcus Sterling",
+    "true_motive": "Covering up years of embezzling court funds through digital manipulation",
+    "why_not_suspected": [
+      "Trusted court employee for 15 years",
+      "Has administrative access that appears legitimate",
+      "Known for his loyalty and dedication",
+      "Was supposedly helping investigate the security breach"
+    ]
+  },
+  "victory_conditions": {
+    "expose_digital_corruption": "Prove Marcus used his administrative access to embezzle funds",
+    "prove_framing": "Show how Marcus stole Elena's software to frame her",
+    "timeline_contradiction": "Demonstrate Marcus lied about his whereabouts during murder",
+    "motive_revelation": "Reveal judge discovered embezzlement and was going to expose Marcus"
+  }
+}

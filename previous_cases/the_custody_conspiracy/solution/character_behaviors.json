@@ -1,0 +1,39 @@
+{
+  "investigation_behaviors": {
+    "eddie_torres": {
+      "initial_state": "Traumatized and fearful, doesn't trust authority figures",
+      "evidence_triggers": {
+        "drug_evidence": "Relief that someone believes he was unconscious",
+        "kane_files": "Emotional - realizes Kane was trying to help him"
+      }
+    },
+    "captain_walsh": {
+      "initial_state": "Helpful authority figure mourning fallen officer",
+      "evidence_triggers": {
+        "financial_scrutiny": "Becomes defensive and evasive",
+        "abuse_allegations": "Threatens witnesses and obstructs investigation"
+      }
+    },
+    "cassandra_kane": {
+      "initial_state": "Grief-stricken widow who blames Eddie",
+      "evidence_triggers": {
+        "investigation_files": "Shocked to learn husband was investigating corruption",
+        "drug_evidence": "Begins to doubt Eddie's guilt"
+      }
+    }
+  },
+  "trial_behaviors": {
+    "prosecutor_vera_vanquish": {
+      "personality": "Overly dramatic with ruby staff and crimson robe",
+      "catchphrase": "Justice always gets the final curtain call!",
+      "evidence_reactions": {
+        "drug_evidence": "Dramatic denial with staff waving",
+        "corruption_exposure": "Complete theatrical breakdown"
+      }
+    },
+    "witness_breakdowns": {
+      "eddie_torres": "Slams fists, tears at clothes in frustration when lies exposed",
+      "captain_walsh": "Stumbles back, knocks over water, hyperventilates when cornered"
+    }
+  }
+}

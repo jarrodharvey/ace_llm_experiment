@@ -1,0 +1,554 @@
+# Real-world inspiration for the_memory_mirage
+# Generated: 2025-07-09T22:00:11.082164
+
+AustLII  Search  Supreme Court of New South Wales - Court of Criminal Appeal       Search AustLII   ▼   Search Options   All databases  This database only  Full text  Titles only   Advanced Search…    Search term:  ×   Close      About    Contact    Copyright & Usage    Privacy    Disclaimers    Feedback    Help          Type Cases    Jurisdiction New South Wales    Database Supreme Court of New South Wales - Court of Criminal Appeal    Year 2023   Citation [2023] NSWCCA 38             All Databases      Cases & Legislation      Journals & Scholarship      Law Reform      Treaties      Libraries      Communities      LawCite          Australia     CTH     ACT     NSW     NT     QLD     SA     TAS     VIC     WA     New Zealand         Specific Year Any   2015            Any            Any                WR v Director of Public Prosecutions (NSW) [2023] NSWCCA 38 (7 March 2023)     Last Updated: 20 March 2023         Court of Criminal Appeal Supreme Court  New South Wales           Case Name:    WR v Director of Public Prosecutions (NSW)      Medium Neutral Citation:     [2023] NSWCCA 38      Hearing Date(s):    1 March 2023      Date of Orders:    7 March 2023      Decision Date:    7 March 2023      Before:    Beech-Jones CJ at CL at [1]; Davies J at [45]; McNaughton J at
+[46]      Decision:    Bail granted on conditions      Catchwords:    BAIL – appeal against conviction pending – necessity to show
+“special or exceptional” circumstances –
+unfitness to stand
+trial – reasonable prospects of success – likely that bulk of
+non-parole period will have been served
+by time appeal is heard –
+applicant vulnerable – special circumstances established – bail
+granted      Legislation Cited:    Bail Act 2013 (NSW) ss 18 , 22 , 26 , 29 Mental Health and Cognitive
+Impairment Forensic Provisions Act 2020 (NSW) s 36      Cases Cited:    El-Hilli and Melville v R [2015] NSWCCA 146 El Khouli v R [2019] NSWCCA
+146 Fantakis v Director of Public Prosecutions [2021] NSWCCA 271 Obeid v R
+(No 2) [2016] NSWCCA 321 Petroulias v R [2010] NSWCCA 95 R v RTI (2003) 58
+NSWLR 438 ; [2003] NSWCCA 283 R v Rivkin (2004) 59 NSWLR 284 ; [2004] NSWCCA
+7 R v Presser [1958] VicRp 9 ; [1958] VR 45      Category:    Principal judgment      Parties:    WR (Applicant) Director of Public Prosecutions (NSW) (Respondent)      Representation:    Counsel: T A Game SC with D Barrow (Applicant) A Bonnor
+(Respondent) Solicitors: Blair Criminal Lawyers (Applicant) Office
+of the Director of Public Prosecutions (Respondent)      File Number(s):    2022/368963      Publication Restriction:    N/A     JUDGMENT   BEECH-JONES
+CJ at CL: Following a trial in the District Court, on 2 and 3 December
+2021 the applicant, WR, was found guilty of committing three
+“historical”
+sexual offences against his daughter, XX. On 27 May
+2022, the applicant was sentenced to an aggregate term of imprisonment of
+5 years
+with a non-parole period of 2 years. His sentence was fixed to
+commence on 4 February 2022. He will be first eligible for release
+on parole on
+3 February 2024.  On
+10 October 2022, the applicant filed a Notice of Appeal against his conviction.
+His appeal is listed for hearing on 13 and 14 June
+2023. He now applies for bail
+pending the hearing of his appeal. To succeed on his application, the applicant
+must, inter alia, demonstrate
+that “special or exceptional
+circumstances” exist to justify the grant of bail pending the appeal
+( Bail Act 2013 (NSW), s 22(1)). For the reasons that follow, I
+consider that the applicant has established such circumstances and bail should
+be granted. The Offences   The
+indictment presented against the applicant alleged that he committed two acts of
+indecency against XX between 22 May 1977 and
+24 May 1979 (counts 1 and 2),
+one act of indecency against XX between 1 January and 31 December 1978
+(count 3), unlawful carnal knowledge
+upon XX between 1 January and 31
+December 1983, when she was over the age of 10 and under the age of 17 (count
+4), and had sexual
+intercourse with XX without her consent between 22 May
+1985 and 23 June 1986 (count 5). The applicant was found guilty on counts
+1, 3
+and 5 and acquitted on counts 2 and 4.  The
+applicant was born in 1937. He was 84 years old at the time he stood trial and
+is now 85. XX was born in 1968 and is the applicant’s
+third child
+from a previous marriage that ended around 1984. In respect of count 1, the
+applicant was found to have indecently assaulted
+XX on a camping trip and
+masturbated in her presence afterwards. The allegation the subject of count 2
+involved similar conduct on
+a camping trip a few months later. As to count 3, it
+was found that XX woke in her parents’ bed and the applicant
+“spoon[ed]”
+her and placed his fingers inside her vagina. When she
+spoke up, he replied “[s]orry, I thought you were your mother”.
+With
+counts 4 and 5, it was respectively alleged (in the case of count 4) and found
+(in the case of count 5) that XX stayed overnight
+with the applicant and
+woke up to find him having penile/vaginal intercourse with her. The applicant
+gave evidence at the trial denying
+the charges. Bail Pending
+Appeal   Section
+s 22(1) of the Bail Act provides that where an appeal is pending in
+this Court against a conviction on indictment, the Court is not to grant bail
+unless
+it is established that “special or exceptional circumstances
+exist”. If the subject offences are “show cause offences”,
+then the requirement in s 22(1) replaces the “show cause”
+requirement (s 22(2)). Otherwise, the approach of the Bail Act to
+assessing “unacceptable risks” still pertains following a finding of
+“special or exceptional circumstances” (s 22(3) ; see El‑Hilli and Melville v R  [2015] NSWCCA 146 at [13] ).  In El Khouli v R  [2019] NSWCCA 146 at [22] (“El Khouli”), this Court (Hoeben CJ at CL, Walton and Wilson
+JJ) observed as follows in relation to s 22:  “... a distinction appears to have been drawn on the authorities, when the
+grounds of appeal are advanced as a factor demonstrating
+special or exceptional
+circumstances, between cases where the strength or merit of an appeal has been
+relied upon in isolation, and
+those where the applicant relied upon that factor
+in combination with other factors including whether the applicant would
+have spent
+a substantial part of his or her sentence in custody by the time of
+the hearing of the appeal.” (emphasis added)   Their
+Honours noted that in the former type of case the applicant must show
+“more than that the grounds seem arguable”
+and that it may be
+necessary to establish that the appeal is “most likely to succeed”
+( El Khouli at [23], citing Petroulias v R  [2010] NSWCCA 95 at [34] ).  In Fantakis v Director of Public Prosecutions  [2021] NSWCCA 271 at [12] (“Fantakis”), I observed as follows in relation to this aspect of El Khouli :  “I do not take El Khouli as specifying different thresholds
+about the relative strength of the proposed grounds of appeal that must be shown
+in order to demonstrate
+special or exceptional circumstances. The above passage
+from El Khouli identifies a particular matter that is often highly
+relevant to a grant of bail pending an appeal, namely, whether an
+‘applicant
+would have spent a substantial part of his or her sentence in
+custody by the time of the hearing of the appeal’. That circumstance
+is
+relevant to an assessment of whether special or exceptional circumstances have
+been shown in that the appeal may be rendered futile,
+or at least of lesser
+utility, if there is no grant of bail. Often, the interaction between the
+assessment of the relative strength
+of the appeal and the utility of the appeal
+will bear heavily upon whether or not special or exceptional circumstances exist
+(see United Mexican States v Cabal  (2001) 209 CLR 165 ; [2001] HCA 60 at [41] ).”   To
+the extent that an application for bail pending appeal requires an assessment of
+the relative strength of the grounds of appeal,
+the approach of this Court is
+confined “to reaching only a broad overall view of an applicant's apparent
+prospects” ( Obeid v R (No 2)  [2016] NSWCCA 321 at [17] (“Obeid”); Fantakis at [15]). Prospects of
+Success on Appeal   The
+applicant’s Notice of Appeal raises two grounds. The first ground of
+appeal contends that a miscarriage of justice “occurred
+by reason of the
+fact that the [applicant] was not or may not have been fit to stand
+trial”. The second ground of appeal contends
+that the guilty verdicts on
+counts 1 and 5 are unreasonable or cannot be supported, having regard to the
+evidence.  The
+submissions filed in support of the applicant’s appeal against his
+conviction were made available on this bail application.
+The submissions on
+ground 2 complain about the supposed inconsistency between the guilty verdicts
+on counts 1 and 5 compared with
+the acquittals on counts 2 and 4, and otherwise
+contend that XX’s evidence was unreliable. It is not necessary to consider
+this ground further. The focus of the present application concerned ground 1 and
+its relative strength.  The
+operative principle governing an appeal against a conviction where the appellant
+contends that they were unfit to stand trial
+was stated in R v RTI  (2003)
+58 NSWLR 438 ; [2003] NSWCCA 283 at [31] (“RTI”) as
+follows:  “ If there is material before this Court which raises a question about
+the propriety of the conviction because an appellant may have
+been unfit to
+stand trial, the court should quash the conviction unless it is satisfied
+that, had the question been raised before or during the trial which led to the
+conviction, the court acting reasonably must have found that the accused was
+fit to stand trial. It is only if the court can come to that finding
+that there
+will be no possibility of a miscarriage of justice. I do not believe that
+such a finding is open in the present case. Therefore, the convictions and
+sentences must be quashed and a new
+trial ordered.” (emphasis added)   The
+first part of this passage appears to establish a relatively low threshold for
+an appellant to satisfy in these circumstances,
+although three matters should be
+noted. First, a mere reduction in the capacity of an accused person to meet the
+test of unfitness,
+stated in R v Presser  [1958] VicRp 9 ; [1958] VR 45 , which “falls
+short of denying to [an] accused the capacity to understand and
+to follow the proceedings in each of the necessary aspects” is
+insufficient
+to constitute unfitness ( R v Rivkin  (2004) 59 NSWLR 284 ; [2004] NSWCCA 7 at [297] –[298]; “Rivkin”).  Second,
+the Presser test is not satisfied merely because, due to some
+psychological or cognitive condition, the accused displayed inappropriate
+behaviour
+in the trial, including while they gave evidence, provided that they
+were “able to give evidence in relation to the matters
+in issue ... had a
+clear understanding of what was involved in the offence charged, and was able to
+make the answer, which [the accused]
+wished to make, in relation to it”
+( Rivkin at [303]).  Third,
+since March 2021, the test for determining whether an accused person is fit to
+stand trial has been set out in s 36 of the Mental Health and Cognitive
+Impairment Forensic Provisions Act 2020 (NSW) (the “MHCIFP
+Act”). The effect of that provision is set out in the passage extracted
+below from Dr Olav Nielssen’s
+report. It suffices to state that s 36(1) is
+clearly based on Presser . Applicant’s Evidentiary
+Material concerning Fitness to be Tried   Consistent
+with the above statements from Obeid and Fantakis , the parties
+placed a confined set of evidentiary material before the Court in relation to
+ground 1. The applicant read an affidavit
+from his solicitor who has acted for
+him since the time of his arrest in 2016. The solicitor recited the
+applicant’s lengthy
+medical history, which relevantly includes major heart
+surgery in 1994 and recurrent cardiovascular issues since that time.  The
+solicitor also notes that, after a number of adjournments, the applicant’s
+trial commenced on 8 November 2021. The applicant
+was represented by very
+experienced Senior Counsel. The solicitor states that, during the trial, he
+became concerned about the applicant’s
+cognitive function. He says that in
+November 2021, after the trial had commenced, he arranged for the applicant to
+undergo a “CT
+brain scan”, the results of which revealed no physical
+abnormality. Despite these concerns, no question of fitness was raised
+at the
+trial. As noted, the applicant was called to give evidence in his case.  In
+January 2022, while the applicant awaited sentencing, his solicitor obtained
+reports from a geriatrician, Associate Professor Tuly
+Rosenfeld, and Dr
+Nielssen, a psychiatrist, which suggested that the applicant was suffering from
+dementia and was cognitively impaired.
+After the applicant was sentenced,
+further reports were obtained from those experts addressing the
+applicant’s fitness at the
+time of his trial. Otherwise, the
+solicitor’s affidavit included a self-admonishment for not addressing the
+applicant’s
+fitness to stand trial prior to his conviction.  The
+applicant also tendered a report from his treating cardiologist dated 14
+February 2022. The cardiologist concluded that there
+was “clinical
+evidence of progressive cognitive impairment”. The cardiologist opined
+that, based on the applicant’s
+age and degree of cognitive dysfunction, he
+is “very likely [to] descend into frank dementia and ... life expectancy
+in the
+realm of 3 [years] or less”. 1   Based
+on prior testing by a general practitioner, and his own interview with and
+examination of the applicant, Associate Professor
+Rosenfeld concluded that the
+applicant “has multiple causes for the occurrence and progression of brain
+disease which is more
+likely than not associated with vascular disease of the
+brain”. [1] He subsequently
+concluded that the vascular brain disease has resulted “in degenerative
+changes of his brain, cognitive impairment
+and dementia that [have] as well as
+other impairments in cognitive function prominently affected frontal lobe
+executive function”. [2] Associate Professor Rosenfeld opined that these impairments were present during
+November and December 2021 and
+added: [3]  “In my opinion therefore [WR] was then and is not currently or in the
+future, as his cognitive function continues to deteriorate,
+properly able to
+undertake, properly understand, respond to the proceedings or explanation and
+advice nor with due reasoning and
+judgement instruct his legal representatives
+in legal proceedings.”   Based
+on his own interview and testing, as well as Associate Professor
+Rosenfeld’s reports, Dr Nielssen diagnosed the applicant
+with
+dementia. [4] In his later report of 4
+September 2022, Dr Nielssen addressed the applicant’s fitness to stand
+trial by reference to the criteria
+in s 36(1) of the MHCIFP Act, as
+follows [5] :  “With regards your further question, I believe that at the time of the two
+assessments [WR] was unfit for trial according to
+the criteria set out in section 36 of the Mental Health and Cognitive Impairment Forensic
+Provisions Act , on the basis of the effect of his cognitive function on his
+ability to follow any proceedings, provide reliable instructions to his legal
+representatives and on
+his ability to give coherent evidence on his own
+behalf . With regards the specific criteria, was [WR] able to:  (a) understand the offence the subject of the proceedings [WR] was aware of the charges he faced.  (b) plead to the charge [WR] was consistent in his account of how he would plead to the charge.  (c) exercise the right to challenge jurors [WR] had some knowledge of the composition and function of a jury.  (d) understand generally the nature of the proceedings as an inquiry into
+whether the person committed the offence with which the
+person is charged [WR] understood the general nature of the proceedings.  (e) follow the course of the proceedings so as to understand what is going on
+in a general sense [WR] has a condition that affects his ability to concentrate and retain
+information, and he would be unable to follow the detail of any
+proceedings .  (f) understand the substantial effect of any evidence given against the
+person, [WR] was assessed to be able to understand the substantial effect of
+evidence given against him in court, with the assistance of
+legal advisers and
+explanations from his wife.  (g) make a defence or answer to the charge [WR] was assessed to be able to make his version of the events known,
+although he had obvious difficulty retrieving information and
+communicating in a
+coherent way, and would have difficulty giving coherent evidence on his own
+behalf.  (h) instruct the person’s legal representative so as to mount a defence
+and provide the person’s version of the facts
+to that legal representative
+and to the court if necessary [WR] indicated how he would respond to the charge. However, he has obvious
+impairment in communication that might affect the reliability of
+instructions and any evidence he was able to give in court.  (i) decide what defence the person will rely on and make that decision known
+to the person’s legal representative and the court. [WR] was assessed to [be] able to decide on which defence to rely on. His condition is by definition permanent and irreversible, and he is unlikely to
+become fit within the next twelve months. With regards [WR's] fitness for trial between 15.11.21 and 3.12.21, it is
+possible that his condition deteriorated in the months
+between the completion of
+the trial and the initial interview conducted on 24.1.22. However, based on his
+presentation at the time
+of the initial interview I believe he was probably not
+fit for trial during the period in which the trial took place.” (emphasis
+added)   At
+this point, six matters should be noted about Associate Professor Rosenfeld and
+Dr Nielssen’s opinions about the applicant’s
+fitness to stand trial
+in late 2021.  First,
+in addressing the criterion in s 36(1)(e) of the MHCIFP Act, Dr Nielssen opined
+on the applicant’s ability to follow
+the “detail” of any
+proceedings. This does not properly address s 36(1)(e), which is addressed to
+whether the accused
+can follow the proceedings “in a general sense”.  Second,
+in relation to s 36(1)(h), Dr Nielssen’s opinion rises no higher than that
+the applicant’s impairment in communication
+“might” have
+affected the reliability of his instructions and evidence.  Third,
+in respect of s 36(1)(g), even though Dr Nielssen concluded that the applicant
+was unfit because of the effect of his cognitive
+impairment on his ability to
+give “coherent evidence”, Dr Nielssen also concluded that he was
+“able to make his
+version of the events known”.  Fourth,
+although Associate Professor Rosenfeld addressed the applicant’s medical
+condition (namely, vascular brain disease)
+at length, the basis of his opinion
+that the applicant was unfit to stand trial is not explained. As was pointed out
+in argument,
+the effect of dementia on a person’s fitness to stand trial
+is a matter of degree. It is also partly dependent on the particular
+circumstances of the trial. There does not appear to be any specific
+consideration, on the part of either Associate Professor Rosenfeld
+or Dr
+Nielssen, of the circumstances of the trial that the applicant in fact
+faced.  Fifth,
+and consistent with the point just made, it can be expected that the experienced
+Senior Counsel who acted for the applicant
+at trial would have insight into each
+of the matters identified by Dr Nielssen and Associate Professor Rosenfeld,
+given that he conducted
+the trial and called the applicant to give evidence. The
+Court was advised that that Senior Counsel has not yet been approached to
+give
+evidence.  Sixth,
+each of the matters identified by Dr Nielssen can be checked against the
+transcript of the applicant’s evidence at the
+trial, bearing in mind the
+points noted in [13] and [14] above. Crown Evidence on
+Fitness   The
+Crown tendered a limited amount of material obtained from Justice Health. This
+included a report from Dr Jacques Ette, a general
+practitioner, which was
+tendered at the applicant’s sentence hearing. The report outlined
+assessments of the applicant undertaken
+upon his entry into custody and the
+manner in which Justice Health addressed his various medical conditions. Dr Ette
+noted the effect
+of Associate Professor Rosenfeld and Dr Nielssen’s
+reports but added that there was no mention of the applicant suffering from
+dementia in the health summary provided by his general practitioner.  The
+Crown also tendered notes from the applicant’s Justice Health file for
+various days between February 2022 and February 2023,
+some of which were
+tendered to show the level of care provided to the applicant. The notes also
+included observations by Justice
+Health personnel about the applicant’s
+psychological state and cognitive capacity, such as: “[r]eports he does
+not have
+any mental health
+problems”; [6] “[h]is
+quality of speech was normal [and] his thought form ... appeared to be logical
+and connected”; [7] and
+“presents as
+logical/articulate”. [8]  Leaving
+aside this material, the Court was advised that the Crown was not able to obtain
+reports responsive to the reports of Associate
+Professor Rosenfeld and Dr
+Nielssen in time for the hearing of this application, although it anticipates
+having those reports by
+the time the appeal is heard. The applicant’s
+Notice of Appeal (and the submissions in support) were filed by October 2022.
+The application for bail pending appeal was filed on 28 November 2022. Although
+it has been over three months since the bail application
+was filed, and the
+basis for the appeal has been fully articulated, it can be accepted that the
+period over which that occurred could
+make it difficult to obtain responsive
+reports, at least in the relatively narrow field of forensic psychiatry. In the
+end result,
+the Court must make its assessment based on the material that was
+presented while allowing for the circumstance that the Crown has
+not yet had the
+full opportunity to obtain material in response. Assessment of
+Prospects   Senior
+Counsel for the applicant in this Court, Mr Game SC, submitted that, having
+regard to the relatively low threshold for success
+on ground 1 of the appeal,
+the Court should find that the applicant is “most likely to succeed”
+on appeal. The matters
+noted above at [22]–[28], and the fact that the
+evidence concerning the applicant’s fitness is not yet complete, mean
+that
+I do not accept that submission. Nevertheless, I accept that the applicant has
+at least reasonable prospects of success in establishing
+that there is
+“ a question about the propriety of the conviction because [the
+applicant] may have been unfit to stand trial” ( RTI supra ). It is
+simply not possible at this point to make any assessment as to whether, if that
+threshold was overcome, the Crown would establish
+that a court acting reasonably
+must have found that the applicant was fit to stand trial. However, at the risk
+of stating the obvious,
+if that point is reached then the burden of
+demonstrating the applicant’s fitness will be on the Crown.  Other Evidence   Three
+other aspects of the evidence adduced on the bail application should be
+noted.  First,
+as noted, the evidence travelled beyond addressing the applicant’s
+cognitive decline. He is presently 85 years of age
+and has a series of medical
+conditions beyond his cognitive decline, including vascular and heart disease,
+sleep apnoea and lung
+disease that leaves him short of breath, as well as
+age-related physical frailty including hip replacements, a knee replacement,
+a
+shoulder operation and the like. Given the competing evidence, I am not in a
+position to make any finding to the effect that his
+various medical conditions
+are not being adequately cared for in custody. Nevertheless, it can be accepted
+that he is vulnerable
+and has a limited life expectancy, although they were
+matters that were presumably known to the sentencing judge.  Second,
+the applicant’s wife affirmed an affidavit in support of the application
+for bail. She noted that, prior to entering
+custody, the applicant owned and
+operated a bakery for 45 years. She deposed to having suffered a significant
+accident in April 2022,
+as a result of which she broke her C5 vertebrae. She
+said that she is in a wheelchair and described herself as a quadriplegic,
+although
+there is evidence that she can drive a car. She stated that she
+“desperately want[s] [the applicant] to return home to help
+me with
+everyday life and running the bakery”. She also agreed to accompany the
+applicant outside of their home as part of
+any bail conditions and agreed to
+forfeit a sum without security if he fails to comply with his bail conditions.
+Her desire for the
+return of her husband is understandable. However, given that
+the premise of the application for bail is that the applicant is suffering
+from
+dementia and is physically frail, no allowance can be made for any assistance
+the applicant might provide her or for his conduct
+of the family business.  Third,
+the applicant was on bail for five years prior to his trial. There is no
+suggestion that he did not comply with his bail conditions
+during that
+period. Special or Exceptional Circumstances   The
+applicant did not seek to establish special or exceptional circumstances solely
+by reference to the prospects of success on appeal.
+Instead, consistent with El Khouli , the applicant also contends that by the time his appeal is
+heard, or at least decided, he would have spent a substantial part of
+his
+minimum non-parole period in custody, i.e. the applicant relies on the
+interaction between the assessment of the relative strength
+of the appeal and
+the utility of the appeal ( Fantakis , supra ). The applicant also
+relies on his age and vulnerability in custody, a matter that has been
+addressed. Those matters do not establish
+special or exceptional circumstances
+in their own right, although they can cumulatively form part of a finding to
+that effect.  The
+applicant’s prospects of success on appeal, based on the material
+available at present, have already been addressed. If
+the Crown’s evidence
+in response to Dr Nielssen and Associate Professor Rosenfeld ultimately supports
+the assessment that the
+applicant was unfit, or at least does not contradict the
+applicant’s material, then it is very likely that the hearing of the
+appeal in June 2023 will be brief and will resolve in the applicant’s
+favour. In that case, a decision to grant bail will be
+vindicated. If the
+Crown’s evidence contradicts the applicant’s experts, then, to
+resist the appeal, it will either have
+to argue that, overall, the material does
+not raise a question as to the applicant’s fitness or otherwise is such as
+to demonstrate
+that a court acting reasonably must have found that the accused
+was fit to stand trial. It is likely that any appeal addressing those
+issues
+will occupy more than one day of hearing and will require some (perhaps
+significant) time to publish a decision. In those
+circumstances, there is a
+strong likelihood that the Court’s decision would not be available until
+later in 2023, when the
+large bulk of the applicant’s minimum non-parole
+period will have been served. Given that possibility, my assessment of the
+relative strength of the appeal and the applicant’s circumstances, I am
+satisfied that special or exceptional circumstances
+have been
+established. Unacceptable Risk   Having
+found that special or exceptional circumstances have been established, it is
+necessary to address the relevant bail risks (see ss 18 – 19 of the Bail
+Act ; [5] above). I accept that there is a risk to XX and any other
+Crown witnesses, albeit not great, and a risk, albeit small, that
+the applicant
+might abscond. Given his bail history, family ties and personal circumstances, I
+am satisfied that those risks can
+be reduced below a level that is unacceptable
+by the imposition of appropriate conditions.  Following
+the hearing of this application, the parties provided bail conditions that it
+was agreed should be imposed if the Court
+proposed to grant bail. Subject to two
+matters, I am satisfied that the agreed bail conditions are appropriate.  The
+first matter is that I consider it appropriate to exclude the applicant from any
+international point of departure.  The
+second matter concerns a proposed bail condition which the parties describe as a
+“pre-release condition”. Section 29 of the Bail Act provides:  “ 29   Limitation on power to impose pre-release
+requirements (1)   The following requirements (and no other requirements) can
+be imposed by a bail authority as pre-release requirements––  (a)   a conduct requirement that requires the accused
+person to surrender his or her passport, (b)   a  security requirement, (c)   a requirement that one or more character
+acknowledgements be provided, (d)   an accommodation requirement.  (2)   A requirement of a bail condition is a pre-release requirement  if the bail condition specifies
+that the condition must be complied with before the accused person is
+released on bail.”   The
+parties proposed a condition of whereby the applicant is to travel from the Long
+Bay Correctional Centre (from which the applicant
+is to be released on bail) in
+the company of a specified person “who must be in attendance at that
+centre before release occurs”.
+To the extent that this imposes an
+obligation on the applicant, it is a “conduct requirement” and can
+be the subject
+of a valid bail condition (see s 25 of the Bail Act ),
+i.e. if he does not travel with the specified person then he is in breach of his
+bail. However, in this case, the parties purported
+to designate this condition
+as a pre-release requirement. To the extent that it is a conduct requirement it
+is not of a kind specified
+in s 29(1)(a) and otherwise does not fall within s
+29(1). I decline to designate the condition as a pre-release requirement.  Accordingly,
+I propose the following orders:  (1)	The
+applicant be granted bail on the following conditions:  Conduct, Accommodation and Curfew Conditions a.   The applicant is to be of good behaviour. b.   The applicant is to appear at Court of Criminal Appeal at
+Sydney on 13 June 2023 and thereafter as directed. c.   The applicant is to live at XXXXXX and nowhere else. d.   The applicant is to report to the Officer in Charge at XXXX
+Police Station each Tuesday and Friday between the hours of 8am
+and 8pm. e.    The applicant is not to be in the company of any person
+aged under 18 years unless in the company of XXXXXX. f.   The applicant is to comply with the terms of any apprehended
+domestic violence order or apprehended violence order made against
+him. g.   The applicant is not to approach or communicate with, or
+attempt to contact by any means, either directly or by any third party,
+XXXX,
+XXXX, or XXXXX, or any child of those persons, including by telephone and
+internet. h.   The applicant is to travel from the Long Bay Correctional
+Centre from which the applicant is to be released on bail in the company
+of
+XXXXX, who must be in attendance at that centre before release occurs. Travel and Passport Conditions i.   The applicant is to surrender any passport to Newcastle
+District Court Registry and is not to apply for a new passport or other
+travel
+document. The Court notes that his passport has already been surrendered. j.   The applicant is not to approach within 2km of any
+international point of departure. Security and Involvement of Acceptable Person k.   An acceptable person is to enter into an agreement under
+which that person agrees to forfeit the sum of $200,000 if the applicant
+fails
+to appear before court in accordance with the bail acknowledgement. Character Acknowledgement l.   An acceptable person is to provide a character
+acknowledgement which complies with the Bail Act 2013 (NSW) and the Bail
+Regulations 2014 (NSW).   DAVIES
+J: I agree with Beech-Jones CJ at CL.  McNAUGHTON
+J: I agree with Beech-Jones CJ at CL. **********  Amendments  13 March 2023 - [20] and [21] - applicant's name anonymised.  20 March 2023 - [43] - reference to s 26 of the Bail Act corrected to read s
+25.  20 March 2023 - The applicant's daughter is further anonymised and referred
+to as "XX".    [1] Exhibit C at page
+4. [2] Exhibit A at
+121.3. [3] Exhibit A at p
+159.5. [4] Exhibit A at
+159.9. [5] Exhibit A at page
+153.8. [6] Exhibit A at
+165 [7] Ex 1 at p
+22.2. [8] Ex 1 at p 27.1.              Print    Print (pretty)    Print (eco-friendly)           Download    RTF format (285 KB)      Signed PDF/A format         Cited By    LawCite records    NoteUp references          Join the discussion    Tweet this page    Follow @AustLII on Twitter             About    Copyright & Usage    Privacy    Disclaimers    Help   http://www.austlii.edu.au/au/cases/nsw/NSWCCA/2023/38.html

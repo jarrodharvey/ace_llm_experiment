@@ -1,0 +1,16 @@
+{
+  "true_testimonies_before_fabrication": [
+    {
+      "witness": "Eddie Torres (Defendant)",
+      "true_testimony": "I remember being in the van with Officer Kane. He was asking about my time in juvie. Then everything went black. Next thing I knew, people were screaming and there was blood."
+    },
+    {
+      "witness": "Captain Derek Walsh",
+      "true_testimony": "I arrived on scene after the incident. Officer Kane was a good man. Eddie Torres has a history of violence against authority figures."
+    }
+  ],
+  "testimony_analysis": {
+    "eddie_reliability": "Memory gaps make him seem unreliable but actually prove drugging",
+    "walsh_credibility": "Appears authoritative but hiding his own involvement"
+  }
+}

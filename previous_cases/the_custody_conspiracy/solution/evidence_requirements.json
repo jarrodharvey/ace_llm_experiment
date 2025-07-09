@@ -1,0 +1,50 @@
+{
+  "investigation_gates": {
+    "gate_1_drug_discovery": {
+      "name": "Proving Eddie Was Drugged",
+      "required_evidence": ["Transport van drug residue", "Medical examination results"],
+      "unlocks": "Ability to challenge prosecution's timeline"
+    },
+    "gate_2_kane_investigation": {
+      "name": "Uncovering Kane's Secret Investigation", 
+      "required_evidence": ["Kane's hidden files", "Decryption key"],
+      "unlocks": "Access to abuse ring evidence"
+    },
+    "gate_3_walsh_finances": {
+      "name": "Exposing Walsh's Illegal Profits",
+      "required_evidence": ["Financial audit results", "Witness testimony"],
+      "unlocks": "Direct confrontation with Walsh possible"
+    }
+  },
+  "trial_evidence_requirements": {
+    "prove_drugging": {
+      "present_evidence": "Transport van drug residue",
+      "contradicts": "Eddie was conscious during murder",
+      "reveals": "Eddie was unconscious when Kane died"
+    },
+    "expose_investigation": {
+      "present_evidence": "Kane's investigation files",
+      "contradicts": "Kane and Eddie were enemies",
+      "reveals": "Kane was trying to help expose abuse"
+    },
+    "reveal_motive": {
+      "present_evidence": "Walsh's financial records",
+      "contradicts": "Walsh had no reason to kill Kane",
+      "reveals": "Walsh was protecting lucrative criminal enterprise"
+    }
+  },
+  "psyche_lock_scenarios": {
+    "cassandra_kane_breakdown": {
+      "character": "Cassandra Kane (victim's widow)",
+      "locks": 3,
+      "evidence_combo": ["Kane's investigation files", "Drug residue test results"],
+      "breakthrough_result": "Realizes Eddie didn't kill her husband"
+    },
+    "walsh_confession": {
+      "character": "Captain Derek Walsh",
+      "locks": 5,
+      "evidence_combo": ["Financial records", "Kane's files", "Drug evidence", "Witness testimony", "Timeline reconstruction"],
+      "breakthrough_result": "Complete confession to murder and abuse ring"
+    }
+  }
+}

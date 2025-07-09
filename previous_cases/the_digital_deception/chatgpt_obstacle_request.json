@@ -1,0 +1,6 @@
+{
+  "phase": "2A_investigation_obstacles",
+  "prompt_template": "CASE BACKBONE: [Insert backbone summary] Design investigation obstacles that: 1. Make witnesses hostile/uncooperative without breaking logical knowledge 2. Hide evidence behind realistic challenges 3. Create misdirection without contradicting established facts 4. Make client appear MORE guilty initially 5. Force player to work hard for every piece of information 6. Design Psyche-Lock scenarios requiring specific evidence combinations 7. Create story-driven evidence presentation gates EXCITEMENT CHECK: Rate investigation 1-10 for drama and suggest improvements.",
+  "command": "python scripts/chatgpt_consultant.py \"[PROMPT]\" -o obstacles/chatgpt_obstacles_v1.json",
+  "notes": "Replace [PROMPT] with filled prompt_template above"
+}

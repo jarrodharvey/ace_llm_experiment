@@ -65,6 +65,46 @@ When asked to consult with ChatGPT on something, the api key can be found in ope
 - **Phase 3**: Claude validates and completes solution files
 - Uses shared configuration system for consistent case structures
 
+**Case Creation Recovery Commands:**
+When case creation fails or encounters issues, use recovery mode to diagnose and fix problems:
+
+- **Diagnose**: `python3 scripts/create_new_game_orchestrator.py --recovery diagnose --target-case {case_name}`
+  - Analyzes case structure, identifies missing files, checks template completion
+  - Provides specific recommendations for fixing issues
+  - Non-destructive analysis of case state
+  
+- **Reset Phase**: `python3 scripts/create_new_game_orchestrator.py --recovery reset-phase --target-case {case_name}`
+  - Rolls back to previous phase when current phase fails
+  - Automatically cleans up corrupted files from failed phase
+  - Updates state file to allow resuming from earlier point
+  
+- **Fix Files**: `python3 scripts/create_new_game_orchestrator.py --recovery fix-files --target-case {case_name}`
+  - Attempts automatic repair of common file issues
+  - Moves misplaced ChatGPT outputs to correct locations
+  - Creates missing directories, encodes solution files
+  - Initializes missing game state files
+  
+- **Clean Start**: `python3 scripts/create_new_game_orchestrator.py --recovery clean-start --target-case {case_name}`
+  - **DESTRUCTIVE**: Completely removes case directory and state files
+  - Requires confirmation: type "DELETE {case_name}" to proceed
+  - Use when case is irreparably corrupted
+  - After deletion, restart with `python3 scripts/create_new_game_orchestrator.py`
+
+**Recovery Workflow Example:**
+```bash
+# Case creation fails during Phase 3
+python3 scripts/create_new_game_orchestrator.py --recovery diagnose --target-case my_failed_case
+
+# If files are misplaced, try automatic fixes
+python3 scripts/create_new_game_orchestrator.py --recovery fix-files --target-case my_failed_case
+
+# If phase is corrupted, reset to previous phase
+python3 scripts/create_new_game_orchestrator.py --recovery reset-phase --target-case my_failed_case
+
+# Resume from the reset phase
+python3 scripts/create_new_game_orchestrator.py --resume case_creation_state_*.json --phase phase_2
+```
+
 **start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME
 - Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --status --actions`
 - Must create save point before beginning: `--save "game_start"`
@@ -74,6 +114,11 @@ When asked to consult with ChatGPT on something, the api key can be found in ope
 - Shows current context and available actions for seamless continuation
 
 **admin mode**: Enter strategic partnership mode for project planning and development
+
+**run tests**: Execute the test suite to verify system integrity
+- **Command**: `source venv/bin/activate && python -m pytest tests/ -v`
+- **Required**: Before any commits or major changes
+- **Coverage**: Core business logic, configuration system, integration points
 
 ## GAME STATE MANAGEMENT
 
@@ -110,11 +155,11 @@ When asked to consult with ChatGPT on something, the api key can be found in ope
 **Trial Management:**
 - `--start-trial` - Initiate trial phase (validates readiness automatically)
 
-**Inspiration Pool (Entropy Prevention):**
-- `--inspire {category}` - Get inspiration from specific category
-- `--inspire-random` - Get random inspiration from any category
-- `--inspire-contextual` - Get contextual inspiration based on current situation
-- `--must-inspire {context}` - FORCING FUNCTION for off-script responses
+**Pure Random Inspiration (Entropy Prevention):**
+- `--inspire {category}` - Get inspiration from specific category (legacy cases only)
+- `--inspire-random` - Get pure random word inspiration
+- `--inspire-contextual` - Get pure random word with context details
+- `--must-inspire {context}` - FORCING FUNCTION for off-script responses (uses pure random)
 - `--inspiration-history` - Show all inspiration usage history
 
 ### Gameplay Integration Requirements:
@@ -146,13 +191,15 @@ python3 scripts/game_state_manager.py {case} --status
 ```bash
 # MANDATORY: Use forcing function for ALL improvisation
 python3 scripts/game_state_manager.py {case} --must-inspire "context description"
-# Apply A-to-C process with provided word
+# Apply A-to-C process with provided PURE RANDOM word
 # Then deliver improvised content based on inspiration
 ```
 
 **NO EXCEPTIONS:** Every response must use either state manager retrieval OR forced inspiration. No improvisation without entropy prevention.
 
 **ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. No exceptions.
+
+**PURE RANDOM WORDS:** The system now uses completely random English words via the wonderwords package for maximum creative forcing. No categories or thematic guidance - pure entropy prevention.
 
 ### State Management Integration:
 
@@ -163,7 +210,8 @@ python3 scripts/game_state_manager.py {case} --must-inspire "context description
 - Create save points before dramatic moments or difficult choices
 - Use `--resume` to generate natural language summaries for players
 - **MANDATORY:** Use `--must-inspire` for ALL improvised character dialogue, plot developments, and reactions
-- **MANDATORY:** Apply A-to-C process with provided inspiration word before delivering content
+- **MANDATORY:** Apply A-to-C process with provided PURE RANDOM word before delivering content
+- **NEW:** No category selection needed - system provides completely random words for maximum creative constraint
 
 **State Files Location:**
 - Main state: `{case_directory}/game_state/investigation_progress.json`
@@ -198,10 +246,11 @@ The game state manager automatically detects:
 - Check case files if dynamic detection fails
 
 **EMERGENCY TROUBLESHOOTING:**
-- **Missing inspiration pool:** Re-run `python3 scripts/random_word_inspiration.py --target-dir {case_path}`
+- **Pure random word system fails:** Check wonderwords package installation: `pip install wonderwords`
 - **Corrupted game state:** Restore from save with `--restore {save_name}`
 - **Script errors:** Check Python path and case directory permissions
 - **Forcing function fails:** Use `--inspire-random` as fallback, then log manually
+- **Test failures:** Run `python -m pytest tests/ -v` to diagnose issues before proceeding
 
 ## COMMANDS - IN GAME
 
@@ -279,16 +328,19 @@ When playing games, you are the game master:
 - **Evidence presentation gates** - Progression locked until player presents specific evidence to specific characters
 - **MANDATORY STATE MANAGEMENT** - Use game state manager for ALL interactions: start/complete gates, add evidence, update trust, track progress
 - **MANDATORY INSPIRATION FORCING** - Use `--must-inspire` for ALL improvised content: character dialogue, plot developments, reactions, obstacles
+- **MANDATORY TRIAL BATTLES** - ALL cases MUST resolve through courtroom cross-examination and evidence presentation. Evidence discovery during investigation sets up trial battles, it does NOT resolve the case.
 
 ### MASTER RULES - CASE CREATION
 
 When creating new games:
 
+- **STRICT NO SPOILERS DURING CREATION** - Never reveal in case creation responses: killer identity, real motives, plot twists, evidence locations, character secrets, framing mechanisms, or case resolution. Only discuss general themes and case structure
 - **Two-phase structure is mandatory** - Both investigation and trial phases required
 - **Logical backbone first** - Build consistent evidence chains before adding obstacles  
 - **Evidence presentation gates** - Story-driven progression locks, not arbitrary percentages
 - **True testimonies → fabricated contradictions** - ChatGPT adds lies that can be proven false with evidence
 - **Semantic naming** - Use case title in lowercase_with_underscores format for directory names
+- **TEST ALL NEW FEATURES** - Any new scripts, modifications, or methodology changes must include comprehensive unit tests before implementation
 
 ---
 
@@ -379,7 +431,6 @@ Build the foundation for BOTH investigation and trial phases:
 ### File Structure:
 ```
 case_name/
-├── inspiration_pool.json          # MANDATORY - Random word inspiration
 ├── backbone/
 │   ├── case_structure.json
 │   ├── evidence_chain.json  
@@ -414,7 +465,7 @@ case_name/
 
 ### Phase 2B: Trial Fabrications (THEATRICAL PROMPTING)
 
-**Command:** `source venv/bin/activate && python scripts/chatgpt_consultant.py "You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness! TRUE TESTIMONIES: [Insert witness_testimonies.json summary] EVIDENCE LIST: [Insert evidence_chain.json summary] Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR: 1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence 2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence 3. ZANY PROSECUTOR: Design prosecutor with impossible quirks 4. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed 5. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations 6. GALLERY REACTIONS: Colorful characters reacting dramatically 7. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes. EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements." -o obstacles/trial_fabrications.json -t 0.8`
+**Command:** `source venv/bin/activate && python scripts/chatgpt_consultant.py "You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness! TRUE TESTIMONIES: [Insert witness_testimonies.json summary] EVIDENCE LIST: [Insert evidence_chain.json summary] CRITICAL REQUIREMENT: This trial MUST happen regardless of pre-trial evidence discovery. Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR: 1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence 2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence 3. PROSECUTION RESISTANCE: Prosecutor fights even when evidence contradicts their case 4. WITNESS PERJURY: Witnesses lie in court despite pre-trial revelations 5. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed 6. ZANY PROSECUTOR: Design prosecutor with impossible quirks who never gives up 7. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations 8. GALLERY REACTIONS: Colorful characters reacting dramatically 9. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details TRIAL ENFORCEMENT: Even if the real perpetrator is found, even if victim appears alive, even if evidence seems conclusive - the trial MUST proceed with fabricated obstacles. Legal realism does NOT override dramatic trial battles. REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes. EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements." -o obstacles/trial_fabrications.json -t 0.8`
 
 ## Phase 3: Integration and Validation (Claude)
 
@@ -429,11 +480,16 @@ case_name/
 - Ensure prosecutor's zany traits don't break evidence logic
 - Confirm witness breakdowns follow logically from evidence presentation
 - Validate "impossible but logical" elements have actual explanations
+- **TRIAL ENFORCEMENT**: Verify trial obstacles force courtroom resolution regardless of pre-trial discoveries
+- **PROSECUTION PERSISTENCE**: Ensure prosecutor fights case even with contradictory evidence
+- **WITNESS UNRELIABILITY**: Confirm witnesses will lie/mislead in court despite truth being known
 
 ### Success Metrics:
 - **Logic Consistency**: 10/10 (no contradictions allowed)
 - **Excitement Level**: 8+/10 for BOTH phases
 - **Authentic AA Feel**: Captures signature investigation → trial gameplay loop
+
+Remember: no spoilers! Discuss the case in general terms.
 
 ---
 
@@ -442,10 +498,10 @@ case_name/
 ## Starting New Games
 
 ### Pre-Game Setup:
-1. Verify directory contains inspiration_pool.json, backbone/, obstacles/, solution/, game_state/
+1. Verify directory contains backbone/, obstacles/, solution/, game_state/
 2. Confirm solution files are BASE64 encoded
 3. Check two-phase structure is complete
-4. **Load inspiration pool** for improvisation reference during gameplay
+4. **Pure random inspiration system** automatically available for improvisation during gameplay
 
 ### Opening Scene Guidelines:
 - Present client as appearing guilty with overwhelming evidence
@@ -493,41 +549,49 @@ case_name/
 - Real killer identified through trial process
 - Client exonerated through player skill
 
+### CRITICAL TRIAL ENFORCEMENT:
+- **Pre-trial evidence discovery** sets up courtroom battles, never resolves cases
+- **Prosecution must resist** even with contradictory evidence found
+- **Witnesses must lie** in court regardless of pre-trial revelations
+- **Legal realism does NOT override game mechanics** - dramatic trial battles are mandatory
+- **Judge must require formal trial** even when evidence seems conclusive
+
 ---
 
 # IMPROVISATION RULES
 
-## Mandatory Inspiration Pool Usage
+## Mandatory Pure Random Inspiration Usage
 
-**CRITICAL REQUIREMENT:** All live gameplay improvisation MUST reference the case's inspiration pool.
+**CRITICAL REQUIREMENT:** All live gameplay improvisation MUST use the pure random word forcing function.
 
 ### Improvisation Process:
 1. **Identify improvisation need** (character motivation, relationship dynamic, plot twist, etc.)
-2. **Select appropriate category** from inspiration pool
-3. **Choose random word** from that category
-4. **Apply A-to-C creative process**:
+2. **Call `--must-inspire` with context** to get completely random English word
+3. **Apply A-to-C creative process**:
    - **A**: Current situation requiring improvisation
-   - **B**: Random word (creative forcing function)
+   - **B**: Pure random word (maximum creative forcing function)
    - **C**: Unique solution that maintains logical consistency
 
 ### Examples:
 - **Need**: Character motivation for defendant
-- **Word**: "taproot" (from character_motivations)
-- **Process**: A (defendant motivation) → B (taproot = deep anchoring root) → C (defendant protecting family identity secret from witness protection)
+- **Word**: "lighthouse" (pure random from wonderwords)
+- **Process**: A (defendant motivation) → B (lighthouse = beacon/warning/isolation) → C (defendant was secretly running witness protection safe house, protecting other families)
 
 - **Need**: Relationship tension between witnesses  
-- **Word**: "intersomnial" (from relationship_dynamics)
-- **Process**: A (witness conflict) → B (intersomnial = between sleep states) → C (witnesses share recurring nightmare about crime, creating psychological bond/conflict)
+- **Word**: "clockwork" (pure random from wonderwords)
+- **Process**: A (witness conflict) → B (clockwork = precision/routine/mechanical) → C (witnesses follow identical daily schedules, creating competitive tension over shared resources)
 
 ### Prohibited Improvisation:
-- **NEVER** improvise without consulting inspiration pool
+- **NEVER** improvise without using `--must-inspire`
 - **NEVER** default to common patterns (family medical bills, simple revenge, etc.)
 - **NEVER** ignore the creative forcing function of random words
+- **NEVER** use themed/categorized inspiration - only pure random
 
 ### Quality Control:
 - Each improvisation must show clear A-to-C creative leap
 - Solutions must maintain logical consistency with backbone
-- Unique inspiration words prevent pattern regression across cases
+- Pure random words prevent ANY pattern regression across cases
+- Harder creative constraints force better breakthrough solutions
 
 ---
 
@@ -593,12 +657,15 @@ Working within limitations leads to creative breakthroughs. Technical constraint
 - Linear progression without significant obstacles  
 - Characters cooperative without reason
 - Evidence appearing without effort
-- Case resolved without proper trial phase (major failure - trials are mandatory!)
+- **Case resolved without proper trial phase (CRITICAL FAILURE - trials are mandatory!)**
 - Investigation gates not building toward dramatic courtroom confrontation
 - **Missing state management** - Gates not marked, evidence not recorded, progress not tracked
 - **Bypassing trial triggers** - Resolving cases externally instead of using automatic trial detection
 - **Uninspired improvisation** - Using default patterns instead of forced inspiration for character development
 - **No entropy prevention** - Falling back on "corrupt official" or "simple revenge" tropes without creative forcing
+- **Legal realism overriding game mechanics** - Cases ending when evidence discovered instead of proceeding to trial
+- **Prosecution surrendering** - Prosecutor giving up when contradictory evidence appears
+- **Witnesses cooperating in court** - Witnesses telling truth in trial instead of lying for dramatic effect
 
 ## Debug Procedures:
 When player uses "!" command:
@@ -616,7 +683,91 @@ When player uses "!" command:
 - **Inconsistent**: Check obstacle integration against backbone  
 - **Missing trial**: CRITICAL ERROR - Cases must progress to courtroom resolution
 - **Wrong pacing**: Verify gate progression matches case_length structure (1-day, 2-day, or 3-day)
+- **Case resolving early**: FORCE trial continuation with prosecution resistance and witness perjury
+- **Realistic legal outcomes**: OVERRIDE with game mechanics - drama takes precedence over legal logic
+
+# TESTING AND QUALITY ASSURANCE
+
+## Unit Test Requirements
+
+**MANDATORY:** All new features and system modifications must include corresponding unit tests.
+
+### Test Coverage Standards:
+- **Core Business Logic:** 100% test coverage required for game state management, evidence handling, character trust, gate transitions
+- **Configuration System:** All case length patterns, gate structures, and validation logic must be tested
+- **Integration Points:** Script interactions and data persistence must have integration tests
+- **Error Handling:** All error conditions and edge cases must be tested
+
+### Test Implementation Process:
+
+**When Adding New Features:**
+1. **Write tests first** (TDD approach) or immediately after feature implementation
+2. **Test both success and failure paths** for all new functionality
+3. **Include edge cases** and boundary condition testing
+4. **Mock external dependencies** (file system, packages, APIs)
+5. **Verify backwards compatibility** with existing functionality
+
+**Required Test Categories:**
+- **Unit Tests:** Individual function/method testing in isolation
+- **Integration Tests:** Script coordination and data flow testing
+- **Regression Tests:** Ensure changes don't break existing functionality
+- **Configuration Tests:** Validate shared configuration system integrity
+
+### Running Tests:
+
+**Before Committing Changes:**
+```bash
+source venv/bin/activate
+python -m pytest tests/ -v
+```
+
+**Test Suite Must Pass:** No commits allowed with failing tests
+
+**Continuous Testing:** Run tests after any modification to:
+- Game state management logic
+- Configuration system changes
+- Inspiration system updates
+- Case scaffolding modifications
+- New script additions
+
+### Test Maintenance:
+
+**Test File Organization:**
+- `tests/test_game_state_manager.py` - Core business logic tests
+- `tests/test_case_config.py` - Configuration system tests  
+- `tests/test_case_scaffolding.py` - Integration and scaffolding tests
+- `tests/conftest.py` - Shared fixtures and test utilities
+
+**When Refactoring:**
+1. **Run existing tests first** to establish baseline
+2. **Modify tests as needed** to match new interfaces
+3. **Ensure test coverage remains complete** after refactoring
+4. **Add new tests** for any new code paths introduced
+
+**Test Quality Standards:**
+- **Clear test names** describing what is being tested
+- **Isolated tests** that don't depend on each other
+- **Fast execution** (entire suite should run in <30 seconds)
+- **Deterministic results** (no flaky tests)
+- **Comprehensive assertions** that verify expected behavior
+
+### Failure Response Protocol:
+
+**When Tests Fail:**
+1. **Do not proceed** with implementation until tests pass
+2. **Identify root cause** of test failure
+3. **Fix code or update tests** as appropriate
+4. **Verify fix** with multiple test runs
+5. **Add additional tests** if gap in coverage discovered
+
+**Test-Driven Development Priority:**
+- **Methodology changes** must be tested before implementation
+- **Bug fixes** must include regression tests
+- **Performance improvements** must maintain test coverage
+- **New scripts** must include comprehensive test suites
+
+This testing framework ensures system reliability as the project continues evolving through iterative experimentation and methodology refinement.
 
 ---
 
-This methodology represents the current state of iterative development, capturing insights that create authentic Ace Attorney experiences through AI collaboration. The RNG-based gate system ensures each case feels unique while maintaining proper pacing that matches original AA games. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements. 
+This methodology represents the current state of iterative development, capturing insights that create authentic Ace Attorney experiences through AI collaboration. The RNG-based gate system ensures each case feels unique while maintaining proper pacing that matches original AA games. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements - with comprehensive testing ensuring stability throughout the evolution process. 

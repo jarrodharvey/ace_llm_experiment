@@ -1,0 +1,62 @@
+{
+  "evidence_pieces": [
+    {
+      "name": "Experimental Syringe",
+      "description": "Murder weapon containing unknown compound",
+      "proves": "Professional medical knowledge required to prepare injection",
+      "contradicts": "Malcolm's lack of medical training"
+    },
+    {
+      "name": "Dr. Harwick's Research Notes",
+      "description": "Hidden notes documenting research fraud and patient manipulation",
+      "proves": "Victim was investigating Dr. Cole's illegal activities",
+      "contradicts": "Theory that Malcolm had motive to kill her"
+    },
+    {
+      "name": "Falsified Hospital Records",
+      "description": "Dr. Cole's surgery schedule was altered after the murder",
+      "proves": "Dr. Cole's alibi was manufactured",
+      "contradicts": "His claim to be in surgery during murder"
+    },
+    {
+      "name": "Malcolm's Blood Test Results",
+      "description": "Shows presence of memory-impairing drug not in his prescription",
+      "proves": "Someone was secretly drugging Malcolm to worsen his condition",
+      "contradicts": "Assumption that his memory loss is purely from dementia"
+    },
+    {
+      "name": "Security Camera Blind Spot Map",
+      "description": "Diagram showing camera gaps that Dr. Cole helped design",
+      "proves": "Real killer knew exactly how to avoid detection",
+      "contradicts": "Random crime theory"
+    },
+    {
+      "name": "Financial Records",
+      "description": "Dr. Cole received $50 million grant based on falsified research",
+      "proves": "Massive financial motive to silence Dr. Harwick",
+      "contradicts": "Dr. Cole's claim of having no connection to victim's research"
+    },
+    {
+      "name": "Nurse Vance's Testimony Under Pressure",
+      "description": "Admits to helping Dr. Cole access building and falsify records",
+      "proves": "Dr. Cole had inside help and opportunity",
+      "contradicts": "His supposed watertight alibi"
+    }
+  ],
+  "evidence_chain_logic": {
+    "step_1": "Malcolm's blood test proves he was being secretly drugged",
+    "step_2": "Dr. Harwick's notes reveal she discovered this poisoning scheme",
+    "step_3": "Financial records show Dr. Cole's $50M motive to silence her",
+    "step_4": "Falsified hospital records prove Dr. Cole manufactured his alibi",
+    "step_5": "Nurse Vance's testimony confirms Dr. Cole had access and opportunity",
+    "step_6": "Professional injection technique proves killer had medical training",
+    "conclusion": "Dr. Cole systematically poisoned Malcolm, murdered Dr. Harwick when she discovered the fraud, then framed the vulnerable Malcolm using his compromised memory"
+  },
+  "how_client_was_framed": {
+    "preparation": "Dr. Cole systematically worsened Malcolm's dementia with drugs to make him a perfect patsy",
+    "manipulation": "Exploited Malcolm's memory gaps to create false memories of conflict with victim",
+    "physical_evidence": "Placed murder weapon in Malcolm's hand while he was unconscious from drugs",
+    "vulnerability": "Malcolm's cognitive decline made him unable to defend himself or remember true events",
+    "misdirection": "Dr. Cole appeared to advocate for Malcolm's mental health needs, hiding his role as the true perpetrator"
+  }
+}

@@ -71,7 +71,7 @@ class GameStateManager:
     # Removed load_gate_patterns - now using shared configuration
     
     def load_inspiration_pool(self) -> Dict[str, Any]:
-        """Load inspiration pool for entropy prevention"""
+        """Load inspiration pool for entropy prevention (legacy support)"""
         inspiration_file = self.case_path / "inspiration_pool.json"
         if not inspiration_file.exists():
             return {}
@@ -670,8 +670,51 @@ class GameStateManager:
     
     # Inspiration Pool Integration for Entropy Prevention
     
+    def get_pure_random_inspiration(self, context: str) -> Dict[str, Any]:
+        """Get completely random word for pure entropy forcing function"""
+        try:
+            from wonderwords import RandomWord
+            r = RandomWord()
+            
+            # Generate random word with filtering
+            word = r.word(
+                word_min_length=3,
+                word_max_length=12,
+                include_categories=["noun", "verb", "adjective"]
+            )
+            
+            return {
+                "category": "pure_random",
+                "word": word,
+                "context": context,
+                "source": "wonderwords",
+                "instruction": f"Use A-to-C process: Current situation (A) + '{word}' (B) → Creative solution (C)"
+            }
+            
+        except ImportError:
+            # Fallback to basic random word if wonderwords not available
+            import random
+            import string
+            
+            # Simple fallback word generation
+            fallback_words = [
+                "anchor", "bridge", "cascade", "deliberate", "echo", "fragment", "gravity", 
+                "hollow", "intricate", "journey", "kindle", "labyrinth", "momentum", "nebula",
+                "obscure", "pivot", "quench", "radiant", "spiral", "turbulent", "unveil",
+                "vibrant", "whisper", "xenial", "yearning", "zenith"
+            ]
+            
+            word = random.choice(fallback_words)
+            return {
+                "category": "pure_random",
+                "word": word,
+                "context": context,
+                "source": "fallback",
+                "instruction": f"Use A-to-C process: Current situation (A) + '{word}' (B) → Creative solution (C)"
+            }
+    
     def get_inspiration(self, category: str) -> Dict[str, Any]:
-        """Get random inspiration from specified category"""
+        """Get random inspiration from specified category (legacy support)"""
         import random
         
         if category not in self.inspiration_pool:
@@ -695,19 +738,28 @@ class GameStateManager:
         }
     
     def get_random_inspiration(self) -> Dict[str, Any]:
-        """Get random inspiration from random category"""
+        """Get random inspiration - uses pure random if no inspiration pool"""
         import random
         
         if not self.inspiration_pool:
-            return {"error": "No inspiration pool available"}
+            # Use pure random inspiration for new cases
+            return self.get_pure_random_inspiration("random_inspiration")
         
+        # Legacy support for cases with inspiration pools
         categories = list(self.inspiration_pool.keys())
         random_category = random.choice(categories)
         return self.get_inspiration(random_category)
     
     def get_contextual_inspiration(self) -> Dict[str, Any]:
         """Get inspiration based on current game context"""
-        # Analyze current situation for best inspiration category
+        # For cases without inspiration pool, use pure random
+        if not self.inspiration_pool:
+            current_gate = self.get_next_gate() or "unknown"
+            current_location = self.current_state.get("current_location", "unknown")
+            context = f"gate: {current_gate}, location: {current_location}"
+            return self.get_pure_random_inspiration(context)
+        
+        # Legacy support for cases with inspiration pools
         current_gate = self.get_next_gate()
         current_location = self.current_state.get("current_location", "")
         
@@ -755,7 +807,13 @@ class GameStateManager:
     
     def must_use_inspiration(self, context: str) -> Dict[str, Any]:
         """FORCING FUNCTION: Must use inspiration for off-script responses"""
-        inspiration = self.get_contextual_inspiration()
+        # Always use pure random for new cases without inspiration pools
+        if not self.inspiration_pool:
+            inspiration = self.get_pure_random_inspiration(context)
+        else:
+            # Legacy support for cases with inspiration pools
+            inspiration = self.get_contextual_inspiration()
+        
         if "error" not in inspiration:
             self.log_inspiration_usage(inspiration, context)
         return inspiration

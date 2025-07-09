@@ -1,0 +1,52 @@
+{
+  "trial_phase_structure": {
+    "prosecutor_profile": {
+      "name": "Prosecutor Vincent Hawthorne",
+      "personality": "Tech-phobic perfectionist obsessed with digital evidence",
+      "quirks": [
+        "Uses a vintage typewriter and refuses modern technology",
+        "Constantly adjusts antique pocket watch",
+        "Speaks in formal, archaic legal language",
+        "Becomes flustered when digital concepts are explained"
+      ],
+      "strategy": "Focus on physical evidence and Elena's presence at crime scene, avoid complex digital analysis",
+      "weakness": "Doesn't understand digital forensics, relies on surface-level evidence"
+    },
+    "witness_order": [
+      "Detective Roy Harrison - Crime scene and evidence presentation",
+      "Chief Clerk Marcus Sterling - Elena's suspicious behavior and access",
+      "Deputy Clerk Sarah Chen - Elena's arrival and judge's recent concerns",
+      "Dr. Margaret Foster - Judge's investigation and Elena's meeting"
+    ],
+    "cross_examination_targets": {
+      "detective_harrison": {
+        "target_lie": "Claims security system is completely tamper-proof",
+        "contradiction_evidence": "Administrative Override Codes show system vulnerabilities",
+        "breakdown_trigger": "Realizing he missed crucial digital evidence"
+      },
+      "marcus_sterling": {
+        "target_lie": "Claims computer illiteracy and filing room alibi",
+        "contradiction_evidence": "Security Access Logs + Elena's Office Break-in Report",
+        "breakdown_trigger": "Confronted with his advanced system access and timeline contradictions"
+      },
+      "sarah_chen": {
+        "target_lie": "Claims she never suspected Marcus or saw anything suspicious",
+        "contradiction_evidence": "Judge's Personal Investigation Notes mentioning her observations",
+        "breakdown_trigger": "Realizing her silence enabled the murder"
+      },
+      "dr_foster": {
+        "target_lie": "Claims ignorance about judge's investigation details",
+        "contradiction_evidence": "Her own possession of Judge's Personal Investigation Notes",
+        "breakdown_trigger": "Reveals notes that name Marcus as primary suspect"
+      }
+    },
+    "victory_sequence": {
+      "phase_1": "Establish digital evidence manipulation through Administrative Override Codes",
+      "phase_2": "Prove Marcus had motive through Financial Transaction Records",
+      "phase_3": "Show Marcus framed Elena through stolen CyberTrace Software",
+      "phase_4": "Break Marcus's alibi using timeline evidence and security gaps",
+      "phase_5": "Present Judge's Investigation Notes naming Marcus as embezzlement suspect",
+      "phase_6": "Final confrontation: Marcus confesses to murder and embezzlement"
+    }
+  }
+}

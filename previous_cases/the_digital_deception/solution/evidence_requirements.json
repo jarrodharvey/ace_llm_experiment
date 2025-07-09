@@ -1,0 +1,69 @@
+{
+  "investigation_gates": {
+    "initial_crime_scene": {
+      "gate_name": "Discover the Digital Connection",
+      "required_evidence": ["Poisoned Coffee Cup", "CyberTrace Software License"],
+      "unlock_condition": "Present evidence that victim was investigating digital irregularities",
+      "character_progression": "Detective Harrison becomes suspicious of Elena's software involvement"
+    },
+    "security_investigation": {
+      "gate_name": "Uncover System Vulnerabilities", 
+      "required_evidence": ["Security Access Logs", "Administrative Override Codes"],
+      "unlock_condition": "Prove court security system can be manipulated by insiders",
+      "character_progression": "Sarah Chen starts to suspect Marcus but remains fearful"
+    },
+    "financial_corruption": {
+      "gate_name": "Expose the Embezzlement Scheme",
+      "required_evidence": ["Financial Transaction Records", "Elena's Office Break-in Report"],
+      "unlock_condition": "Connect stolen software to financial manipulation",
+      "character_progression": "Dr. Foster reveals she has the judge's investigation notes"
+    }
+  },
+  "trial_evidence_requirements": {
+    "marcus_computer_knowledge": {
+      "testimony_lie": "Claims computer illiteracy",
+      "required_evidence": "Administrative Override Codes",
+      "contradiction_text": "Only someone with advanced computer knowledge could access these codes!"
+    },
+    "marcus_alibi": {
+      "testimony_lie": "Was in filing room during murder",
+      "required_evidence": "Security Access Logs",
+      "contradiction_text": "These logs show your badge accessing the judge's chambers!"
+    },
+    "detective_system_security": {
+      "testimony_lie": "Security system is tamper-proof",
+      "required_evidence": "Administrative Override Codes",
+      "contradiction_text": "These override codes prove the system can be manipulated!"
+    },
+    "sarah_coffee_service": {
+      "testimony_lie": "Had no interaction with judge that day",
+      "required_evidence": "Poisoned Coffee Cup",
+      "contradiction_text": "But you served the judge his coffee that afternoon!"
+    },
+    "foster_investigation_denial": {
+      "testimony_lie": "Judge had no investigation plans",
+      "required_evidence": "Judge's Personal Investigation Notes",
+      "contradiction_text": "Then explain these detailed investigation notes naming Marcus!"
+    }
+  },
+  "psyche_lock_scenarios": {
+    "sarah_chen_fear": {
+      "character": "Sarah Chen",
+      "lock_reason": "Fears losing job for speaking against Marcus",
+      "required_evidence": ["Judge's Personal Investigation Notes", "Security Access Logs"],
+      "resolution": "Show that remaining silent enables corruption and murder"
+    },
+    "dr_foster_protection": {
+      "character": "Dr. Margaret Foster",
+      "lock_reason": "Protecting judge's investigation notes from wrong people",
+      "required_evidence": ["Financial Transaction Records", "Elena's Office Break-in Report"],
+      "resolution": "Prove Elena is innocent and Marcus is the real threat"
+    },
+    "marcus_sterling_desperation": {
+      "character": "Marcus Sterling",
+      "lock_reason": "Desperate to maintain trusted position and hide embezzlement",
+      "required_evidence": ["Administrative Override Codes", "Digitalis Plant Extract", "Judge's Personal Investigation Notes"],
+      "resolution": "Present overwhelming evidence forcing confession"
+    }
+  }
+}

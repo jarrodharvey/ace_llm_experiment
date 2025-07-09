@@ -1,0 +1,72 @@
+{
+  "investigation_behaviors": {
+    "sarah_chen": {
+      "initial_stance": "Fearful and evasive about Marcus, provides minimal information",
+      "evidence_triggers": {
+        "Security Access Logs": "Becomes more nervous, admits seeing 'unusual activity'",
+        "Judge's Personal Investigation Notes": "Breaks down, reveals Marcus was near Elena's office night of theft"
+      },
+      "psyche_lock_break": "Realizes silence enables corruption, agrees to testify against Marcus"
+    },
+    "marcus_sterling": {
+      "initial_stance": "Helpful and concerned, plays up trusted employee image",
+      "evidence_triggers": {
+        "Administrative Override Codes": "Becomes defensive, claims codes are 'administrative necessity'",
+        "Financial Transaction Records": "Aggressive denial, accuses Elena of manipulation",
+        "Elena's Office Break-in Report": "Panic, tries to redirect suspicion to external hackers"
+      },
+      "psyche_lock_break": "Cornered by evidence, confesses to murder and embezzlement"
+    },
+    "dr_margaret_foster": {
+      "initial_stance": "Protective of judge's reputation, claims ignorance of investigation details",
+      "evidence_triggers": {
+        "Financial Transaction Records": "Admits judge was 'concerned about irregularities'",
+        "Elena's Office Break-in Report": "Reveals judge specifically suspected 'someone with inside access'"
+      },
+      "psyche_lock_break": "Convinced Elena is innocent, produces hidden investigation notes"
+    },
+    "detective_harrison": {
+      "initial_stance": "Focused on physical evidence against Elena, dismissive of digital complexity",
+      "evidence_triggers": {
+        "Administrative Override Codes": "Reluctantly admits security system has vulnerabilities",
+        "Security Access Logs": "Begins to question tampering possibility"
+      },
+      "final_realization": "Acknowledges he was manipulated by digital evidence fabrication"
+    }
+  },
+  "trial_behaviors": {
+    "prosecutor_hawthorne": {
+      "personality": "Tech-phobic, relies on typewriter, becomes flustered with digital evidence",
+      "objection_patterns": [
+        "Irrelevant! This newfangled computer nonsense has no place in a proper courtroom!",
+        "Objection! I don't understand this digital wizardry, therefore it must be inadmissible!",
+        "The prosecution relies on good old-fashioned evidence, not these electronic contraptions!"
+      ],
+      "breakdown_trigger": "When forced to use computer to verify evidence, types frantically on typewriter"
+    },
+    "marcus_sterling_trial": {
+      "false_confidence": "Initially maintains innocent helpful clerk persona",
+      "fabricated_lies": [
+        "Claims he was in his 'home office' (contradicted by Security Access Logs)",
+        "Insists he 'never uses those confounded machines' (contradicted by Administrative Override Codes)",
+        "Denies knowledge of Elena's investigation (contradicted by Judge's Investigation Notes)"
+      ],
+      "dramatic_breakdown": "Rips off shirt revealing 'I LOVE COMPUTERS' tee, confesses to secret cyber obsession and crimes"
+    },
+    "sarah_chen_trial": {
+      "initial_lie": "Claims Elena was already in office at 3:00 PM",
+      "contradiction_evidence": "Poisoned Coffee Cup proves she served judge that day",
+      "breakdown_behavior": "Pulls hair, confesses seeing Marcus lurking suspiciously"
+    },
+    "dr_foster_trial": {
+      "initial_lie": "Denies judge had investigation plans with flamboyant gestures",
+      "contradiction_evidence": "Judge's Personal Investigation Notes",
+      "breakdown_behavior": "Faints dramatically, admits fear for safety but reveals truth"
+    },
+    "detective_harrison_trial": {
+      "initial_lie": "Claims only Elena could access security system",
+      "contradiction_evidence": "Administrative Override Codes",
+      "breakdown_behavior": "Spills coffee, tries cleaning with floppy disc, admits system vulnerabilities"
+    }
+  }
+}

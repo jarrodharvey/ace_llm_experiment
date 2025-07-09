@@ -1,0 +1,36 @@
+{
+  "investigation_obstacles": {
+    "bureaucratic_barriers": {
+      "hospital_records_lockdown": "Hospital administration refuses to release Malcolm's medical records without court order - creates 2-day delay",
+      "research_data_encryption": "Dr. Harwick's research files are encrypted and IT department claims they need special authorization",
+      "police_evidence_backlog": "Blood test results stuck in forensics backlog - Detective Kim admits department is understaffed"
+    },
+    "hostile_witnesses": {
+      "nurse_vance_fear": "Refuses to talk about Dr. Cole's after-hours activities, fears losing pension 3 years before retirement",
+      "security_guard_loyalty": "Defensive about security system gaps, doesn't want to admit oversight failures",
+      "dr_torres_professional_protection": "Initially protective of colleague's reputation, won't speculate about research fraud"
+    },
+    "false_appearances": {
+      "dr_cole_helpful_facade": "Appears genuinely concerned about Malcolm's mental health, offers to testify about his cognitive decline",
+      "malcolm_unreliable_memory": "Client's memory gaps make his testimony seem incoherent and untrustworthy",
+      "surface_evidence_misleading": "Security footage and fingerprints make Malcolm appear obviously guilty"
+    },
+    "psyche_lock_scenarios": {
+      "nurse_vance_breakthrough": {
+        "locks": 3,
+        "required_evidence": ["Financial pressure documentation", "Dr. Cole's after-hours access logs", "Patient medication discrepancies"],
+        "breakdown_trigger": "Present evidence that Dr. Cole threatened her job if she didn't cooperate"
+      },
+      "dr_cole_alibi_crack": {
+        "locks": 5,
+        "required_evidence": ["Falsified surgery schedule", "Malcolm's blood test results", "Dr. Harwick's research notes", "Security blind spot evidence", "Financial motive proof"],
+        "breakdown_trigger": "Confront him with proof his surgery alibi was manufactured after the murder"
+      }
+    },
+    "evidence_presentation_gates": {
+      "gate_1_medical_conspiracy": "Must prove Malcolm was being secretly drugged before anyone will listen to fraud allegations",
+      "gate_2_research_fraud": "Must present Dr. Harwick's hidden notes before hospital will investigate Dr. Cole",
+      "gate_3_alibi_fabrication": "Must demonstrate timeline inconsistencies before confronting Dr. Cole directly"
+    }
+  }
+}

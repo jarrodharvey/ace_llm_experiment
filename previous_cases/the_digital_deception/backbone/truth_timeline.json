@@ -1,0 +1,40 @@
+{
+  "timeline_of_actual_events": {
+    "three_weeks_ago": "Judge Blackwell notices financial irregularities during routine audit",
+    "two_weeks_ago": "Judge begins informal investigation, discovers digital manipulation",
+    "one_week_ago": "Judge contacts Elena for professional digital forensics consultation",
+    "october_12_3_days_before": {
+      "9_pm": "Marcus breaks into Elena's office, steals CyberTrace software",
+      "11_pm": "Marcus begins using stolen software to access court financial records"
+    },
+    "october_13_2_days_before": {
+      "morning": "Elena reports software theft to police",
+      "afternoon": "Judge and Elena have public argument (Marcus overhears scheduling details)"
+    },
+    "october_14_day_before": {
+      "morning": "Marcus realizes judge's investigation is closing in on him",
+      "evening": "Marcus prepares digitalis extract from foxglove plants"
+    },
+    "october_15_murder_day": {
+      "9_am": "Judge arrives at court, reviews financial evidence",
+      "11_am": "Marcus manipulates security logs to show Elena's badge activity",
+      "1_pm": "Judge has lunch, tells Dr. Foster about meeting with Elena",
+      "3_pm": "Judge prepares coffee in chambers for 3:30 meeting",
+      "3_15_pm": "Marcus enters judge's chambers through administrative access",
+      "3_20_pm": "Marcus adds digitalis to coffee, plants Elena's fingerprints on cup",
+      "3_25_pm": "Marcus exits through back corridor",
+      "3_30_pm": "Elena arrives for scheduled meeting",
+      "3_35_pm": "Judge drinks poisoned coffee while reviewing Elena's preliminary findings",
+      "3_45_pm": "Judge collapses from digitalis poisoning",
+      "4_00_pm": "Elena discovers body, calls for help",
+      "4_05_pm": "Security and police arrive, find Elena with victim"
+    }
+  },
+  "key_timeline_facts": {
+    "critical_window": "Marcus had 10-minute window (3:15-3:25 PM) to poison coffee and plant evidence",
+    "elena_alibi_gap": "Elena was in parking garage 3:25-3:30, security cameras can verify",
+    "marcus_false_alibi": "Claims he was in filing room, but no witnesses or cameras to confirm",
+    "judge_investigation_timing": "Judge's investigation threatened to expose 3-year embezzlement scheme",
+    "software_theft_significance": "Stolen CyberTrace was used 3 days to create digital trail framing Elena"
+  }
+}
