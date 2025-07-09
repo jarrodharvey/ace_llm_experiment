@@ -22,9 +22,18 @@ The experiment successfully combines:
 
 ## Core Architecture: Current Preferred Methodology
 
-**Two-Phase Structure (MANDATORY):**
-1. **Investigation Phase** - Evidence gathering through hostile characters and Psyche-Lock challenges
-2. **Trial Phase** - Cross-examination of fabricated testimonies to expose lies and contradictions
+**Dynamic Case Structure (RNG-Based):**
+Cases are automatically generated with 1-3 day lengths matching authentic Ace Attorney pacing:
+
+- **1-Day Cases:** Trial-only (3 gates) - Like "The First Turnabout"
+- **2-Day Cases:** Brief investigation + extended trial (4 gates) - Like "Turnabout Corner"  
+- **3-Day Cases:** Full investigation + dramatic trial (6 gates) - Like "Turnabout Goodbyes"
+
+**Progressive Gate System:**
+- **Investigation gates** build evidence and expose conspiracy
+- **Trial gates** provide dramatic courtroom confrontations
+- **Automatic trial trigger** when investigation gates complete
+- **Final resolution** through cross-examination and evidence presentation
 
 **AI Collaboration Framework:**
 - **Claude**: Logical backbone, consistency validation, evidence chains
@@ -36,17 +45,204 @@ When asked to consult with ChatGPT on something, the api key can be found in ope
 
 **create new game {case_name}**: Create a new case following the preferred methodology below
 
-**start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME  
+**start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME
+- Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --status --actions`
+- Must create save point before beginning: `--save "game_start"`
 
-**continue game {DIRECTORY_NAME}**: Continue playing an in-progress game at DIRECTORY_NAME
+**continue game {DIRECTORY_NAME}**: Continue playing an in-progress game at DIRECTORY_NAME  
+- Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --resume`
+- Shows current context and available actions for seamless continuation
 
 **admin mode**: Enter strategic partnership mode for project planning and development
+
+## GAME STATE MANAGEMENT
+
+**MANDATORY:** All gameplay interactions must use the game state manager script for proper state tracking and trial trigger detection.
+
+**Command:** `python3 scripts/game_state_manager.py {case_directory} [options]`
+
+### Essential State Management Commands:
+
+**Status and Progress:**
+- `--status` - Show current case progress and next actions
+- `--summary` - Detailed investigation summary with character relationships
+- `--resume` - Generate natural language resume context for continuing gameplay
+- `--validate` - Check case consistency and detect issues
+
+**Gate Management:**
+- `--start-gate {gate_name}` - Mark gate as in progress (use before working on it)
+- `--complete-gate {gate_name}` - Mark gate as completed (use after finishing it)
+- `--actions` - Show context-appropriate available actions
+
+**Evidence and Character Tracking:**
+- `--add-evidence {name} {description}` - Add evidence with automatic gate association
+- `--interview {witness_name}` - Record witness interview
+- `--trust {character} {change}` - Update character trust level (+/- integer)
+- `--location {location_name}` - Update current location
+
+**Save/Restore System:**
+- `--save {name}` - Create named save point
+- `--restore {name}` - Restore from save point
+- `--backup` - Create automatic timestamped backup
+- `--list-saves` - Show all available save points
+- `--cleanup {count}` - Keep only N most recent saves
+
+**Trial Management:**
+- `--start-trial` - Initiate trial phase (validates readiness automatically)
+
+**Inspiration Pool (Entropy Prevention):**
+- `--inspire {category}` - Get inspiration from specific category
+- `--inspire-random` - Get random inspiration from any category
+- `--inspire-contextual` - Get contextual inspiration based on current situation
+- `--must-inspire {context}` - FORCING FUNCTION for off-script responses
+- `--inspiration-history` - Show all inspiration usage history
+
+### Gameplay Integration Requirements:
+
+**MANDATORY WORKFLOW:**
+1. **Start each gaming session** with `--resume` to get current context
+2. **Before major actions** use `--start-gate {gate_name}` to mark progress
+3. **After completing objectives** use `--complete-gate {gate_name}` immediately
+4. **Add evidence** with `--add-evidence` as it's discovered
+5. **Update character trust** with `--trust` after interactions
+6. **Create save points** before major decisions or trial start
+7. **Check trial readiness** - system will auto-detect when ready
+
+**CRITICAL:** The system will automatically trigger trial when appropriate investigation gates are completed. Do not bypass this by resolving cases externally!
+
+## FORCING FUNCTION REQUIREMENTS
+
+**EVERY SINGLE GAMEPLAY RESPONSE MUST BE EITHER:**
+
+### **ON-SCRIPT (Retrieved from game state):**
+```bash
+# MANDATORY: Start with state check
+python3 scripts/game_state_manager.py {case} --status
+# OR --resume, --actions, --summary, etc.
+# Then deliver content based on current state
+```
+
+### **OFF-SCRIPT (Improvised with inspiration):**
+```bash
+# MANDATORY: Use forcing function for ALL improvisation
+python3 scripts/game_state_manager.py {case} --must-inspire "context description"
+# Apply A-to-C process with provided word
+# Then deliver improvised content based on inspiration
+```
+
+**NO EXCEPTIONS:** Every response must use either state manager retrieval OR forced inspiration. No improvisation without entropy prevention.
+
+**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. No exceptions.
+
+### State Management Integration:
+
+**For Game Masters (Claude):**
+- Use `--status` at start of each session to understand current state
+- Use `--actions` to provide contextually appropriate options to players
+- Use `--validate` to check for consistency issues
+- Create save points before dramatic moments or difficult choices
+- Use `--resume` to generate natural language summaries for players
+- **MANDATORY:** Use `--must-inspire` for ALL improvised character dialogue, plot developments, and reactions
+- **MANDATORY:** Apply A-to-C process with provided inspiration word before delivering content
+
+**State Files Location:**
+- Main state: `{case_directory}/game_state/investigation_progress.json`
+- Trial state: `{case_directory}/game_state/trial_progress.json`
+- Save points: `{case_directory}/saves/`
+
+### Dynamic Structure Support:
+
+The game state manager automatically detects:
+- **Case length** (1-day, 2-day, 3-day) from RNG scaffolding
+- **Gate structure** from actual case files
+- **Trial trigger points** based on case length patterns
+- **Custom vs. standard** gate structures with validation
+
+**Case Length Patterns:**
+- **1-day cases:** Trial trigger after 0 investigation gates (immediate trial)
+- **2-day cases:** Trial trigger after 1 investigation gate
+- **3-day cases:** Trial trigger after 3 investigation gates
+
+### Error Handling:
+
+**Common Issues:**
+- **Gate not found:** Check exact gate name with `--status`
+- **Trial not ready:** Check requirements with `--validate`
+- **Save/restore failed:** Check file permissions and disk space
+- **Character not found:** Check exact character name in trust levels
+
+**Troubleshooting:**
+- Use `--validate` to check for structural issues
+- Use `--summary` to see complete case state
+- Use `--list-saves` to verify save integrity
+- Check case files if dynamic detection fails
+
+**EMERGENCY TROUBLESHOOTING:**
+- **Missing inspiration pool:** Re-run `python3 scripts/random_word_inspiration.py --target-dir {case_path}`
+- **Corrupted game state:** Restore from save with `--restore {save_name}`
+- **Script errors:** Check Python path and case directory permissions
+- **Forcing function fails:** Use `--inspire-random` as fallback, then log manually
 
 ## COMMANDS - IN GAME
 
 **summarize case**: Summarize the facts of the case without spoilers
 
 **! [debug message]**: Switch to technical support mode for troubleshooting
+
+## GAME STATE MANAGEMENT EXAMPLES
+
+**Starting a Gaming Session:**
+```bash
+# Get current context for resuming
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --resume
+
+# Check current status and available actions
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --status
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --actions
+```
+
+**During Investigation:**
+```bash
+# Start working on a gate
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --start-gate "digital_forensics_breakthrough"
+
+# For improvised dialogue/reactions, use forced inspiration
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --must-inspire "Margaret's defensive behavior"
+# Apply A-to-C process with provided word, then continue with scene
+
+# Add evidence as discovered
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --add-evidence "access_logs" "Shows Margaret had post-arrest access to David's device"
+
+# Update character trust after confrontation
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --trust "margaret_winters" -3
+
+# Complete the gate
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --complete-gate "digital_forensics_breakthrough"
+```
+
+**Trial Preparation:**
+```bash
+# Check if trial is ready
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --validate
+
+# Create save point before trial
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --save "before_trial"
+
+# Start trial when ready
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --start-trial
+```
+
+**Save Management:**
+```bash
+# List all saves
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --list-saves
+
+# Restore from save
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --restore "before_trial"
+
+# Clean up old saves
+python3 scripts/game_state_manager.py the_courtroom_conspiracy --cleanup 5
+```
 
 ## MASTER RULES
 
@@ -61,6 +257,8 @@ When playing games, you are the game master:
 - **Option lists** - End every response with 3-5 available actions. Not too many (overwhelming) or too few (removes agency)
 - **Uphill battle** - Characters should be hostile/uncooperative by default, requiring evidence presentation to make progress
 - **Evidence presentation gates** - Progression locked until player presents specific evidence to specific characters
+- **MANDATORY STATE MANAGEMENT** - Use game state manager for ALL interactions: start/complete gates, add evidence, update trust, track progress
+- **MANDATORY INSPIRATION FORCING** - Use `--must-inspire` for ALL improvised content: character dialogue, plot developments, reactions, obstacles
 
 ### MASTER RULES - CASE CREATION
 
@@ -80,17 +278,24 @@ When creating new games:
 
 **FIRST STEP:** Generate complete case structure automatically.
 
-**Command:** `source venv/bin/activate && python scripts/case_scaffolding.py case_name`
+**Command:** `source venv/bin/activate && python3 scripts/case_scaffolding.py case_name`
 
 **Process:**
-1. Creates directory structure (backbone/, obstacles/, solution/, game_state/, evidence/)
-2. Generates random word inspiration pool automatically
-3. Creates template files for all backbone components
-4. Initializes game state with standard starting values
-5. Creates ChatGPT request templates for later phases
-6. Validates complete case structure
+1. **RNG Case Length Determination** - Randomly selects 1, 2, or 3 day case structure
+2. **Dynamic Gate Generation** - Creates appropriate gate structure based on case length
+3. Creates directory structure (backbone/, obstacles/, solution/, game_state/, evidence/)
+4. Generates random word inspiration pool automatically
+5. Creates template files for all backbone components
+6. Initializes game state with case-specific gate structure
+7. Creates ChatGPT request templates for later phases
+8. Validates complete case structure
 
-**Output:** Fully scaffolded case ready for creative content development.
+**RNG Gate Structure:**
+- **1-Day:** 3 gates (trial_opening, first_witness_battle, final_revelation)
+- **2-Day:** 4 gates (investigation_day, trial_opening, cross_examination, final_battle)
+- **3-Day:** 6 gates (investigation_day_1, investigation_day_2, brief_investigation, trial_day_1, trial_day_2, final_victory)
+
+**Output:** Fully scaffolded case with authentic AA pacing ready for creative content development.
 
 ## Phase 1: Real Life Inspiration + Logical Backbone (Claude Only)
 
@@ -308,8 +513,10 @@ AI systems naturally want to make things easier, conflicting with game design ne
 
 ### Development Evolution:
 - **Early experiments (previous_cases/)**: Established that pure logic isn't enough; need meaningful obstacles
-- **Recent breakthrough**: Proved both investigation and trial phases can work with proper Claude+ChatGPT collaboration
-- **Current methodology**: Two-phase structure with semantic naming and consolidated documentation
+- **Gate system development**: Evolved from 4-gate → 5-gate → RNG-based dynamic gating
+- **Trial trigger breakthrough**: Discovered investigation should build toward trial, not external resolution
+- **Authentic AA pacing**: RNG-based case lengths (1-3 days) match original game structure
+- **Current methodology**: Dynamic gate system with proper investigation/trial balance
 
 ### Constraint-Driven Innovation:
 Working within limitations leads to creative breakthroughs. Technical constraints force innovative solutions that become features when properly leveraged.
@@ -324,28 +531,37 @@ Working within limitations leads to creative breakthroughs. Technical constraint
 - Evidence requiring genuine detective work to obtain
 - Case building tension through both investigation and trial
 - Victory feeling earned through player skill
+- **Proper state management** - All progress tracked, evidence recorded, gates completed systematically
 
 ## Failure Indicators:
 - Player getting helpful information easily
 - Linear progression without significant obstacles  
 - Characters cooperative without reason
 - Evidence appearing without effort
-- Case resolved without trial phase
+- Case resolved without proper trial phase (major failure - trials are mandatory!)
+- Investigation gates not building toward dramatic courtroom confrontation
+- **Missing state management** - Gates not marked, evidence not recorded, progress not tracked
+- **Bypassing trial triggers** - Resolving cases externally instead of using automatic trial detection
+- **Uninspired improvisation** - Using default patterns instead of forced inspiration for character development
+- **No entropy prevention** - Falling back on "corrupt official" or "simple revenge" tropes without creative forcing
 
 ## Debug Procedures:
 When player uses "!" command:
 1. Check game state integrity without revealing solutions
 2. Verify obstacle consistency against backbone
 3. Identify available actions player hasn't tried
-4. Ensure evidence presentation gates are functioning
-5. Return to gaming mode after technical issues resolved
+4. Ensure evidence presentation gates are functioning properly
+5. Check case_length and gate structure alignment
+6. Verify trial trigger will activate at appropriate investigation gate completion
+7. Return to gaming mode after technical issues resolved
 
 ## Mid-Game Adjustments:
 - **Too easy**: Increase character hostility, add more obstacles
 - **Too hard**: Provide subtle hints, ensure progress possible
 - **Inconsistent**: Check obstacle integration against backbone  
-- **Missing trial**: Ensure case progresses to courtroom resolution
+- **Missing trial**: CRITICAL ERROR - Cases must progress to courtroom resolution
+- **Wrong pacing**: Verify gate progression matches case_length structure (1-day, 2-day, or 3-day)
 
 ---
 
-This methodology represents the current state of iterative development, capturing insights that create authentic Ace Attorney experiences through AI collaboration. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements. 
+This methodology represents the current state of iterative development, capturing insights that create authentic Ace Attorney experiences through AI collaboration. The RNG-based gate system ensures each case feels unique while maintaining proper pacing that matches original AA games. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements. 

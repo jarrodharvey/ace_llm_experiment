@@ -1,14 +1,22 @@
 {
-  "current_phase": "ready_to_start",
+  "current_phase": "trial",
   "investigation_gates": {
-    "basic_evidence_gathering": "pending",
+    "basic_evidence_gathering": "completed",
     "digital_forensics_breakthrough": "pending",
-    "corruption_network_exposure": "pending", 
+    "corruption_network_exposure": "pending",
     "timeline_contradiction": "pending",
     "administrative_conspiracy": "pending"
   },
-  "evidence_collected": [],
-  "witnesses_interviewed": [],
+  "evidence_collected": [
+    {
+      "name": "visiting_logs",
+      "description": "Margaret Winters visited David twice - unusual for administrative purposes",
+      "discovered_at": "Gate: basic_evidence_gathering"
+    }
+  ],
+  "witnesses_interviewed": [
+    "david_chen"
+  ],
   "psyche_locks_broken": [],
   "character_trust_levels": {
     "david_chen": 3,
@@ -16,7 +24,7 @@
     "sarah_kim": 1,
     "dr_amanda_foster": 4,
     "security_chief_torres": 1,
-    "margaret_winters": 1
+    "margaret_winters": 0
   },
   "current_location": "detention_center",
   "available_locations": [
@@ -32,8 +40,17 @@
   "investigation_notes": [],
   "case_complexity_factors": {
     "administrative_bureaucracy": "high",
-    "evidence_access_restrictions": "very_high", 
+    "evidence_access_restrictions": "very_high",
     "witness_intimidation_level": "high",
     "corruption_network_depth": "extensive"
-  }
+  },
+  "inspiration_log": [
+    {
+      "word": "semifixed",
+      "category": "relationship_dynamics",
+      "usage_context": "Margaret's defensive behavior in evidence vault",
+      "gate": "digital_forensics_breakthrough",
+      "location": "detention_center"
+    }
+  ]
 }

@@ -8,7 +8,8 @@
       "Bash(pip3 install:*)",
       "Bash(source:*)",
       "Bash(mv:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

@@ -1,5 +1,5 @@
 {
-  "trial_status": "not_started",
+  "trial_status": "in_progress",
   "current_witness": null,
   "witnesses_examined": [],
   "evidence_presented": [],
@@ -10,10 +10,10 @@
   "courtroom_atmosphere": "tense",
   "dramatic_moments": [],
   "breakdown_witnesses": [],
-  "trial_day": 0,
+  "trial_day": 1,
   "session_progress": {
     "opening_statements": "pending",
-    "prosecution_case": "pending", 
+    "prosecution_case": "pending",
     "cross_examinations": "pending",
     "final_arguments": "pending",
     "verdict": "pending"
