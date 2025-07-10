@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from case_config import get_config_manager
+from dice_system import DiceRoller
 
 class GameStateManager:
     def __init__(self, case_path: str):
@@ -30,6 +31,9 @@ class GameStateManager:
         
         # Load inspiration pool for entropy prevention
         self.inspiration_pool = self.load_inspiration_pool()
+        
+        # Initialize dice roller for action resolution
+        self.dice_roller = DiceRoller(str(self.case_path))
         
     def load_case_structure(self) -> Dict[str, Any]:
         """Load the basic case structure from backbone files"""
@@ -805,6 +809,71 @@ class GameStateManager:
         """Get history of inspiration usage"""
         return self.current_state.get("inspiration_log", [])
     
+    # Dice Rolling System Integration
+    
+    def roll_dice(self, modifier: int = 0, description: str = "") -> Dict[str, Any]:
+        """Roll a d20 for action resolution"""
+        return self.dice_roller.roll_d20(modifier, description)
+    
+    def make_action_check(self, 
+                         action_description: str,
+                         difficulty: int = 10,
+                         evidence_count: int = 0,
+                         character_trust: int = 0,
+                         additional_modifier: int = 0) -> Dict[str, Any]:
+        """
+        Make an action check with contextual modifiers.
+        
+        Args:
+            action_description: What the player is trying to do
+            difficulty: Target difficulty (1-20, default 10)
+            evidence_count: Number of relevant evidence pieces
+            character_trust: Trust level with relevant character (-10 to +10)
+            additional_modifier: Any additional situation modifiers
+            
+        Returns:
+            Dict with roll result and success information
+        """
+        # Calculate total modifier
+        total_modifier = additional_modifier
+        total_modifier += self.dice_roller.get_evidence_modifier(evidence_count)
+        total_modifier += self.dice_roller.get_trust_modifier(character_trust)
+        
+        # Make the skill check
+        result = self.dice_roller.make_skill_check(
+            target_difficulty=difficulty,
+            modifier=total_modifier,
+            description=action_description
+        )
+        
+        # Add contextual information
+        result["modifiers"] = {
+            "evidence_bonus": self.dice_roller.get_evidence_modifier(evidence_count),
+            "trust_bonus": self.dice_roller.get_trust_modifier(character_trust),
+            "additional": additional_modifier,
+            "total": total_modifier
+        }
+        
+        return result
+    
+    def get_difficulty_for_action(self, action_type: str) -> int:
+        """Get recommended difficulty for common action types"""
+        difficulties = {
+            "casual_conversation": 5,
+            "witness_interview": 8,
+            "evidence_examination": 10,
+            "confrontation": 12,
+            "hostile_questioning": 15,
+            "convincing_judge": 16,
+            "accessing_restricted_area": 18,
+            "getting_confession": 20
+        }
+        return difficulties.get(action_type, 10)
+    
+    def get_recent_dice_rolls(self, count: int = 5) -> List[Dict[str, Any]]:
+        """Get recent dice roll history"""
+        return self.dice_roller.get_recent_rolls(count)
+    
     def must_use_inspiration(self, context: str) -> Dict[str, Any]:
         """FORCING FUNCTION: Must use inspiration for off-script responses"""
         # Always use pure random for new cases without inspiration pools
@@ -846,6 +915,9 @@ def main():
     parser.add_argument('--inspire-contextual', action='store_true', help='Get contextual inspiration based on current situation')
     parser.add_argument('--must-inspire', help='FORCING FUNCTION: Must use inspiration for off-script response')
     parser.add_argument('--inspiration-history', action='store_true', help='Show inspiration usage history')
+    parser.add_argument('--roll', nargs='*', help='Roll dice with optional modifiers and description')
+    parser.add_argument('--action-check', nargs='+', help='Make action check: action_description [difficulty] [evidence_count] [character_trust] [additional_modifier]')
+    parser.add_argument('--dice-history', action='store_true', help='Show recent dice roll history')
     
     args = parser.parse_args()
     
@@ -1061,6 +1133,57 @@ def main():
                     print()
             else:
                 print("No inspiration usage history found.")
+        
+        if args.roll is not None:
+            if len(args.roll) == 0:
+                # Simple d20 roll
+                result = manager.roll_dice()
+                print(f"🎲 D20 Roll: {result['base_roll']} = {result['total']} ({result['success_level']})")
+            else:
+                # Parse modifier and description
+                modifier = 0
+                description = ""
+                if len(args.roll) >= 1:
+                    try:
+                        modifier = int(args.roll[0])
+                        description = " ".join(args.roll[1:]) if len(args.roll) > 1 else ""
+                    except ValueError:
+                        description = " ".join(args.roll)
+                
+                result = manager.roll_dice(modifier, description)
+                print(f"🎲 D20 Roll: {description}")
+                print(f"   Result: {result['base_roll']} + {result['modifier']} = {result['total']}")
+                print(f"   Success Level: {result['success_level']}")
+        
+        if args.action_check:
+            action_description = args.action_check[0]
+            difficulty = int(args.action_check[1]) if len(args.action_check) > 1 else 10
+            evidence_count = int(args.action_check[2]) if len(args.action_check) > 2 else 0
+            character_trust = int(args.action_check[3]) if len(args.action_check) > 3 else 0
+            additional_modifier = int(args.action_check[4]) if len(args.action_check) > 4 else 0
+            
+            result = manager.make_action_check(
+                action_description, difficulty, evidence_count, character_trust, additional_modifier
+            )
+            
+            print(f"🎯 Action Check: {action_description}")
+            print(f"   Target Difficulty: {result['target_difficulty']}")
+            print(f"   Roll: {result['base_roll']} + {result['modifier']} = {result['total']}")
+            print(f"   Result: {'SUCCESS' if result['succeeded'] else 'FAILURE'} (margin: {result['margin']})")
+            print(f"   Success Level: {result['success_level']}")
+            print(f"   Modifiers: Evidence({result['modifiers']['evidence_bonus']}) + Trust({result['modifiers']['trust_bonus']}) + Additional({result['modifiers']['additional']}) = {result['modifiers']['total']}")
+        
+        if args.dice_history:
+            history = manager.get_recent_dice_rolls()
+            if history:
+                print(f"\n=== Recent Dice Rolls ===")
+                for i, roll in enumerate(history, 1):
+                    print(f"{i}. {roll['description'] or 'Generic roll'}")
+                    print(f"   Result: {roll['base_roll']} + {roll['modifier']} = {roll['total']} ({roll['success_level']})")
+                    print(f"   Time: {roll['timestamp']}")
+                    print()
+            else:
+                print("No dice roll history found.")
         
     except Exception as e:
         print(f"❌ Error: {e}")

@@ -1,0 +1,26 @@
+[
+  {
+    "base_roll": 18,
+    "modifier": 3,
+    "total": 20,
+    "description": "Testing dice integration",
+    "timestamp": "2025-07-10T19:42:24.690156",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 3,
+    "modifier": 2,
+    "total": 5,
+    "description": "Confronting Margaret with evidence",
+    "timestamp": "2025-07-10T19:42:29.826236",
+    "success_level": "failure"
+  },
+  {
+    "base_roll": 14,
+    "modifier": 0,
+    "total": 14,
+    "description": "Getting_judge_to_break_protocol",
+    "timestamp": "2025-07-10T19:43:26.183241",
+    "success_level": "success"
+  }
+]

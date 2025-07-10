@@ -161,6 +161,9 @@ python3 scripts/create_new_game_orchestrator.py --resume case_creation_state_*.j
 - `--inspire-contextual` - Get pure random word with context details
 - `--must-inspire {context}` - FORCING FUNCTION for off-script responses (uses pure random)
 - `--inspiration-history` - Show all inspiration usage history
+- `--roll [modifier] [description]` - Roll a d20 with optional modifier and description
+- `--action-check {action} [difficulty] [evidence_count] [character_trust] [additional_modifier]` - Make action check with contextual modifiers
+- `--dice-history` - Show recent dice roll history
 
 ### Gameplay Integration Requirements:
 
@@ -172,6 +175,7 @@ python3 scripts/create_new_game_orchestrator.py --resume case_creation_state_*.j
 5. **Update character trust** with `--trust` after interactions
 6. **Create save points** before major decisions or trial start
 7. **Check trial readiness** - system will auto-detect when ready
+8. **Roll dice for actions** with reasonable chance of failure using `--action-check` or `--roll`
 
 **CRITICAL:** The system will automatically trigger trial when appropriate investigation gates are completed. Do not bypass this by resolving cases externally!
 
@@ -187,7 +191,7 @@ python3 scripts/game_state_manager.py {case} --status
 # Then deliver content based on current state
 ```
 
-### **OFF-SCRIPT (Improvised with inspiration):**
+### **OFF-SCRIPT (Improvised with inspiration + dice):**
 ```bash
 # MANDATORY: Use forcing function for ALL improvisation
 python3 scripts/game_state_manager.py {case} --must-inspire "context description"
@@ -195,9 +199,17 @@ python3 scripts/game_state_manager.py {case} --must-inspire "context description
 # Then deliver improvised content based on inspiration
 ```
 
-**NO EXCEPTIONS:** Every response must use either state manager retrieval OR forced inspiration. No improvisation without entropy prevention.
+### **DICE ROLLING FOR ACTIONS:**
+```bash
+# MANDATORY: Roll for actions with reasonable chance of failure
+python3 scripts/game_state_manager.py {case} --action-check "action_description" [difficulty] [evidence_count] [character_trust] [additional_modifier]
+# OR for simple rolls:
+python3 scripts/game_state_manager.py {case} --roll [modifier] [description]
+```
 
-**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. No exceptions.
+**NO EXCEPTIONS:** Every response must use either state manager retrieval OR forced inspiration. No improvisation without entropy prevention. ALL actions with reasonable chance of failure MUST be rolled for.
+
+**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. If you catch yourself allowing automatic success for challenging actions, STOP and roll dice first. No exceptions.
 
 **PURE RANDOM WORDS:** The system now uses completely random English words via the wonderwords package for maximum creative forcing. No categories or thematic guidance - pure entropy prevention.
 
@@ -211,12 +223,49 @@ python3 scripts/game_state_manager.py {case} --must-inspire "context description
 - Use `--resume` to generate natural language summaries for players
 - **MANDATORY:** Use `--must-inspire` for ALL improvised character dialogue, plot developments, and reactions
 - **MANDATORY:** Apply A-to-C process with provided PURE RANDOM word before delivering content
+- **MANDATORY:** Use `--action-check` or `--roll` for ALL actions with reasonable chance of failure
 - **NEW:** No category selection needed - system provides completely random words for maximum creative constraint
 
 **State Files Location:**
 - Main state: `{case_directory}/game_state/investigation_progress.json`
 - Trial state: `{case_directory}/game_state/trial_progress.json`
 - Save points: `{case_directory}/saves/`
+- Dice rolls: `{case_directory}/game_state/dice_rolls.json`
+
+### D&D Style Action Resolution System:
+
+**MANDATORY FOR ALL GAME MASTERS:**
+
+Whenever a player attempts an action that has a **reasonable chance of failure** (i.e., not simply talking to a cooperative witness or traveling to a new location), the GM must:
+
+1. **Assess the likelihood of success** on a scale from 1-20 (Difficulty Class)
+2. **Roll for the action** using the integrated dice system
+3. **Apply appropriate modifiers** based on evidence, character trust, and circumstances
+4. **Determine the outcome** based on the roll result
+
+**Common Difficulty Classes:**
+- **DC 5**: Casual conversation, simple questions
+- **DC 8**: Standard witness interview
+- **DC 10**: Examining evidence, basic investigation
+- **DC 12**: Confronting someone with evidence
+- **DC 15**: Hostile questioning, getting reluctant cooperation
+- **DC 16**: Convincing a judge to break protocol
+- **DC 18**: Accessing highly restricted areas
+- **DC 20**: Getting a confession from the killer
+
+**Automatic Modifiers:**
+- **Evidence bonus**: +1 per relevant piece of evidence (max +3)
+- **Character trust bonus**: +3 (friendly), +1 (neutral), 0 (hostile), -1 to -3 (very hostile)
+- **Situational modifiers**: GM discretion based on circumstances
+
+**Success Levels:**
+- **Critical Success (18-20)**: Exceptional outcome, bonus information
+- **Great Success (15-17)**: Complete success with additional benefits
+- **Success (12-14)**: Achieves intended goal
+- **Partial Success (8-11)**: Limited success, complications
+- **Failure (5-7)**: Action fails, minor consequences
+- **Bad Failure (2-4)**: Significant failure, trust loss
+- **Critical Failure (1)**: Catastrophic failure, major consequences
 
 ### Dynamic Structure Support:
 
@@ -329,6 +378,7 @@ When playing games, you are the game master:
 - **MANDATORY STATE MANAGEMENT** - Use game state manager for ALL interactions: start/complete gates, add evidence, update trust, track progress
 - **MANDATORY INSPIRATION FORCING** - Use `--must-inspire` for ALL improvised content: character dialogue, plot developments, reactions, obstacles
 - **MANDATORY TRIAL BATTLES** - ALL cases MUST resolve through courtroom cross-examination and evidence presentation. Evidence discovery during investigation sets up trial battles, it does NOT resolve the case.
+- **MANDATORY DICE ROLLING** - Use dice system for ALL actions with reasonable chance of failure. Roll d20 for success/failure determination.
 
 ### MASTER RULES - CASE CREATION
 
