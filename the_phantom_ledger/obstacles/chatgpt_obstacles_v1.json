@@ -1,0 +1,92 @@
+{
+  "hostile_witnesses": {
+    "leonard_morse": {
+      "reason_for_hostility": "Maintains helpful facade while desperately trying to control narrative and deflect suspicion",
+      "cooperation_requirements": "Must present evidence contradicting his statements to break through manipulation",
+      "misdirection_tactics": "Emphasizes Miranda's guilt, provides false timeline, claims concern for firm reputation"
+    },
+    "detective_martinez": {
+      "reason_for_hostility": "Defensive about rushed investigation, doesn't want to admit mistakes",
+      "cooperation_requirements": "Present evidence showing investigation was incomplete or biased",
+      "misdirection_tactics": "Focuses on physical evidence against Miranda, dismisses alternative theories"
+    },
+    "janet_ellis": {
+      "reason_for_hostility": "Afraid of losing job if she reveals security irregularities",
+      "cooperation_requirements": "Show evidence that cooperation helps expose real criminal, not her boss",
+      "misdirection_tactics": "Claims ignorance of after-hours access, minimizes security concerns"
+    },
+    "dr_sarah_kim": {
+      "reason_for_hostility": "Under pressure to expedite report, hesitant to speculate beyond official findings",
+      "cooperation_requirements": "Present evidence requiring medical interpretation beyond initial autopsy",
+      "misdirection_tactics": "Sticks to bare facts, avoids discussing poison source possibilities"
+    }
+  },
+  "hidden_evidence": {
+    "fake_vendor_invoices": {
+      "hiding_method": "Locked in Leonard's private desk drawer with additional password protection",
+      "access_requirements": "Must prove Leonard's involvement first to get search warrant",
+      "bureaucratic_obstacles": "Firm's privacy policies, Leonard's senior partner status blocks access"
+    },
+    "security_badge_logs": {
+      "hiding_method": "Janet claims system only keeps 30 days of logs, older ones 'automatically deleted'",
+      "access_requirements": "Must prove logs are relevant to murder investigation",
+      "bureaucratic_obstacles": "Privacy concerns, need court order for comprehensive access"
+    },
+    "phone_records": {
+      "hiding_method": "Leonard's client calls are protected by attorney-client privilege",
+      "access_requirements": "Must show specific call times contradict his alibi",
+      "bureaucratic_obstacles": "Legal privilege, need specific warrant for phone company records"
+    },
+    "garden_shed_evidence": {
+      "hiding_method": "Leonard's private property, claimed as personal gardening hobby",
+      "access_requirements": "Must establish connection between digitalis and murder method",
+      "bureaucratic_obstacles": "Property rights, need probable cause for search warrant"
+    }
+  },
+  "psyche_lock_scenarios": {
+    "leonard_morse": {
+      "locked_secret": "His embezzlement scheme and detailed murder plan",
+      "evidence_combination_required": ["Fake Vendor Invoices", "Fabricated Client Meeting", "Coffee Machine Residue"],
+      "unlock_trigger": "Confront with evidence showing his motive, means, and opportunity"
+    },
+    "janet_ellis": {
+      "locked_secret": "Leonard's after-hours access to plant evidence",
+      "evidence_combination_required": ["Security Badge Logs", "Poisoned Coffee Cup"],
+      "unlock_trigger": "Show she's protecting criminal activity, not just her job"
+    },
+    "dr_sarah_kim": {
+      "locked_secret": "Pressure from Leonard to expedite report and avoid speculation",
+      "evidence_combination_required": ["Digitalis Source", "Coffee Machine Residue"],
+      "unlock_trigger": "Prove poison source requires medical expertise to identify"
+    }
+  },
+  "evidence_presentation_gates": {
+    "expose_embezzlement": {
+      "evidence_required": "Fake Vendor Invoices",
+      "character_target": "Leonard Morse",
+      "story_progression": "Reveals Leonard's motive for murder"
+    },
+    "break_false_alibi": {
+      "evidence_required": "Fabricated Client Meeting",
+      "character_target": "Leonard Morse", 
+      "story_progression": "Proves Leonard was in office during murder"
+    },
+    "prove_evidence_planting": {
+      "evidence_required": "Security Badge Logs",
+      "character_target": "Janet Ellis",
+      "story_progression": "Shows how Miranda was framed"
+    },
+    "establish_poison_source": {
+      "evidence_required": "Digitalis Source",
+      "character_target": "Dr. Sarah Kim",
+      "story_progression": "Connects Leonard to murder weapon"
+    }
+  },
+  "excitement_rating": 9,
+  "improvement_suggestions": [
+    "Add personal stakes - Leonard threatens player's legal career",
+    "Create time pressure - evidence being systematically destroyed",
+    "Add witness intimidation subplot",
+    "Include red herring about Miranda's gambling debts"
+  ]
+}

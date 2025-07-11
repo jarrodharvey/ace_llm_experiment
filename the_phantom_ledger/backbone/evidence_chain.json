@@ -1,0 +1,63 @@
+{
+  "evidence_pieces": [
+    {
+      "name": "Poisoned Coffee Cup",
+      "location": "Conference Room B",
+      "description": "Miranda's coffee cup with traces of digitalis poison",
+      "proves": "Someone with access to her workspace planted evidence"
+    },
+    {
+      "name": "Coffee Machine Residue",
+      "location": "Office Kitchen",
+      "description": "Digitalis traces found in coffee machine's water reservoir",
+      "proves": "Poison was added to the machine, not individual cups"
+    },
+    {
+      "name": "Fake Vendor Invoices",
+      "location": "Leonard's locked desk drawer",
+      "description": "200+ invoices from non-existent companies over 5 years",
+      "proves": "Leonard has been embezzling through phantom vendor scheme"
+    },
+    {
+      "name": "Blackwood's Audit Notes",
+      "location": "Victim's home office",
+      "description": "Detailed investigation showing Leonard's embezzlement patterns",
+      "proves": "Blackwood was helping Miranda expose Leonard's crimes"
+    },
+    {
+      "name": "Fabricated Client Meeting",
+      "location": "Phone records",
+      "description": "Leonard's alleged client never received scheduled call",
+      "proves": "Leonard's alibi is false - he was in the office during murder"
+    },
+    {
+      "name": "Digitalis Source",
+      "location": "Leonard's garden shed",
+      "description": "Foxglove plant cultivation equipment and extraction notes",
+      "proves": "Leonard had access to the murder weapon"
+    },
+    {
+      "name": "Security Badge Logs",
+      "location": "Building security system",
+      "description": "Leonard's keycard accessed Miranda's workspace after hours",
+      "proves": "Leonard planted evidence in Miranda's area"
+    }
+  ],
+  "evidence_chain_logic": {
+    "step_1": "Coffee Machine Residue proves poison was added to machine, not individual cups",
+    "step_2": "Poisoned Coffee Cup in Miranda's possession was planted evidence",
+    "step_3": "Security Badge Logs prove Leonard had access to plant evidence",
+    "step_4": "Fake Vendor Invoices reveal Leonard's 5-year embezzlement scheme",
+    "step_5": "Blackwood's Audit Notes show victim was helping Miranda expose Leonard",
+    "step_6": "Fabricated Client Meeting proves Leonard's alibi is false",
+    "step_7": "Digitalis Source proves Leonard had means to commit murder",
+    "conclusion": "Leonard killed Blackwood to prevent exposure of embezzlement, then framed Miranda"
+  },
+  "how_client_was_framed": {
+    "motive_fabrication": "Leonard spread rumors about Miranda's disciplinary issues to create apparent motive",
+    "evidence_planting": "Used security access to place poisoned coffee cup in Miranda's workspace",
+    "timing_manipulation": "Arranged for Miranda to find victim first, making her prime suspect",
+    "narrative_control": "As senior partner, Leonard shaped initial investigation narrative",
+    "why_miranda_targeted": "She was junior employee investigating discrepancies that threatened Leonard's scheme"
+  }
+}

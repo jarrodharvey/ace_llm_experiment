@@ -1,0 +1,46 @@
+{
+  "trial_phase_structure": {
+    "prosecutor_profile": {
+      "name": "Miles Edgeworth",
+      "personality": "Methodical and precise, believes in following evidence to logical conclusions",
+      "prosecution_strategy": "Will build case on physical evidence and apparent motive, but can be swayed by contradictory proof",
+      "weakness": "Respects truth over winning - will concede when evidence clearly contradicts his case"
+    },
+    "witness_order": [
+      "Detective Ray Martinez - Initial Investigation",
+      "Dr. Sarah Kim - Medical Evidence",
+      "Leonard Morse - Key Witness Account",
+      "Janet Ellis - Security and Office Management"
+    ],
+    "cross_examination_targets": {
+      "martinez_testimony": {
+        "lies_to_expose": "Claims investigation was thorough, denies rushing to judgment",
+        "evidence_to_present": "Security Badge Logs showing Leonard's after-hours access",
+        "breakthrough_moment": "Admit investigation focused only on Miranda"
+      },
+      "kim_testimony": {
+        "lies_to_expose": "Will claim poison could only come from specialized source",
+        "evidence_to_present": "Digitalis Source from Leonard's garden shed",
+        "breakthrough_moment": "Admit foxglove plants are common poison source"
+      },
+      "morse_testimony": {
+        "lies_to_expose": "Claims he was in client meeting, heard Miranda scream first",
+        "evidence_to_present": "Fabricated Client Meeting phone records",
+        "breakthrough_moment": "Admit alibi is false, was in office during murder"
+      },
+      "ellis_testimony": {
+        "lies_to_expose": "Claims no knowledge of after-hours security issues",
+        "evidence_to_present": "Coffee Machine Residue showing poison in machine",
+        "breakthrough_moment": "Admit Leonard had access to plant evidence"
+      }
+    },
+    "victory_sequence": {
+      "step_1": "Prove coffee machine was poisoned, not individual cups",
+      "step_2": "Expose Leonard's false alibi with phone records",
+      "step_3": "Present evidence of Leonard's embezzlement scheme",
+      "step_4": "Show Leonard had access to plant evidence in Miranda's workspace",
+      "step_5": "Reveal Leonard's motive: silencing Blackwood's investigation",
+      "final_accusation": "Leonard Morse killed Richard Blackwood to cover up his embezzlement and framed Miranda Chen"
+    }
+  }
+}

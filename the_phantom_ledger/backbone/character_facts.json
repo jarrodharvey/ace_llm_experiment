@@ -1,0 +1,76 @@
+{
+  "characters": [
+    {
+      "name": "Miranda Chen (Client)",
+      "true_knowledge": [
+        "Discovered discrepancies in vendor payments while doing routine audit",
+        "Blackwood was secretly helping her investigate the irregularities",
+        "Leonard has been pressuring her to drop certain audit lines",
+        "She found evidence of phantom companies receiving payments"
+      ],
+      "what_he_hides": [
+        "Hasn't told anyone about the secret investigation with Blackwood",
+        "Afraid to reveal how much she knows about the embezzlement",
+        "Believes someone is watching her and tampering with her work"
+      ],
+      "motivations": "Wants to clear her name and expose the real criminal who killed her only ally"
+    },
+    {
+      "name": "Leonard Morse (Real Killer)",
+      "true_knowledge": [
+        "Has been embezzling $2.3 million through fake vendor invoices for 5 years",
+        "Blackwood discovered the scheme and was helping Miranda gather evidence",
+        "Knows exactly how the coffee machine poisoning was executed",
+        "Aware that his client meeting alibi can be disproven"
+      ],
+      "what_he_hides": [
+        "The full extent of his embezzlement scheme",
+        "How he cultivated digitalis and planned the murder",
+        "His systematic campaign to frame Miranda",
+        "The fake client meeting that serves as his alibi"
+      ],
+      "motivations": "Desperate to avoid exposure and prison; will sacrifice anyone to protect his reputation and stolen money"
+    },
+    {
+      "name": "Dr. Sarah Kim (Medical Examiner)",
+      "true_knowledge": [
+        "Digitalis poisoning was the cause of death",
+        "Poison concentration suggests deliberate murder, not accidental",
+        "Timing of death was approximately 11:30 AM"
+      ],
+      "what_he_hides": [
+        "Under pressure from Leonard to expedite the report",
+        "Noticed unusual patterns in the poison distribution"
+      ],
+      "motivations": "Wants to provide accurate medical evidence despite political pressure"
+    },
+    {
+      "name": "Detective Ray Martinez",
+      "true_knowledge": [
+        "Miranda was found alone with the victim",
+        "Initial evidence strongly points to Miranda as killer",
+        "Leonard has been very helpful in providing background information"
+      ],
+      "what_he_hides": [
+        "Rushed to arrest Miranda due to pressure from prosecutor",
+        "Didn't thoroughly investigate other suspects",
+        "Has doubts about the case but won't admit it"
+      ],
+      "motivations": "Wants to solve the case quickly and avoid admitting investigative mistakes"
+    },
+    {
+      "name": "Janet Ellis (Office Manager)",
+      "true_knowledge": [
+        "Maintains security system and badge access logs",
+        "Knows everyone's schedules and movements",
+        "Aware of tension between Leonard and Miranda over audit issues"
+      ],
+      "what_he_hides": [
+        "Noticed Leonard accessing areas after hours recently",
+        "Suspicious about Leonard's increasing control over office operations",
+        "Knows about discrepancies in vendor payments but afraid to speak up"
+      ],
+      "motivations": "Wants to keep her job and avoid getting involved in office politics"
+    }
+  ]
+}

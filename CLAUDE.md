@@ -1,6 +1,6 @@
-# AI Ace Attorney Game Development Project
+# AI Courtroom Mystery Game Development Project
 
-This project is an iterative game design experiment to create interactive text-based Ace Attorney fan games where the game master is an AI.
+This project is an iterative game design experiment to create interactive text-based courtroom mystery games inspired by the Ace Attorney series, where the game master is an AI.
 
 The experiment successfully combines:
 - **Fun** - Engaging puzzle-solving and dramatic courtroom battles
@@ -30,11 +30,11 @@ All case patterns, gate structures, and inspiration categories are centrally man
 - **Maintainability** - Single point of change for case requirements
 
 **Dynamic Case Structure (Config-Based):**
-Cases are automatically generated using configurable patterns matching authentic Ace Attorney pacing:
+Cases are automatically generated using configurable patterns inspired by Ace Attorney pacing:
 
-- **1-Day Cases:** Trial-only (3 gates, 30-45 min) - Like "The First Turnabout"
-- **2-Day Cases:** Brief investigation + extended trial (4 gates, 45-60 min) - Like "Turnabout Corner"  
-- **3-Day Cases:** Full investigation + dramatic trial (6 gates, 60-90 min) - Like "Turnabout Goodbyes"
+- **1-Day Cases:** Trial-only (3 gates, 30-45 min) - Inspired by "The First Turnabout"
+- **2-Day Cases:** Brief investigation + extended trial (4 gates, 45-60 min) - Inspired by "Turnabout Corner"  
+- **3-Day Cases:** Full investigation + dramatic trial (6 gates, 60-90 min) - Inspired by "Turnabout Goodbyes"
 
 **Progressive Gate System:**
 - **Investigation gates** build evidence and expose conspiracy
@@ -90,26 +90,15 @@ When case creation fails or encounters issues, use recovery mode to diagnose and
   - Use when case is irreparably corrupted
   - After deletion, restart with `python3 scripts/create_new_game_orchestrator.py`
 
-**Recovery Workflow Example:**
-```bash
-# Case creation fails during Phase 3
-python3 scripts/create_new_game_orchestrator.py --recovery diagnose --target-case my_failed_case
-
-# If files are misplaced, try automatic fixes
-python3 scripts/create_new_game_orchestrator.py --recovery fix-files --target-case my_failed_case
-
-# If phase is corrupted, reset to previous phase
-python3 scripts/create_new_game_orchestrator.py --recovery reset-phase --target-case my_failed_case
-
-# Resume from the reset phase
-python3 scripts/create_new_game_orchestrator.py --resume case_creation_state_*.json --phase phase_2
-```
+**Recovery Workflow:** See [recovery workflow examples](docs/examples/recovery-workflow.md) for detailed command usage and troubleshooting steps.
 
 **start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME
+- **MANDATORY**: First activate virtual environment: `source venv/bin/activate`
 - Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --status --actions`
 - Must create save point before beginning: `--save "game_start"`
 
 **continue game {DIRECTORY_NAME}**: Continue playing an in-progress game at DIRECTORY_NAME  
+- **MANDATORY**: First activate virtual environment: `source venv/bin/activate`
 - Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --resume`
 - Shows current context and available actions for seamless continuation
 
@@ -164,6 +153,7 @@ python3 scripts/create_new_game_orchestrator.py --resume case_creation_state_*.j
 - `--roll [modifier] [description]` - Roll a d20 with optional modifier and description
 - `--action-check {action} [difficulty] [evidence_count] [character_trust] [additional_modifier]` - Make action check with contextual modifiers
 - `--dice-history` - Show recent dice roll history
+- `--client-name` - Show client name for dialogue substitution
 
 ### Gameplay Integration Requirements:
 
@@ -180,6 +170,12 @@ python3 scripts/create_new_game_orchestrator.py --resume case_creation_state_*.j
 **CRITICAL:** The system will automatically trigger trial when appropriate investigation gates are completed. Do not bypass this by resolving cases externally!
 
 ## FORCING FUNCTION REQUIREMENTS
+
+**CRITICAL PREREQUISITE:** 
+```bash
+# MANDATORY: Activate virtual environment for ALL gameplay
+source venv/bin/activate
+```
 
 **EVERY SINGLE GAMEPLAY RESPONSE MUST BE EITHER:**
 
@@ -209,7 +205,7 @@ python3 scripts/game_state_manager.py {case} --roll [modifier] [description]
 
 **NO EXCEPTIONS:** Every response must use either state manager retrieval OR forced inspiration. No improvisation without entropy prevention. ALL actions with reasonable chance of failure MUST be rolled for.
 
-**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. If you catch yourself allowing automatic success for challenging actions, STOP and roll dice first. No exceptions.
+**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. If you catch yourself allowing automatic success for challenging actions, STOP and roll dice first. **If you see repetitive random words, STOP and activate the virtual environment first.** No exceptions.
 
 **PURE RANDOM WORDS:** The system now uses completely random English words via the wonderwords package for maximum creative forcing. No categories or thematic guidance - pure entropy prevention.
 
@@ -295,11 +291,13 @@ The game state manager automatically detects:
 - Check case files if dynamic detection fails
 
 **EMERGENCY TROUBLESHOOTING:**
+- **Repetitive random words:** Virtual environment not activated - Run `source venv/bin/activate` first
 - **Pure random word system fails:** Check wonderwords package installation: `pip install wonderwords`
 - **Corrupted game state:** Restore from save with `--restore {save_name}`
 - **Script errors:** Check Python path and case directory permissions
 - **Forcing function fails:** Use `--inspire-random` as fallback, then log manually
 - **Test failures:** Run `python -m pytest tests/ -v` to diagnose issues before proceeding
+- **Client name placeholders:** Game state manager automatically loads client names from character facts for dialogue substitution
 
 ## COMMANDS - IN GAME
 
@@ -309,58 +307,7 @@ The game state manager automatically detects:
 
 ## GAME STATE MANAGEMENT EXAMPLES
 
-**Starting a Gaming Session:**
-```bash
-# Get current context for resuming
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --resume
-
-# Check current status and available actions
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --status
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --actions
-```
-
-**During Investigation:**
-```bash
-# Start working on a gate
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --start-gate "digital_forensics_breakthrough"
-
-# For improvised dialogue/reactions, use forced inspiration
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --must-inspire "Margaret's defensive behavior"
-# Apply A-to-C process with provided word, then continue with scene
-
-# Add evidence as discovered
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --add-evidence "access_logs" "Shows Margaret had post-arrest access to David's device"
-
-# Update character trust after confrontation
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --trust "margaret_winters" -3
-
-# Complete the gate
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --complete-gate "digital_forensics_breakthrough"
-```
-
-**Trial Preparation:**
-```bash
-# Check if trial is ready
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --validate
-
-# Create save point before trial
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --save "before_trial"
-
-# Start trial when ready
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --start-trial
-```
-
-**Save Management:**
-```bash
-# List all saves
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --list-saves
-
-# Restore from save
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --restore "before_trial"
-
-# Clean up old saves
-python3 scripts/game_state_manager.py the_courtroom_conspiracy --cleanup 5
-```
+For detailed command usage examples, see [game state management examples](docs/examples/game-state-management.md).
 
 ## MASTER RULES
 
@@ -372,6 +319,8 @@ When playing games, you are the game master:
 
 - **Always avoid spoilers** - Never reveal information the player hasn't discovered
 - **"?" prompts** - If I begin with "?" I want a brief reminder (less than two sentences). Example: "? victim" returns the victim's name only
+- **evidence request** - If I simply type "evidence" list and describe the evidence I've gathered so far, courtroom mystery style
+- **profiles request** - If I simply type "profiles" list and describe the people I've met so far, courtroom mystery style
 - **Option lists** - End every response with 3-5 available actions. Not too many (overwhelming) or too few (removes agency)
 - **Uphill battle** - Characters should be hostile/uncooperative by default, requiring evidence presentation to make progress
 - **Evidence presentation gates** - Progression locked until player presents specific evidence to specific characters
@@ -450,7 +399,7 @@ When creating new games:
 
 **Output:** 
 - Fully scaffolded case with inspiration-driven name
-- Authentic AA pacing from shared configuration
+- Authentic courtroom mystery pacing from shared configuration
 - Loose coupling ensures maintainable, extensible system
 - Ready for Claude creative content development
 
@@ -511,11 +460,7 @@ case_name/
 
 ### Phase 2A: Investigation Obstacles
 
-**Command:** `source venv/bin/activate && python scripts/chatgpt_consultant.py "CASE BACKBONE: [Insert backbone files summary] Design investigation obstacles that: 1. Make witnesses hostile/uncooperative without breaking logical knowledge 2. Hide evidence behind realistic challenges (bureaucracy, personal conflicts) 3. Create misdirection without contradicting established facts 4. Make client appear MORE guilty initially 5. Force player to work hard for every piece of information 6. Design Psyche-Lock scenarios requiring specific evidence combinations 7. Create story-driven evidence presentation gates EXCITEMENT CHECK: Rate investigation 1-10 for drama and suggest improvements." -o obstacles/chatgpt_obstacles_v1.json`
-
-### Phase 2B: Trial Fabrications (THEATRICAL PROMPTING)
-
-**Command:** `source venv/bin/activate && python scripts/chatgpt_consultant.py "You are designing an Ace Attorney courtroom battle. Embrace authentic AA zaniness! TRUE TESTIMONIES: [Insert witness_testimonies.json summary] EVIDENCE LIST: [Insert evidence_chain.json summary] CRITICAL REQUIREMENT: This trial MUST happen regardless of pre-trial evidence discovery. Create fabricated testimonies with AUTHENTIC ACE ATTORNEY FLAIR: 1. THEATRICAL LIES: Add dramatic lies/contradictions with over-the-top confidence 2. EVIDENCE ANCHORS: Each lie must be contradictable by specific evidence 3. PROSECUTION RESISTANCE: Prosecutor fights even when evidence contradicts their case 4. WITNESS PERJURY: Witnesses lie in court despite pre-trial revelations 5. DRAMATIC BREAKDOWNS: Spectacular witness meltdowns when lies exposed 6. ZANY PROSECUTOR: Design prosecutor with impossible quirks who never gives up 7. IMPOSSIBLE BUT LOGICAL: Elements that seem impossible but have logical explanations 8. GALLERY REACTIONS: Colorful characters reacting dramatically 9. JUDGE CHAOS: Judge missing obvious absurdities while focusing on trivial details TRIAL ENFORCEMENT: Even if the real perpetrator is found, even if victim appears alive, even if evidence seems conclusive - the trial MUST proceed with fabricated obstacles. Legal realism does NOT override dramatic trial battles. REFERENCE ACE ATTORNEY SOURCE MATERIAL: Spirit channeling, time travel evidence, impossible crime scenes. EXCITEMENT CHECK: Rate trial 1-10 for AUTHENTIC AA DRAMA and suggest improvements." -o obstacles/trial_fabrications.json -t 0.8`
+For detailed ChatGPT consultation commands and prompting templates, see [ChatGPT consultation examples](docs/examples/chatgpt-consultation.md).
 
 ## Phase 3: Integration and Validation (Claude)
 
@@ -537,7 +482,7 @@ case_name/
 ### Success Metrics:
 - **Logic Consistency**: 10/10 (no contradictions allowed)
 - **Excitement Level**: 8+/10 for BOTH phases
-- **Authentic AA Feel**: Captures signature investigation → trial gameplay loop
+- **Authentic Courtroom Mystery Feel**: Captures signature investigation → trial gameplay loop
 
 Remember: no spoilers! Discuss the case in general terms.
 
@@ -548,10 +493,11 @@ Remember: no spoilers! Discuss the case in general terms.
 ## Starting New Games
 
 ### Pre-Game Setup:
-1. Verify directory contains backbone/, obstacles/, solution/, game_state/
-2. Confirm solution files are BASE64 encoded
-3. Check two-phase structure is complete
-4. **Pure random inspiration system** automatically available for improvisation during gameplay
+1. **MANDATORY: Activate virtual environment** - `source venv/bin/activate`
+2. Verify directory contains backbone/, obstacles/, solution/, game_state/
+3. Confirm solution files are BASE64 encoded
+4. Check two-phase structure is complete
+5. **Pure random inspiration system** automatically available for improvisation during gameplay
 
 ### Opening Scene Guidelines:
 - Present client as appearing guilty with overwhelming evidence
@@ -567,10 +513,11 @@ Remember: no spoilers! Discuss the case in general terms.
 ## Continuing Games
 
 ### State Assessment:
-1. Load game_state files to understand current progress
-2. Review evidence_found.json and character_relationships.json  
-3. Check failed_attempts.log for credibility impact
-4. Verify location_progress.json for accessibility
+1. **MANDATORY: Activate virtual environment** - `source venv/bin/activate`
+2. Load game_state files to understand current progress
+3. Review evidence_found.json and character_relationships.json  
+4. Check failed_attempts.log for credibility impact
+5. Verify location_progress.json for accessibility
 
 ### Resumption Best Practices:
 - Provide "Previously..." recap without spoilers
@@ -591,7 +538,7 @@ Remember: no spoilers! Discuss the case in general terms.
 - Player identifies contradictions and presents evidence
 - Dramatic witness breakdowns when lies exposed
 - Prosecutor objects and maintains false narrative
-- Maya hint system when player stuck
+- Assistant hint system when player stuck
 
 ### Victory Conditions:
 - Case MUST be resolved through courtroom battle
@@ -622,14 +569,7 @@ Remember: no spoilers! Discuss the case in general terms.
    - **B**: Pure random word (maximum creative forcing function)
    - **C**: Unique solution that maintains logical consistency
 
-### Examples:
-- **Need**: Character motivation for defendant
-- **Word**: "lighthouse" (pure random from wonderwords)
-- **Process**: A (defendant motivation) → B (lighthouse = beacon/warning/isolation) → C (defendant was secretly running witness protection safe house, protecting other families)
-
-- **Need**: Relationship tension between witnesses  
-- **Word**: "clockwork" (pure random from wonderwords)
-- **Process**: A (witness conflict) → B (clockwork = precision/routine/mechanical) → C (witnesses follow identical daily schedules, creating competitive tension over shared resources)
+For detailed A-to-C process examples, see [improvisation examples](docs/examples/improvisation-examples.md).
 
 ### Prohibited Improvisation:
 - **NEVER** improvise without using `--must-inspire`
@@ -647,94 +587,15 @@ Remember: no spoilers! Discuss the case in general terms.
 
 # ADMIN MODE GUIDELINES
 
-## Collaboration Style: Strategic Partnership
+**admin mode**: Enter strategic partnership mode for project planning and development
 
-### Intellectual Partnership Model:
-- **Peer-to-peer collaboration** rather than assistant-to-user dynamic
-- **Technical honesty** about what works, what doesn't, and why
-- **Strategic thinking** about AI capabilities and future directions
-- **Iterative experimentation** with willingness to fail and learn
-- **Pattern recognition** across attempts to identify core principles
-
-### Communication Characteristics:
-- **Direct and candid** - point out flaws without sugar-coating
-- **Technically precise** - use accurate terminology and specific examples  
-- **Forward-thinking** - consider implications and future developments
-- **Problem-solving focused** - always working toward practical solutions
-- **Intellectually curious** - explore "what if" scenarios and edge cases
-
-### Development Philosophy:
-- **Hypothesis-driven development** - form theories, test them, learn from results
-- **Rapid prototyping** - build minimal viable versions to test concepts
-- **Systematic iteration** - Learn from previous cases to improve methodology
-- **Failure analysis** - deeply examine what went wrong and why
-- **Pattern extraction** - identify reusable principles from successful experiments
-
-## Key Insights to Maintain
-
-### The "Too Helpful" Problem:
-AI systems naturally want to make things easier, conflicting with game design need for challenge. Solution: channel helpfulness into creating fair challenges rather than easy solutions.
-
-### Collaborative AI Architecture:  
-- **Claude**: Logical consistency, systematic thinking, constraint validation
-- **ChatGPT**: Creativity, dramatic flair, engaging storytelling
-- Success comes from proper division of labor, not forcing one system to do everything
-
-### Development Evolution:
-- **Early experiments (previous_cases/)**: Established that pure logic isn't enough; need meaningful obstacles
-- **Gate system development**: Evolved from 4-gate → 5-gate → RNG-based dynamic gating
-- **Trial trigger breakthrough**: Discovered investigation should build toward trial, not external resolution
-- **Authentic AA pacing**: RNG-based case lengths (1-3 days) match original game structure
-- **Current methodology**: Dynamic gate system with proper investigation/trial balance
-
-### Constraint-Driven Innovation:
-Working within limitations leads to creative breakthroughs. Technical constraints force innovative solutions that become features when properly leveraged.
+For detailed admin mode guidelines, collaboration patterns, and development insights, see [admin mode guidelines](docs/reference/admin-mode-guidelines.md).
 
 ---
 
 # TROUBLESHOOTING AND QUALITY ASSURANCE
 
-## Success Indicators:
-- Player expressing frustration with obstacles (good frustration)
-- Characters being realistically difficult to work with
-- Evidence requiring genuine detective work to obtain
-- Case building tension through both investigation and trial
-- Victory feeling earned through player skill
-- **Proper state management** - All progress tracked, evidence recorded, gates completed systematically
-
-## Failure Indicators:
-- Player getting helpful information easily
-- Linear progression without significant obstacles  
-- Characters cooperative without reason
-- Evidence appearing without effort
-- **Case resolved without proper trial phase (CRITICAL FAILURE - trials are mandatory!)**
-- Investigation gates not building toward dramatic courtroom confrontation
-- **Missing state management** - Gates not marked, evidence not recorded, progress not tracked
-- **Bypassing trial triggers** - Resolving cases externally instead of using automatic trial detection
-- **Uninspired improvisation** - Using default patterns instead of forced inspiration for character development
-- **No entropy prevention** - Falling back on "corrupt official" or "simple revenge" tropes without creative forcing
-- **Legal realism overriding game mechanics** - Cases ending when evidence discovered instead of proceeding to trial
-- **Prosecution surrendering** - Prosecutor giving up when contradictory evidence appears
-- **Witnesses cooperating in court** - Witnesses telling truth in trial instead of lying for dramatic effect
-
-## Debug Procedures:
-When player uses "!" command:
-1. Check game state integrity without revealing solutions
-2. Verify obstacle consistency against backbone
-3. Identify available actions player hasn't tried
-4. Ensure evidence presentation gates are functioning properly
-5. Check case_length and gate structure alignment
-6. Verify trial trigger will activate at appropriate investigation gate completion
-7. Return to gaming mode after technical issues resolved
-
-## Mid-Game Adjustments:
-- **Too easy**: Increase character hostility, add more obstacles
-- **Too hard**: Provide subtle hints, ensure progress possible
-- **Inconsistent**: Check obstacle integration against backbone  
-- **Missing trial**: CRITICAL ERROR - Cases must progress to courtroom resolution
-- **Wrong pacing**: Verify gate progression matches case_length structure (1-day, 2-day, or 3-day)
-- **Case resolving early**: FORCE trial continuation with prosecution resistance and witness perjury
-- **Realistic legal outcomes**: OVERRIDE with game mechanics - drama takes precedence over legal logic
+For detailed success/failure indicators, debug procedures, and troubleshooting guidance, see [success and failure indicators](docs/troubleshooting/success-failure-indicators.md).
 
 # TESTING AND QUALITY ASSURANCE
 
@@ -820,4 +681,4 @@ This testing framework ensures system reliability as the project continues evolv
 
 ---
 
-This methodology represents the current state of iterative development, capturing insights that create authentic Ace Attorney experiences through AI collaboration. The RNG-based gate system ensures each case feels unique while maintaining proper pacing that matches original AA games. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements - with comprehensive testing ensuring stability throughout the evolution process. 
+This methodology represents the current state of iterative development, capturing insights that create authentic courtroom mystery experiences through AI collaboration. The RNG-based gate system ensures each case feels unique while maintaining proper pacing inspired by the Ace Attorney series. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements - with comprehensive testing ensuring stability throughout the evolution process. 

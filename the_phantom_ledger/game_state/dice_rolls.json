@@ -1,0 +1,234 @@
+[
+  {
+    "base_roll": 10,
+    "modifier": -2,
+    "total": 8,
+    "description": "getting client to explain embezzlement details",
+    "timestamp": "2025-07-10T20:36:00.228143",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 12,
+    "modifier": 0,
+    "total": 12,
+    "description": "building trust with defensive client",
+    "timestamp": "2025-07-10T20:38:27.938459",
+    "success_level": "success"
+  },
+  {
+    "base_roll": 10,
+    "modifier": 1,
+    "total": 11,
+    "description": "getting client to reveal embezzlement details with trust established",
+    "timestamp": "2025-07-10T20:40:17.725472",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 2,
+    "modifier": 2,
+    "total": 4,
+    "description": "getting client to reveal who else knew about scheme",
+    "timestamp": "2025-07-10T20:43:52.842785",
+    "success_level": "bad_failure"
+  },
+  {
+    "base_roll": 6,
+    "modifier": 2,
+    "total": 8,
+    "description": "rebuilding trust after client feels betrayed",
+    "timestamp": "2025-07-10T20:45:20.495621",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 19,
+    "modifier": 2,
+    "total": 20,
+    "description": "getting client to explain murder night timeline",
+    "timestamp": "2025-07-10T20:47:05.239314",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 2,
+    "modifier": 5,
+    "total": 7,
+    "description": "analyzing locked room mystery details",
+    "timestamp": "2025-07-10T20:53:00.305521",
+    "success_level": "failure"
+  },
+  {
+    "base_roll": 20,
+    "modifier": 5,
+    "total": 20,
+    "description": "getting client to reveal key access information",
+    "timestamp": "2025-07-10T20:54:46.252326",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 13,
+    "modifier": 6,
+    "total": 19,
+    "description": "getting detailed information about Victoria Chen",
+    "timestamp": "2025-07-10T21:04:52.362969",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 14,
+    "modifier": 6,
+    "total": 20,
+    "description": "getting details about Victoria's mother's medical situation",
+    "timestamp": "2025-07-10T21:07:08.180392",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 16,
+    "modifier": 6,
+    "total": 20,
+    "description": "solving the locked room mystery with Victoria as suspect",
+    "timestamp": "2025-07-10T21:09:22.539781",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 4,
+    "modifier": 6,
+    "total": 10,
+    "description": "examining window for physical evidence of rope system",
+    "timestamp": "2025-07-10T21:13:23.449476",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 11,
+    "modifier": 6,
+    "total": 17,
+    "description": "figuring out disposal location for climbing equipment",
+    "timestamp": "2025-07-10T21:14:51.973965",
+    "success_level": "great_success"
+  },
+  {
+    "base_roll": 12,
+    "modifier": 3,
+    "total": 15,
+    "description": "investigating hospital security footage from detention center",
+    "timestamp": "2025-07-10T21:16:56.817842",
+    "success_level": "great_success"
+  },
+  {
+    "base_roll": 2,
+    "modifier": 6,
+    "total": 8,
+    "description": "delivering compelling opening statement about locked room impossibility",
+    "timestamp": "2025-07-10T21:21:50.419466",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 9,
+    "modifier": 6,
+    "total": 15,
+    "description": "cross-examining detective about fingerprint evidence",
+    "timestamp": "2025-07-10T21:26:36.015732",
+    "success_level": "great_success"
+  },
+  {
+    "base_roll": 4,
+    "modifier": 6,
+    "total": 10,
+    "description": "challenging detective about incomplete investigation of other suspects",
+    "timestamp": "2025-07-10T21:32:34.051380",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 3,
+    "modifier": 6,
+    "total": 9,
+    "description": "demanding detective specify evidence details under pressure",
+    "timestamp": "2025-07-10T21:35:27.037290",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 1,
+    "modifier": 6,
+    "total": 7,
+    "description": "presenting Victoria's technical knowledge as evidence",
+    "timestamp": "2025-07-10T21:38:17.533298",
+    "success_level": "failure"
+  },
+  {
+    "base_roll": 15,
+    "modifier": 4,
+    "total": 19,
+    "description": "salvaging cross-examination with basic procedural questions",
+    "timestamp": "2025-07-10T21:39:55.398515",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 10,
+    "modifier": 6,
+    "total": 16,
+    "description": "questioning detective about Robert Hayes investigation",
+    "timestamp": "2025-07-10T21:42:02.287589",
+    "success_level": "great_success"
+  },
+  {
+    "base_roll": 15,
+    "modifier": 6,
+    "total": 20,
+    "description": "pressing Victoria Chen about her relationship with Marcus",
+    "timestamp": "2025-07-11T22:21:39.844338",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 18,
+    "modifier": 6,
+    "total": 20,
+    "description": "sympathetic approach then devastating question to Victoria",
+    "timestamp": "2025-07-11T22:31:22.782455",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 17,
+    "modifier": 6,
+    "total": 20,
+    "description": "questioning Victoria about her whereabouts with established trust",
+    "timestamp": "2025-07-11T22:39:51.108048",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 4,
+    "modifier": 6,
+    "total": 10,
+    "description": "using emotional vulnerability to get confession",
+    "timestamp": "2025-07-11T22:42:09.029117",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 11,
+    "modifier": 6,
+    "total": 17,
+    "description": "questioning Victoria about phantom accounts knowledge",
+    "timestamp": "2025-07-11T22:47:00.103925",
+    "success_level": "great_success"
+  },
+  {
+    "base_roll": 12,
+    "modifier": 6,
+    "total": 18,
+    "description": "challenging Victoria's denials with evidence",
+    "timestamp": "2025-07-11T22:50:47.839204",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 19,
+    "modifier": 6,
+    "total": 20,
+    "description": "questioning Victoria about computer evidence manipulation",
+    "timestamp": "2025-07-11T22:52:43.115738",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 14,
+    "modifier": 6,
+    "total": 20,
+    "description": "presenting complete theory for final confrontation",
+    "timestamp": "2025-07-11T22:55:55.341950",
+    "success_level": "critical_success"
+  }
+]

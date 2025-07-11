@@ -36,6 +36,20 @@ def minimal_case_structure(temp_case_dir):
     with open(backbone_dir / "case_structure.json", 'w') as f:
         json.dump({"case_title": "Test Case", "case_id": "test_case"}, f)
     
+    # Create character facts with client
+    character_facts = {
+        "characters": [
+            {
+                "name": "Test Client (Client)",
+                "true_knowledge": ["Test knowledge"],
+                "what_he_hides": ["Test secret"],
+                "motivations": "Test motivation"
+            }
+        ]
+    }
+    with open(backbone_dir / "character_facts.json", 'w') as f:
+        json.dump(character_facts, f, indent=2)
+    
     # Create game state files
     game_state_dir = temp_case_dir / "game_state"
     

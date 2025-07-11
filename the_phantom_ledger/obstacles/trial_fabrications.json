@@ -1,0 +1,71 @@
+{
+  "prosecutor_magical_mike": {
+    "signature_quirk": "Former magician who conjures smoke clouds when losing points, then 'reappears' with new evidence",
+    "dramatic_flair": "Uses magic metaphors constantly ('presto proof,' 'abracadabra evidence,' 'vanishing alibis')",
+    "impossible_habit": "Pulls evidence from thin air using sleight of hand, claims it was 'hidden in plain sight'",
+    "weakness": "Gets distracted by his own theatrics, misses logical contradictions while focusing on dramatic presentation"
+  },
+  
+  "fabricated_testimonies": {
+    "leonard_morse_lies": {
+      "theatrical_lie": "Miranda called me for a MIDNIGHT RENDEZVOUS on the night before the murder! She confessed her deadly plan with tears streaming down her face, begging me to help her escape justice!",
+      "evidence_contradiction": "Phone records showing no call was made from Miranda to Leonard",
+      "breakdown_trigger": "Present phone records proving no midnight contact occurred",
+      "breakdown_style": "Breaks down crying, admits embezzlement scheme and murder plot in dramatic confession"
+    },
+    
+    "dr_sarah_kim_lies": {
+      "theatrical_lie": "Miranda's WEEKEND GARDENING HOBBY gave her expert knowledge of digitalis poison! Death occurred at MIDNIGHT, not morning - my original report was a clerical error!",
+      "evidence_contradiction": "Coffee machine residue showing poison was added to machine, not individual cups",
+      "breakdown_trigger": "Confront with coffee machine forensics contradicting timeline",
+      "breakdown_style": "Faints dramatically when forensic evidence is presented, then admits to timeline pressure"
+    },
+    
+    "detective_martinez_lies": {
+      "theatrical_lie": "Miranda personally served the victim poisoned coffee with her own hands! I witnessed a LOVE TRIANGLE between Miranda, the victim, and Leonard - passionate jealousy was the motive!",
+      "evidence_contradiction": "Security badge logs showing Leonard had after-hours access, not Miranda",
+      "breakdown_trigger": "Present badge logs proving Leonard's unauthorized access",
+      "breakdown_style": "Rips off badge in frustration, admits to rushing investigation under pressure"
+    },
+    
+    "janet_ellis_lies": {
+      "theatrical_lie": "I saw Miranda TAMPERING with the coffee machine on the morning of the murder! She was fiddling with mysterious chemicals while cackling maniacally!",
+      "evidence_contradiction": "Security badge logs showing Leonard's after-hours access when tampering occurred",
+      "breakdown_trigger": "Present Leonard's after-hours access logs from her own security system",
+      "breakdown_style": "Starts compulsively cleaning the courtroom while admitting fear of Leonard's influence"
+    }
+  },
+  
+  "zany_elements": {
+    "spirit_medium_twist": "A spirit medium channels the victim's spirit, who initially claims he committed suicide, adding confusion before revealing he was murdered",
+    "impossible_but_logical": "The coffee machine has a 'Time Delay' setting that explains discrepancies in Dr. Kim's timeline - the poison was added hours before brewing",
+    "judge_absurdity": "Judge becomes obsessed with the technical specifications of the coffee machine, missing obvious murder evidence while demanding brewing temperature details"
+  },
+  
+  "gallery_reactions": {
+    "miranda_supporters": "Office colleagues cheer when evidence of her innocence is presented",
+    "leonard_allies": "Other senior partners gasp and whisper when his crimes are exposed",
+    "dramatic_moments": "Courtroom erupts when Leonard's embezzlement scheme is revealed"
+  },
+  
+  "evidence_anchors": {
+    "phone_records": "Contradict Leonard's midnight rendezvous claim",
+    "coffee_machine_residue": "Prove poison was in machine, not cups, destroying Dr. Kim's theory",
+    "security_badge_logs": "Show Leonard's after-hours access, not Miranda's tampering",
+    "digitalis_source": "Leonard's garden shed connects him to murder weapon"
+  },
+  
+  "trial_enforcement": {
+    "prosecution_persistence": "Magical Mike refuses to concede even when evidence contradicts case, conjuring new theories",
+    "witness_perjury": "All witnesses maintain lies until confronted with undeniable contradictory evidence",
+    "dramatic_necessity": "Trial proceeds despite pre-trial discoveries, with witnesses fabricating new lies in court"
+  },
+  
+  "excitement_rating": 9,
+  "improvement_suggestions": [
+    "Add more magic trick demonstrations that illustrate legal points",
+    "Include more courtroom chaos with magical smoke effects",
+    "Develop spirit medium subplot with more dramatic revelations",
+    "Add impossible evidence that turns out to have logical explanations"
+  ]
+}

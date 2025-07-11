@@ -35,6 +35,9 @@ class GameStateManager:
         # Initialize dice roller for action resolution
         self.dice_roller = DiceRoller(str(self.case_path))
         
+        # Load client name for dialogue substitution
+        self.client_name = self.load_client_name()
+        
     def load_case_structure(self) -> Dict[str, Any]:
         """Load the basic case structure from backbone files"""
         structure_file = self.case_path / "backbone" / "case_structure.json"
@@ -82,6 +85,35 @@ class GameStateManager:
         
         with open(inspiration_file, 'r') as f:
             return json.load(f)
+    
+    def load_client_name(self) -> str:
+        """Load client name from character facts for dialogue substitution"""
+        try:
+            character_facts_file = self.case_path / "backbone" / "character_facts.json"
+            if not character_facts_file.exists():
+                return "[Client Name]"  # Fallback to placeholder
+            
+            with open(character_facts_file, 'r') as f:
+                character_facts = json.load(f)
+            
+            # Find the character marked as client
+            for character in character_facts.get("characters", []):
+                name = character.get("name", "")
+                if "(Client)" in name:
+                    # Remove the "(Client)" suffix and return clean name
+                    return name.replace("(Client)", "").strip()
+            
+            return "[Client Name]"  # Fallback if no client found
+        except Exception:
+            return "[Client Name]"  # Fallback on any error
+    
+    def get_client_name(self) -> str:
+        """Get the client's name for dialogue substitution"""
+        return self.client_name
+    
+    def substitute_client_name(self, text: str) -> str:
+        """Substitute [Client Name] placeholder with actual client name in text"""
+        return text.replace("[Client Name]", self.client_name)
     
     def get_current_status(self) -> Dict[str, Any]:
         """Get comprehensive current status"""
@@ -918,6 +950,7 @@ def main():
     parser.add_argument('--roll', nargs='*', help='Roll dice with optional modifiers and description')
     parser.add_argument('--action-check', nargs='+', help='Make action check: action_description [difficulty] [evidence_count] [character_trust] [additional_modifier]')
     parser.add_argument('--dice-history', action='store_true', help='Show recent dice roll history')
+    parser.add_argument('--client-name', action='store_true', help='Show client name for dialogue substitution')
     
     args = parser.parse_args()
     
@@ -1184,6 +1217,10 @@ def main():
                     print()
             else:
                 print("No dice roll history found.")
+        
+        if args.client_name:
+            client_name = manager.get_client_name()
+            print(f"👤 Client Name: {client_name}")
         
     except Exception as e:
         print(f"❌ Error: {e}")

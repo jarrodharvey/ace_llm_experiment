@@ -23,12 +23,17 @@ class CaseCreationOrchestrator:
         
     def save_state(self, phase, status, data=None):
         """Save orchestration state for resuming"""
+        # Include inspiration data in state if available
+        state_data = data or {}
+        if self.inspiration_data and "inspiration_data" not in state_data:
+            state_data["inspiration_data"] = self.inspiration_data
+        
         state = {
             "case_name": self.case_name,
             "current_phase": phase,
             "status": status,
             "timestamp": datetime.now().isoformat(),
-            "data": data or {}
+            "data": state_data
         }
         
         if self.state_file:
@@ -45,8 +50,16 @@ class CaseCreationOrchestrator:
             self.case_path = self.base_path / self.case_name if self.case_name else None
             self.state_file = state_file_path
             
-            return state.get("current_phase"), state.get("status"), state.get("data", {})
+            # Restore inspiration data if available
+            data = state.get("data", {})
+            if "inspiration_data" in data:
+                self.inspiration_data = data["inspiration_data"]
+            
+            return state.get("current_phase"), state.get("status"), data
         except FileNotFoundError:
+            return None, None, {}
+        except json.JSONDecodeError as e:
+            print(f"❌ Corrupted state file: {e}")
             return None, None, {}
     
     def phase_0_inspiration_generation(self):
@@ -169,6 +182,14 @@ class CaseCreationOrchestrator:
         print(f"\n🤖 PHASE 2: CHATGPT CONSULTATION PREPARATION")
         print("=" * 60)
         
+        # Ensure case_path is set from case_name
+        if not self.case_path and self.case_name:
+            self.case_path = self.base_path / self.case_name
+        
+        if not self.case_path:
+            print("❌ Case path not available. Cannot proceed with Phase 2.")
+            return False
+        
         # Verify backbone files exist
         backbone_files = [
             "case_structure.json",
@@ -232,6 +253,14 @@ class CaseCreationOrchestrator:
         """Phase 3: Validate and complete case creation"""
         print(f"\n🔍 PHASE 3: VALIDATION & COMPLETION")
         print("=" * 60)
+        
+        # Ensure case_path is set from case_name
+        if not self.case_path and self.case_name:
+            self.case_path = self.base_path / self.case_name
+        
+        if not self.case_path:
+            print("❌ Case path not available. Cannot proceed with Phase 3.")
+            return False
         
         # Verify ChatGPT outputs exist
         obstacle_file = self.case_path / "obstacles" / "chatgpt_obstacles_v1.json"

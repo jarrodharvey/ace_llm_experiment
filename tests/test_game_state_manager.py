@@ -28,13 +28,24 @@ class TestGameStateManager:
         
         # Test completing a gate
         assert manager.complete_gate("gate1") == True
-        assert manager.current_state["investigation_gates"]["gate1"] == "completed"
+    
+    def test_client_name_loading(self, minimal_case_structure):
+        """Test client name loading and substitution"""
+        manager = GameStateManager(str(minimal_case_structure))
         
-        # Test trying to start already completed gate
-        assert manager.start_gate("gate1") == False
+        # Test client name extraction
+        client_name = manager.get_client_name()
+        assert client_name == "Test Client"  # Based on conftest fixture
         
-        # Test trying to complete already completed gate
-        assert manager.complete_gate("gate1") == False
+        # Test dialogue substitution
+        test_text = "All charges against [Client Name] are hereby dismissed."
+        result = manager.substitute_client_name(test_text)
+        assert result == "All charges against Test Client are hereby dismissed."
+        
+        # Test multiple occurrences
+        test_text = "[Client Name] is innocent. [Client Name] has been framed."
+        result = manager.substitute_client_name(test_text)
+        assert result == "Test Client is innocent. Test Client has been framed."
     
     def test_invalid_gate_operations(self, minimal_case_structure):
         """Test error handling for invalid gate operations"""

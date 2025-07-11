@@ -1,0 +1,52 @@
+{
+  "true_testimonies_before_fabrication": [
+    {
+      "witness": "Leonard Morse",
+      "true_testimony": "I was in my office reviewing client files when I heard Miranda screaming from the conference room. I rushed over and found her standing over Richard's body, looking shocked. She was holding her coffee cup and trembling. I immediately called 911 and tried to secure the scene.",
+      "contradictable_elements": [
+        "Claims he was in his office reviewing files",
+        "Says he heard Miranda screaming first",
+        "Emphasizes Miranda was holding her coffee cup"
+      ]
+    },
+    {
+      "witness": "Dr. Sarah Kim",
+      "true_testimony": "The victim died from digitalis poisoning, commonly found in foxglove plants. Based on stomach contents and blood levels, death occurred approximately 11:30 AM. The concentration was high enough to cause rapid cardiac arrest. This was definitely intentional poisoning, not accidental.",
+      "contradictable_elements": [
+        "States definitive time of death",
+        "Confirms digitalis source",
+        "Emphasizes intentional nature"
+      ]
+    },
+    {
+      "witness": "Detective Ray Martinez",
+      "true_testimony": "Miranda Chen was found alone with the victim immediately after death. Her coffee cup tested positive for digitalis traces. She had a documented conflict with the victim over work performance. Physical evidence and motive point clearly to her as the perpetrator.",
+      "contradictable_elements": [
+        "Claims Miranda was alone with victim",
+        "States her cup contained poison",
+        "Cites work performance conflict as motive"
+      ]
+    },
+    {
+      "witness": "Janet Ellis",
+      "true_testimony": "I manage the office security system and maintain access logs. On the morning of the murder, Miranda badged in at 8:15 AM and Leonard arrived at 8:30 AM. Richard came in at 10:45 AM. The coffee machine in the kitchen was serviced the week before and working normally.",
+      "contradictable_elements": [
+        "Provides specific badge-in times",
+        "Claims coffee machine was working normally",
+        "Only mentions morning access logs"
+      ]
+    }
+  ],
+  "testimony_analysis": {
+    "leonard_lies_to_add": "Will claim he was in client meeting, exaggerate Miranda's hostile behavior, downplay his knowledge of audit issues",
+    "sarah_lies_to_add": "Will be pressured to suggest Miranda had medical knowledge to obtain poison, may alter timeline under pressure",
+    "martinez_lies_to_add": "Will claim investigation was thorough, deny rushing to judgment, exaggerate Miranda's guilt",
+    "janet_lies_to_add": "Will claim she never saw Leonard after hours, deny knowledge of security badge irregularities",
+    "evidence_anchors": {
+      "leonard_alibi": "Can be contradicted with phone records showing no client contact",
+      "badge_access": "After-hours logs show Leonard accessing Miranda's workspace",
+      "poison_source": "Leonard's garden shed contains foxglove cultivation equipment",
+      "coffee_machine": "Forensic analysis shows poison was added to machine, not individual cups"
+    }
+  }
+}

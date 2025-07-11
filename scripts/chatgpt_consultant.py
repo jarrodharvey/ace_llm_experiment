@@ -103,12 +103,21 @@ def main():
     parser = argparse.ArgumentParser(description='Consult ChatGPT for case creation')
     parser.add_argument('prompt', help='Prompt to send to ChatGPT')
     parser.add_argument('-o', '--output', required=True, help='Output JSON file path')
+    parser.add_argument('--case-dir', help='Case directory to prepend to relative output paths')
     parser.add_argument('-m', '--model', default='gpt-4', help='OpenAI model to use (default: gpt-4)')
     parser.add_argument('-t', '--temperature', type=float, default=0.7, help='Temperature setting (default: 0.7)')
     parser.add_argument('--max-tokens', type=int, default=2000, help='Maximum tokens (default: 2000)')
     parser.add_argument('--api-key-file', default='openai_key.txt', help='API key file path (default: openai_key.txt)')
     
     args = parser.parse_args()
+    
+    # Process output path with case directory if provided
+    output_path = args.output
+    if args.case_dir and not Path(output_path).is_absolute():
+        # Prepend case directory to relative paths
+        output_path = str(Path(args.case_dir) / output_path)
+        print(f"📁 Using case directory: {args.case_dir}")
+        print(f"📄 Output will be saved to: {output_path}")
     
     # Initialize consultant
     consultant = ChatGPTConsultant(args.api_key_file)
@@ -122,7 +131,7 @@ def main():
     )
     
     # Save response
-    consultant.save_response(response, args.output)
+    consultant.save_response(response, output_path)
     
     # Exit with appropriate code
     sys.exit(0 if response['success'] else 1)
