@@ -16,7 +16,8 @@
       "Bash(do base64 -i \"\"$file\"\" -o \"\"$file.b64\"\")",
       "Bash(done)",
       "Bash(pip install:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(echo:*)"
     ],
     "deny": []
   }

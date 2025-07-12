@@ -10,6 +10,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from case_config import get_config_manager
 from dice_system import DiceRoller
+from character_name_generator import CharacterNameGenerator
+from enhanced_save_system import NarrativeSaveSystem
 
 class GameStateManager:
     def __init__(self, case_path: str):
@@ -19,14 +21,21 @@ class GameStateManager:
         # Load shared configuration
         self.config_manager = get_config_manager()
         
-        # Load case structure dynamically
+        # Auto-detect case type from file structure
+        self.case_type = self.detect_case_type()
+        
+        # Load case structure dynamically based on type
         self.case_structure = self.load_case_structure()
         self.current_state = self.load_current_state()
         self.trial_state = self.load_trial_state()
         
         # Auto-detect case characteristics
         self.case_length = self.detect_case_length()
-        self.gates = list(self.current_state.get("investigation_gates", {}).keys())
+        
+        # Get all gates for this case (investigation + trial) for proper validation
+        # Both simple and complex cases now use configuration for consistency
+        self.gates = self.config_manager.get_gates_for_case_length(self.case_length)
+        
         self.total_gates = len(self.gates)
         
         # Load inspiration pool for entropy prevention
@@ -35,36 +44,162 @@ class GameStateManager:
         # Initialize dice roller for action resolution
         self.dice_roller = DiceRoller(str(self.case_path))
         
+        # Initialize character name generator
+        self.name_generator = CharacterNameGenerator(str(self.case_path))
+        
+        # Initialize enhanced narrative save system
+        self.narrative_save_system = NarrativeSaveSystem(str(self.case_path))
+        
         # Load client name for dialogue substitution
         self.client_name = self.load_client_name()
         
-    def load_case_structure(self) -> Dict[str, Any]:
-        """Load the basic case structure from backbone files"""
-        structure_file = self.case_path / "backbone" / "case_structure.json"
-        if not structure_file.exists():
-            raise FileNotFoundError(f"Case structure not found: {structure_file}")
+    def detect_case_type(self) -> str:
+        """Auto-detect case type from file structure"""
+        # Check for complex case structure
+        backbone_dir = self.case_path / "backbone"
+        if backbone_dir.exists() and (backbone_dir / "case_structure.json").exists():
+            return "complex"
         
-        with open(structure_file, 'r') as f:
-            return json.load(f)
+        # Check for simple improvisation structure
+        real_life_file = self.case_path / "real_life_case_summary.txt"
+        opening_file = self.case_path / "case_opening.txt"
+        if real_life_file.exists() and opening_file.exists():
+            return "simple_improvisation"
+        
+        # Fallback to complex for backward compatibility
+        return "complex"
+        
+    def load_case_structure(self) -> Dict[str, Any]:
+        """Load the basic case structure based on case type"""
+        if self.case_type == "complex":
+            structure_file = self.case_path / "backbone" / "case_structure.json"
+            if not structure_file.exists():
+                raise FileNotFoundError(f"Case structure not found: {structure_file}")
+            
+            with open(structure_file, 'r') as f:
+                return json.load(f)
+        
+        elif self.case_type == "simple_improvisation":
+            # Create minimal structure for simple improvisation cases
+            return {
+                "case_type": "simple_improvisation",
+                "name": self.case_name.replace("_", " ").title(),
+                "description": "Improvisation-first case",
+                "phase": "investigation"
+            }
+        
+        else:
+            raise ValueError(f"Unknown case type: {self.case_type}")
     
     def load_current_state(self) -> Dict[str, Any]:
-        """Load current investigation progress"""
+        """Load current investigation progress based on case type"""
         progress_file = self.case_path / "game_state" / "investigation_progress.json"
+        
         if not progress_file.exists():
-            raise FileNotFoundError(f"Investigation progress not found: {progress_file}")
+            if self.case_type == "simple_improvisation":
+                # Initialize simple improvisation state
+                return self.create_simple_improvisation_state()
+            else:
+                raise FileNotFoundError(f"Investigation progress not found: {progress_file}")
         
         with open(progress_file, 'r') as f:
             return json.load(f)
     
     def load_trial_state(self) -> Dict[str, Any]:
-        """Load current trial progress"""
+        """Load current trial progress based on case type"""
         trial_file = self.case_path / "game_state" / "trial_progress.json"
+        
         if not trial_file.exists():
-            raise FileNotFoundError(f"Trial progress not found: {trial_file}")
+            if self.case_type == "simple_improvisation":
+                # Initialize simple trial state
+                return self.create_simple_trial_state()
+            else:
+                raise FileNotFoundError(f"Trial progress not found: {trial_file}")
         
         with open(trial_file, 'r') as f:
             return json.load(f)
     
+    def create_simple_improvisation_state(self) -> Dict[str, Any]:
+        """Create initial state for simple improvisation cases"""
+        # Use the random case length from configuration to determine gates
+        case_config = self.config_manager.config["case_types"]["simple_improvisation"]
+        case_length = case_config.get("trial_trigger_after", 1)
+        
+        # Get proper gate structure from configuration based on case length
+        gates = self.config_manager.get_gates_for_case_length(case_length)
+        
+        # Separate investigation and trial gates using configuration
+        gate_classifications = self.config_manager.config["gate_classifications"]
+        investigation_gate_types = gate_classifications["investigation"]
+        trial_gate_types = gate_classifications["trial"]
+        
+        # Create investigation gates structure (may be empty for trial-only cases)
+        investigation_gates = {}
+        for gate in gates:
+            if gate in investigation_gate_types:  # Only investigation gates
+                investigation_gates[gate] = {
+                    "status": "pending",
+                    "description": f"Improvised {gate} phase",
+                    "evidence_found": [],
+                    "interviews_conducted": [],
+                    "started_at": None,
+                    "completed_at": None
+                }
+        
+        # Determine the first gate and phase
+        first_gate = gates[0] if gates else "trial_opening"
+        if case_length == 1:
+            # Trial-only case - start directly in trial phase
+            current_phase = "trial"
+            # Ensure trial_ready is True for trial-only cases
+            trial_ready = True
+        else:
+            # Investigation + trial case - start in investigation phase
+            current_phase = "investigation"
+            trial_ready = False
+        
+        state = {
+            "case_type": "simple_improvisation",
+            "case_length": case_length,
+            "current_phase": current_phase,
+            "current_gate": first_gate,
+            "investigation_gates": investigation_gates,
+            "evidence_found": [],
+            "character_relationships": {},
+            "location_progress": {},
+            "failed_attempts": [],
+            "inspiration_usage": [],
+            "trial_ready": trial_ready,
+            "last_updated": None
+        }
+        
+        # Save the state file
+        self.save_current_state(state)
+        return state
+    
+    def create_simple_trial_state(self) -> Dict[str, Any]:
+        """Create initial trial state for simple improvisation cases"""
+        state = {
+            "case_type": "simple_improvisation",
+            "trial_phase": "not_started",
+            "current_witness": None,
+            "witnesses_examined": [],
+            "evidence_presented": [],
+            "objections_sustained": 0,
+            "objections_overruled": 0,
+            "trial_gates": {
+                "opening_statements": {"status": "pending", "completed_at": None},
+                "witness_examination": {"status": "pending", "completed_at": None},
+                "final_argument": {"status": "pending", "completed_at": None}
+            },
+            "trial_ready": False,
+            "last_updated": None
+        }
+        
+        # Save the state file
+        self.save_trial_state(state)
+        return state
+        
     def detect_case_length(self) -> int:
         """Auto-detect case length from structure using shared configuration"""
         # Check if case_length is explicitly stored
@@ -87,25 +222,52 @@ class GameStateManager:
             return json.load(f)
     
     def load_client_name(self) -> str:
-        """Load client name from character facts for dialogue substitution"""
+        """Load client name based on case type"""
         try:
-            character_facts_file = self.case_path / "backbone" / "character_facts.json"
-            if not character_facts_file.exists():
-                return "[Client Name]"  # Fallback to placeholder
+            if self.case_type == "complex":
+                character_facts_file = self.case_path / "backbone" / "character_facts.json"
+                if not character_facts_file.exists():
+                    return "[Client Name]"  # Fallback to placeholder
+                
+                with open(character_facts_file, 'r') as f:
+                    character_facts = json.load(f)
+                
+                # Find the character marked as client
+                for character in character_facts.get("characters", []):
+                    name = character.get("name", "")
+                    if "(Client)" in name:
+                        # Remove the "(Client)" suffix and return clean name
+                        return name.replace("(Client)", "").strip()
+                
+                return "[Client Name]"  # Fallback if no client found
             
-            with open(character_facts_file, 'r') as f:
-                character_facts = json.load(f)
+            elif self.case_type == "simple_improvisation":
+                # For simple cases, derive client name from case name or use placeholder
+                case_words = self.case_name.replace("_", " ").title().split()
+                if len(case_words) >= 2:
+                    return f"{case_words[0][0]}. {case_words[-1]}"  # e.g., "M. Masquerade"
+                else:
+                    return "[Client Name]"
             
-            # Find the character marked as client
-            for character in character_facts.get("characters", []):
-                name = character.get("name", "")
-                if "(Client)" in name:
-                    # Remove the "(Client)" suffix and return clean name
-                    return name.replace("(Client)", "").strip()
-            
-            return "[Client Name]"  # Fallback if no client found
+            return "[Client Name]"
         except Exception:
             return "[Client Name]"  # Fallback on any error
+    
+    def save_current_state(self, state: Dict[str, Any]) -> None:
+        """Save current investigation state to file"""
+        progress_file = self.case_path / "game_state" / "investigation_progress.json"
+        progress_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(progress_file, 'w') as f:
+            json.dump(state, f, indent=2)
+    
+    def save_trial_state(self, state: Dict[str, Any]) -> None:
+        """Save current trial state to file"""
+        trial_file = self.case_path / "game_state" / "trial_progress.json"
+        trial_file.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(trial_file, 'w') as f:
+            json.dump(state, f, indent=2)
     
     def get_client_name(self) -> str:
         """Get the client's name for dialogue substitution"""
@@ -154,8 +316,8 @@ class GameStateManager:
         completed = len(self.get_completed_gates())
         return (completed / self.total_gates) * 100
     
-    def complete_gate(self, gate_name: str) -> bool:
-        """Complete a specific gate with validation"""
+    def complete_gate(self, gate_name: str, narrative_context: Optional[Dict[str, Any]] = None) -> bool:
+        """Complete a specific gate with validation and narrative save"""
         # Validate gate exists
         if gate_name not in self.gates:
             raise ValueError(f"Gate '{gate_name}' not found in case structure. Available gates: {self.gates}")
@@ -168,8 +330,16 @@ class GameStateManager:
         # Update state
         self.current_state["investigation_gates"][gate_name] = "completed"
         
+        # Create enhanced narrative save if context provided
+        if narrative_context:
+            try:
+                save_path = self.narrative_save_system.create_narrative_save(gate_name, narrative_context)
+                print(f"📖 Narrative save created: {os.path.basename(save_path)}")
+            except Exception as e:
+                print(f"⚠️ Warning: Could not create narrative save: {e}")
+        
         # Save changes
-        self.save_current_state()
+        self.save_current_state_to_file()
         
         return True
     
@@ -186,7 +356,7 @@ class GameStateManager:
         self.current_state["investigation_gates"][gate_name] = "in_progress"
         
         # Save changes
-        self.save_current_state()
+        self.save_current_state_to_file()
         
         return True
     
@@ -211,7 +381,7 @@ class GameStateManager:
         
         return None
     
-    def save_current_state(self) -> None:
+    def save_current_state_to_file(self) -> None:
         """Save current state back to file"""
         progress_file = self.case_path / "game_state" / "investigation_progress.json"
         with open(progress_file, 'w') as f:
@@ -237,7 +407,7 @@ class GameStateManager:
         evidence_list.append(evidence_entry)
         
         self.current_state["evidence_collected"] = evidence_list
-        self.save_current_state()
+        self.save_current_state_to_file()
         
         return True
     
@@ -250,7 +420,7 @@ class GameStateManager:
         trust_levels[character_name] = new_trust
         
         self.current_state["character_trust_levels"] = trust_levels
-        self.save_current_state()
+        self.save_current_state_to_file()
         
         return new_trust
     
@@ -262,7 +432,7 @@ class GameStateManager:
             return False  # Invalid location
         
         self.current_state["current_location"] = location_name
-        self.save_current_state()
+        self.save_current_state_to_file()
         
         return True
     
@@ -275,7 +445,7 @@ class GameStateManager:
         })
         
         self.current_state["investigation_notes"] = notes
-        self.save_current_state()
+        self.save_current_state_to_file()
     
     # Phase 2: Advanced Features
     
@@ -410,12 +580,12 @@ class GameStateManager:
         self.current_state["current_phase"] = "trial"
         
         # Save both states
-        self.save_current_state()
-        self.save_trial_state()
+        self.save_current_state_to_file()
+        self.save_trial_state_to_file()
         
         return True
     
-    def save_trial_state(self) -> None:
+    def save_trial_state_to_file(self) -> None:
         """Save trial state back to file"""
         trial_file = self.case_path / "game_state" / "trial_progress.json"
         with open(trial_file, 'w') as f:
@@ -428,7 +598,7 @@ class GameStateManager:
         if witness_name not in interviewed:
             interviewed.append(witness_name)
             self.current_state["witnesses_interviewed"] = interviewed
-            self.save_current_state()
+            self.save_current_state_to_file()
             return True
         
         return False  # Already interviewed
@@ -443,7 +613,7 @@ class GameStateManager:
             locations.remove(location)
         
         self.current_state["available_locations"] = locations
-        self.save_current_state()
+        self.save_current_state_to_file()
     
     def get_available_actions(self) -> List[str]:
         """Get context-appropriate available actions"""
@@ -548,8 +718,8 @@ class GameStateManager:
             self.gates = save_data["gates"]
             
             # Save restored states to main files
-            self.save_current_state()
-            self.save_trial_state()
+            self.save_current_state_to_file()
+            self.save_trial_state_to_file()
             
             return True
             
@@ -558,11 +728,20 @@ class GameStateManager:
     
     def get_resume_context(self) -> Dict[str, Any]:
         """Get context needed to resume gameplay"""
+        # Determine actual current phase by checking trial state
+        actual_phase = self.current_state.get("current_phase", "unknown")
+        trial_status = self.trial_state.get("trial_status", "not_started")
+        trial_phase = self.trial_state.get("trial_phase", "not_started")
+        
+        # If trial has started, use trial phase as current phase
+        if trial_status == "in_progress" or trial_phase != "not_started":
+            actual_phase = "trial"
+        
         return {
             "case_info": {
                 "name": self.case_name,
                 "length": self.case_length,
-                "current_phase": self.current_state.get("current_phase", "unknown"),
+                "current_phase": actual_phase,
                 "progress": self.get_progress_percentage()
             },
             "current_situation": {
@@ -577,9 +756,16 @@ class GameStateManager:
                 "recent_notes": self.get_recent_notes(3)
             },
             "current_status": {
-                "trial_ready": self.is_trial_ready(),
+                "trial_ready": self.is_trial_ready() or trial_status == "in_progress",
                 "available_actions": self.get_available_actions()[:5],  # Top 5 actions
                 "key_characters": self.get_key_character_status()
+            },
+            "trial_progress": {
+                "status": trial_status,
+                "phase": trial_phase,
+                "current_witness": self.trial_state.get("current_witness"),
+                "witnesses_examined": self.trial_state.get("witnesses_examined", []),
+                "cross_exam_history": self.trial_state.get("cross_examination_history", [])
             }
         }
     
@@ -639,13 +825,36 @@ class GameStateManager:
         summary += f"**Location:** {location.replace('_', ' ').title()}\n"
         summary += f"**Day {day}** - {time_left} until trial\n\n"
         
-        # Recent progress
-        last_gate = context['recent_progress']['last_completed_gate']
-        current_gate = context['recent_progress']['current_gate']
-        if last_gate:
-            summary += f"**Last Completed:** {last_gate.replace('_', ' ').title()}\n"
-        if current_gate:
-            summary += f"**Current Focus:** {current_gate.replace('_', ' ').title()}\n\n"
+        # Trial-specific progress if in trial
+        trial_progress = context.get('trial_progress', {})
+        if trial_progress.get('status') == 'in_progress':
+            summary += "**🏛️ TRIAL IN PROGRESS**\n"
+            
+            # Show witnesses examined
+            witnesses_examined = trial_progress.get('witnesses_examined', [])
+            if witnesses_examined:
+                summary += f"**Witnesses Examined:** {', '.join(witnesses_examined)}\n"
+            
+            # Show current witness if in cross-examination
+            current_witness = trial_progress.get('current_witness')
+            if current_witness:
+                summary += f"**Currently Cross-Examining:** {current_witness}\n"
+            
+            # Show cross-examination victories
+            cross_exam_history = trial_progress.get('cross_exam_history', [])
+            if cross_exam_history:
+                total_victories = sum(1 for exam in cross_exam_history if exam.get('victory_achieved', False))
+                summary += f"**Cross-Examination Victories:** {total_victories}\n"
+            
+            summary += "\n"
+        else:
+            # Investigation progress
+            last_gate = context['recent_progress']['last_completed_gate']
+            current_gate = context['recent_progress']['current_gate']
+            if last_gate:
+                summary += f"**Last Completed:** {last_gate.replace('_', ' ').title()}\n"
+            if current_gate:
+                summary += f"**Current Focus:** {current_gate.replace('_', ' ').title()}\n\n"
         
         # Recent evidence
         recent_evidence = context['recent_progress']['recent_evidence']
@@ -656,7 +865,7 @@ class GameStateManager:
             summary += "\n"
         
         # Trial status
-        if context['current_status']['trial_ready']:
+        if context['current_status']['trial_ready'] and trial_progress.get('status') != 'in_progress':
             summary += "**🚨 TRIAL READY!** You have enough evidence to proceed to trial.\n\n"
         
         # Available actions
@@ -835,7 +1044,7 @@ class GameStateManager:
         })
         
         self.current_state["inspiration_log"] = notes
-        self.save_current_state()
+        self.save_current_state_to_file()
     
     def get_inspiration_history(self) -> List[Dict[str, Any]]:
         """Get history of inspiration usage"""
@@ -918,6 +1127,1092 @@ class GameStateManager:
         if "error" not in inspiration:
             self.log_inspiration_usage(inspiration, context)
         return inspiration
+    
+    # Cross-Examination System
+    
+    def load_trial_statements(self, witness_name: str = None) -> Dict[str, Any]:
+        """Load trial statements for cross-examination"""
+        statements_file = self.case_path / "game_state" / "trial_statements.json"
+        
+        if not statements_file.exists():
+            return {"error": "No trial statements file found"}
+        
+        with open(statements_file, 'r') as f:
+            statements_data = json.load(f)
+        
+        if witness_name:
+            # Look for specific witness cross-examination
+            witness_key = f"{witness_name.lower().replace(' ', '_')}_cross_exam"
+            if witness_key in statements_data:
+                return statements_data[witness_key]
+            else:
+                return {"error": f"No cross-examination found for {witness_name}"}
+        
+        return statements_data
+    
+    def start_cross_examination(self, witness_name: str) -> Dict[str, Any]:
+        """Start cross-examination of a specific witness"""
+        cross_exam_data = self.load_trial_statements(witness_name)
+        
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        # Update trial state
+        self.trial_state["current_witness"] = witness_name
+        self.trial_state["trial_phase"] = "cross_examination"
+        self.trial_state["current_cross_exam"] = {
+            "witness": witness_name,
+            "statements_presented": [],
+            "evidence_presented": [],
+            "successful_contradictions": 0,
+            "failed_presentations": 0,
+            "statements_pressed": [],
+            "penalty_count": 0,
+            "game_over": False
+        }
+        
+        self.save_trial_state_to_file()
+        
+        return {
+            "success": True,
+            "witness": witness_name,
+            "statements": cross_exam_data["statements"],
+            "message": f"Cross-examination of {witness_name} begins!"
+        }
+    
+    def press_statement(self, statement_id: str) -> Dict[str, Any]:
+        """Press a witness for more details on a statement"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        witness_name = current_exam["witness"]
+        cross_exam_data = self.load_trial_statements(witness_name)
+        
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        # Find the statement
+        statement = None
+        for stmt in cross_exam_data["statements"]:
+            if stmt["id"] == statement_id:
+                statement = stmt
+                break
+        
+        if not statement:
+            return {"error": f"Statement {statement_id} not found"}
+        
+        # Record that this statement was pressed
+        if statement_id not in current_exam["statements_pressed"]:
+            current_exam["statements_pressed"].append(statement_id)
+            self.trial_state["current_cross_exam"] = current_exam
+            self.save_trial_state_to_file()
+        
+        # Use pre-written response if available, otherwise generate dynamic response
+        base_response = statement.get("press_response", "")
+        if not base_response:
+            dynamic_response = self.generate_dramatic_response(
+                f"pressing witness about {statement['text'][:50]}...", 
+                "press"
+            )
+        else:
+            dynamic_response = base_response
+        
+        return {
+            "success": True,
+            "statement_id": statement_id,
+            "response": dynamic_response,
+            "statement_text": statement["text"]
+        }
+    
+    def get_hint(self, statement_id: str = None) -> Dict[str, Any]:
+        """Get context-aware hint for current cross-examination"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        witness_name = current_exam["witness"]
+        cross_exam_data = self.load_trial_statements(witness_name)
+        
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        # If specific statement requested, provide targeted hint
+        if statement_id:
+            for stmt in cross_exam_data["statements"]:
+                if stmt["id"] == statement_id:
+                    if stmt.get("is_lie", False):
+                        contradicting_evidence = stmt.get("contradicting_evidence", [])
+                        if contradicting_evidence:
+                            hint_text = f"This statement seems suspicious. Try examining evidence related to: {', '.join(contradicting_evidence)}"
+                        else:
+                            hint_text = "This statement contradicts something we know about the case."
+                    else:
+                        hint_text = "This statement appears to be truthful. Consider pressing for more details or focus on other statements."
+                    
+                    return {
+                        "hint_type": "statement_specific",
+                        "statement_id": statement_id,
+                        "hint_text": hint_text,
+                        "statement_text": stmt["text"]
+                    }
+            
+            return {"error": f"Statement {statement_id} not found"}
+        
+        # General hints based on current progress
+        successful_contradictions = current_exam["successful_contradictions"]
+        failed_presentations = current_exam["failed_presentations"]
+        penalty_count = current_exam.get("penalty_count", 0)
+        
+        # Analyze what's been tried
+        evidence_presented = [ep["evidence_name"] for ep in current_exam["evidence_presented"]]
+        statements_pressed = current_exam.get("statements_pressed", [])
+        
+        # Find statements that are lies but haven't been contradicted yet
+        unchallenged_lies = []
+        for stmt in cross_exam_data["statements"]:
+            if stmt.get("is_lie", False):
+                stmt_contradicted = any(
+                    ep["statement_id"] == stmt["id"] and ep["success"] 
+                    for ep in current_exam["evidence_presented"]
+                )
+                if not stmt_contradicted:
+                    unchallenged_lies.append(stmt)
+        
+        # Generate contextual hint
+        if penalty_count >= 3:
+            hint_text = "⚠️ You're accumulating penalties. Try pressing statements for more information before presenting evidence."
+        elif failed_presentations > successful_contradictions:
+            hint_text = "💡 Consider focusing on the contradictions in the witness's story rather than trying random evidence."
+        elif len(statements_pressed) < 2:
+            hint_text = "💭 Try pressing some statements first to gather more information before presenting evidence."
+        elif unchallenged_lies:
+            target_stmt = unchallenged_lies[0]
+            hint_text = f"🎯 Statement {target_stmt['id']} looks suspicious. What evidence might contradict it?"
+        else:
+            victory_status = self.check_cross_examination_victory()
+            if victory_status.get('victory_achieved', False):
+                hint_text = "🏆 You've achieved victory conditions! Consider ending the cross-examination."
+            else:
+                hint_text = "🔍 Keep looking for contradictions in the witness's testimony."
+        
+        return {
+            "hint_type": "general",
+            "hint_text": hint_text,
+            "progress_info": {
+                "successful_contradictions": successful_contradictions,
+                "failed_presentations": failed_presentations,
+                "penalty_count": penalty_count,
+                "statements_pressed": len(statements_pressed),
+                "unchallenged_lies": len(unchallenged_lies)
+            }
+        }
+    
+    def apply_penalty(self, witness_name: str) -> Dict[str, Any]:
+        """Apply penalty for wrong evidence presentation"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        cross_exam_data = self.load_trial_statements(witness_name)
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        penalty_system = cross_exam_data.get("penalty_system", {})
+        if not penalty_system.get("enabled", False):
+            return {"penalty_applied": False}
+        
+        # Increment penalty count
+        current_exam["penalty_count"] += 1
+        penalty_count = current_exam["penalty_count"]
+        max_penalties = penalty_system.get("max_wrong_presentations", 5)
+        
+        # Check if game over
+        if penalty_count >= max_penalties:
+            current_exam["game_over"] = True
+            self.trial_state["current_cross_exam"] = current_exam
+            self.save_trial_state_to_file()
+            
+            failure_message = penalty_system.get("failure_consequences", {}).get(
+                "max_penalties_reached", 
+                "GAME OVER: Too many wrong evidence presentations!"
+            )
+            
+            return {
+                "penalty_applied": True,
+                "penalty_count": penalty_count,
+                "max_penalties": max_penalties,
+                "game_over": True,
+                "penalty_message": failure_message
+            }
+        
+        # Apply penalty effect based on count
+        penalty_effects = penalty_system.get("penalty_effects", {})
+        penalty_message = ""
+        
+        if penalty_count <= 2:
+            penalty_message = penalty_effects.get("1-2", "The judge looks disapproving")
+        elif penalty_count <= 4:
+            penalty_message = penalty_effects.get("3-4", "The prosecutor objects and the judge sustains")
+        else:
+            penalty_message = penalty_effects.get("5+", "The judge threatens contempt of court")
+        
+        # Generate dynamic penalty response
+        dynamic_penalty = self.generate_dramatic_response(
+            f"penalty {penalty_count} for wrong evidence presentation", 
+            "judge_reaction"
+        )
+        
+        self.trial_state["current_cross_exam"] = current_exam
+        self.save_trial_state_to_file()
+        
+        return {
+            "penalty_applied": True,
+            "penalty_count": penalty_count,
+            "max_penalties": max_penalties,
+            "game_over": False,
+            "penalty_message": penalty_message,
+            "dynamic_penalty": dynamic_penalty
+        }
+    
+    def generate_dramatic_response(self, context: str, response_type: str = "success") -> str:
+        """Generate dynamic dramatic response using forcing function"""
+        try:
+            inspiration = self.get_forced_inspiration(f"trial {response_type} response: {context}")
+            
+            if "error" in inspiration:
+                # Fallback to default responses
+                if response_type == "success":
+                    return "OBJECTION! The witness's statement has been contradicted!"
+                elif response_type == "failure":
+                    return "That evidence doesn't contradict the witness's statement."
+                elif response_type == "press":
+                    return "The witness has nothing more to add."
+                else:
+                    return "The courtroom waits in tense silence..."
+            
+            # Use the forced inspiration word to generate unique response
+            forced_word = inspiration.get("word", "tension")
+            
+            # Generate contextual dramatic response based on forced word
+            if response_type == "success":
+                return f"OBJECTION! Like a {forced_word} cutting through deception, the evidence reveals the truth! {context}"
+            elif response_type == "failure":
+                return f"The evidence sits like a {forced_word} in the courtroom - present, but ineffective against this testimony."
+            elif response_type == "press":
+                return f"The witness's expression shows {forced_word} as they elaborate on their statement."
+            elif response_type == "judge_reaction":
+                return f"The judge's expression reflects {forced_word} as the courtroom drama unfolds."
+            elif response_type == "prosecutor_objection":
+                return f"The prosecutor rises with {forced_word}, objecting to this line of questioning!"
+            else:
+                return f"The courtroom atmosphere fills with {forced_word} as the trial continues."
+                
+        except Exception as e:
+            # Fallback for any errors
+            return "The courtroom holds its breath as the evidence is presented."
+    
+    def present_evidence_against_statement(self, statement_id: str, evidence_name: str) -> Dict[str, Any]:
+        """Present evidence to contradict a witness statement"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        witness_name = current_exam["witness"]
+        cross_exam_data = self.load_trial_statements(witness_name)
+        
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        # Find the statement
+        statement = None
+        for stmt in cross_exam_data["statements"]:
+            if stmt["id"] == statement_id:
+                statement = stmt
+                break
+        
+        if not statement:
+            return {"error": f"Statement {statement_id} not found"}
+        
+        # Check if evidence exists in our case
+        evidence_list = self.current_state.get("evidence_collected", [])
+        evidence_exists = any(e["name"] == evidence_name for e in evidence_list)
+        
+        if not evidence_exists:
+            return {"error": f"Evidence '{evidence_name}' not found in your case file"}
+        
+        # Check if this evidence contradicts the statement
+        contradicting_evidence = statement.get("contradicting_evidence", [])
+        
+        # Record the presentation attempt
+        presentation_record = {
+            "statement_id": statement_id,
+            "evidence_name": evidence_name,
+            "success": evidence_name in contradicting_evidence
+        }
+        
+        current_exam["evidence_presented"].append(presentation_record)
+        
+        if evidence_name in contradicting_evidence:
+            # Success!
+            current_exam["successful_contradictions"] += 1
+            self.trial_state["current_cross_exam"] = current_exam
+            self.save_trial_state_to_file()
+            
+            # Use pre-written response if available, otherwise generate dynamic response
+            base_response = statement.get("success_response", "")
+            if not base_response:
+                dynamic_response = self.generate_dramatic_response(
+                    f"evidence {evidence_name} contradicts statement about {statement['text'][:50]}...", 
+                    "success"
+                )
+            else:
+                dynamic_response = base_response
+            
+            # Add judge reaction for extra drama
+            judge_reaction = self.generate_dramatic_response(
+                f"successful objection with {evidence_name}", 
+                "judge_reaction"
+            )
+            
+            return {
+                "success": True,
+                "contradiction_found": True,
+                "statement_id": statement_id,
+                "evidence_name": evidence_name,
+                "response": dynamic_response,
+                "judge_reaction": judge_reaction,
+                "statement_text": statement["text"]
+            }
+        else:
+            # Failure - apply penalty system
+            current_exam["failed_presentations"] += 1
+            self.trial_state["current_cross_exam"] = current_exam
+            self.save_trial_state_to_file()
+            
+            # Apply penalty for wrong evidence presentation
+            penalty_result = self.apply_penalty(witness_name)
+            
+            # Check if game over due to penalties
+            if penalty_result.get("game_over", False):
+                return {
+                    "success": False,
+                    "contradiction_found": False,
+                    "statement_id": statement_id,
+                    "evidence_name": evidence_name,
+                    "response": penalty_result["penalty_message"],
+                    "game_over": True,
+                    "penalty_count": penalty_result["penalty_count"],
+                    "statement_text": statement["text"]
+                }
+            
+            # Use pre-written response if available, otherwise generate dynamic response
+            base_response = statement.get("failure_response", "")
+            if not base_response:
+                dynamic_response = self.generate_dramatic_response(
+                    f"evidence {evidence_name} fails against statement", 
+                    "failure"
+                )
+            else:
+                dynamic_response = base_response
+            
+            # Add prosecutor reaction for extra drama
+            prosecutor_reaction = self.generate_dramatic_response(
+                f"defense fails with {evidence_name}", 
+                "prosecutor_objection"
+            )
+            
+            response_data = {
+                "success": False,
+                "contradiction_found": False,
+                "statement_id": statement_id,
+                "evidence_name": evidence_name,
+                "response": dynamic_response,
+                "prosecutor_reaction": prosecutor_reaction,
+                "statement_text": statement["text"]
+            }
+            
+            # Add penalty information if penalties are enabled
+            if penalty_result.get("penalty_applied", False):
+                response_data["penalty_applied"] = True
+                response_data["penalty_count"] = penalty_result["penalty_count"]
+                response_data["max_penalties"] = penalty_result["max_penalties"]
+                response_data["penalty_message"] = penalty_result["penalty_message"]
+                if "dynamic_penalty" in penalty_result:
+                    response_data["penalty_reaction"] = penalty_result["dynamic_penalty"]
+            
+            return response_data
+    
+    def present_evidence_combination(self, statement_id: str, evidence_names: List[str]) -> Dict[str, Any]:
+        """Present multiple pieces of evidence together to create complex contradictions"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        witness_name = current_exam["witness"]
+        cross_exam_data = self.load_trial_statements(witness_name)
+        
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        # Find the statement
+        statement = None
+        for stmt in cross_exam_data["statements"]:
+            if stmt["id"] == statement_id:
+                statement = stmt
+                break
+        
+        if not statement:
+            return {"error": f"Statement {statement_id} not found"}
+        
+        # Check if all evidence exists
+        evidence_list = self.current_state.get("evidence_collected", [])
+        for evidence_name in evidence_names:
+            if not any(e["name"] == evidence_name for e in evidence_list):
+                return {"error": f"Evidence '{evidence_name}' not found in your case file"}
+        
+        # Check for evidence combinations in statement metadata
+        evidence_combinations = statement.get("evidence_combinations", [])
+        
+        # Look for matching combination
+        matching_combination = None
+        for combo in evidence_combinations:
+            required_evidence = set(combo.get("required_evidence", []))
+            provided_evidence = set(evidence_names)
+            
+            if required_evidence.issubset(provided_evidence):
+                matching_combination = combo
+                break
+        
+        # If no specific combination found, check if all evidence individually contradicts
+        if not matching_combination:
+            contradicting_evidence = statement.get("contradicting_evidence", [])
+            individual_matches = [e for e in evidence_names if e in contradicting_evidence]
+            
+            if len(individual_matches) >= 2:  # Multiple individual pieces
+                # Create dynamic combination response
+                dynamic_response = self.generate_dramatic_response(
+                    f"multiple evidence pieces {', '.join(individual_matches)} against statement",
+                    "success"
+                )
+                
+                combination_response = f"OBJECTION! Multiple pieces of evidence contradict this testimony: {', '.join(individual_matches)}!"
+                if not any("OBJECTION!" in dynamic_response for _ in [1]):  # Check if already has objection
+                    combination_response = dynamic_response
+                
+                # Record successful combination
+                current_exam["successful_contradictions"] += 1
+                current_exam["evidence_presented"].append({
+                    "statement_id": statement_id,
+                    "evidence_combination": evidence_names,
+                    "success": True,
+                    "combination_type": "multiple_individual"
+                })
+                
+                self.trial_state["current_cross_exam"] = current_exam
+                self.save_trial_state_to_file()
+                
+                return {
+                    "success": True,
+                    "contradiction_found": True,
+                    "combination_used": True,
+                    "evidence_combination": evidence_names,
+                    "statement_id": statement_id,
+                    "response": combination_response,
+                    "combination_type": "multiple_individual",
+                    "statement_text": statement["text"]
+                }
+        
+        # Use specific combination if found
+        if matching_combination:
+            current_exam["successful_contradictions"] += 1
+            current_exam["evidence_presented"].append({
+                "statement_id": statement_id,
+                "evidence_combination": evidence_names,
+                "success": True,
+                "combination_type": "designed_combination"
+            })
+            
+            self.trial_state["current_cross_exam"] = current_exam
+            self.save_trial_state_to_file()
+            
+            combination_response = matching_combination.get(
+                "success_response", 
+                f"OBJECTION! The combination of {', '.join(evidence_names)} completely undermines this testimony!"
+            )
+            
+            return {
+                "success": True,
+                "contradiction_found": True,
+                "combination_used": True,
+                "evidence_combination": evidence_names,
+                "statement_id": statement_id,
+                "response": combination_response,
+                "combination_type": "designed_combination",
+                "statement_text": statement["text"]
+            }
+        
+        # No valid combination found
+        current_exam["failed_presentations"] += 1
+        self.trial_state["current_cross_exam"] = current_exam
+        
+        # Apply penalty for failed combination
+        penalty_result = self.apply_penalty(witness_name)
+        
+        if penalty_result.get("game_over", False):
+            return {
+                "success": False,
+                "contradiction_found": False,
+                "combination_used": True,
+                "evidence_combination": evidence_names,
+                "statement_id": statement_id,
+                "response": penalty_result["penalty_message"],
+                "game_over": True,
+                "statement_text": statement["text"]
+            }
+        
+        failure_response = f"Those pieces of evidence don't work together to contradict this statement."
+        
+        response_data = {
+            "success": False,
+            "contradiction_found": False,
+            "combination_used": True,
+            "evidence_combination": evidence_names,
+            "statement_id": statement_id,
+            "response": failure_response,
+            "statement_text": statement["text"]
+        }
+        
+        # Add penalty information
+        if penalty_result.get("penalty_applied", False):
+            response_data["penalty_applied"] = True
+            response_data["penalty_count"] = penalty_result["penalty_count"]
+            response_data["penalty_message"] = penalty_result["penalty_message"]
+        
+        return response_data
+    
+    def generate_trial_statements_from_backbone(self, witness_name: str) -> Dict[str, Any]:
+        """Generate cross-examination statements dynamically from backbone files"""
+        
+        # Check if this is a simple improvisation case
+        if self.case_type == "simple_improvisation":
+            return {"error": "This case doesn't have backbone files for dynamic generation"}
+        
+        # Load backbone files
+        try:
+            character_facts_file = self.case_path / "backbone" / "character_facts.json"
+            witness_testimonies_file = self.case_path / "backbone" / "witness_testimonies.json"
+            evidence_chain_file = self.case_path / "backbone" / "evidence_chain.json"
+            
+            if not all([character_facts_file.exists(), witness_testimonies_file.exists(), evidence_chain_file.exists()]):
+                return {"error": "Missing backbone files required for dynamic generation"}
+            
+            with open(character_facts_file, 'r') as f:
+                character_facts = json.load(f)
+            with open(witness_testimonies_file, 'r') as f:
+                witness_testimonies = json.load(f)
+            with open(evidence_chain_file, 'r') as f:
+                evidence_chain = json.load(f)
+                
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            return {"error": f"Failed to load backbone files: {e}"}
+        
+        # Find witness in testimonies
+        witness_testimony = None
+        for testimony in witness_testimonies.get("true_testimonies_before_fabrication", []):
+            if testimony["witness"].lower() == witness_name.lower():
+                witness_testimony = testimony
+                break
+        
+        if not witness_testimony:
+            return {"error": f"No testimony found for {witness_name} in backbone files"}
+        
+        # Find character facts for this witness
+        character_data = None
+        for char in character_facts.get("characters", []):
+            if witness_name.lower() in char["name"].lower():
+                character_data = char
+                break
+        
+        # Extract contradictable elements and evidence
+        contradictable_elements = witness_testimony.get("contradictable_elements", [])
+        true_testimony = witness_testimony.get("true_testimony", "")
+        evidence_pieces = evidence_chain.get("evidence_pieces", [])
+        
+        # Generate statements by breaking down the testimony
+        statements = []
+        statement_id = 'A'
+        
+        # Split testimony into logical chunks and create statements
+        testimony_sentences = [s.strip() for s in true_testimony.split('.') if s.strip()]
+        
+        for i, sentence in enumerate(testimony_sentences[:5]):  # Max 5 statements (A-E)
+            # Determine if this statement should be a lie based on contradictable elements
+            # More sophisticated lie detection using keyword matching
+            is_lie = False
+            for element in contradictable_elements:
+                element_lower = element.lower()
+                sentence_lower = sentence.lower()
+                
+                # Check for key concepts that would make this statement contradictable
+                if (("claims" in element_lower or "says" in element_lower or "emphasizes" in element_lower) and
+                    any(keyword in sentence_lower for keyword in 
+                        ["office", "files", "screaming", "coffee", "cup", "time", "death", "digitalis", "intentional"])):
+                    is_lie = True
+                    break
+            
+            # Find relevant evidence that could contradict this statement
+            relevant_evidence = []
+            for evidence in evidence_pieces:
+                evidence_name = evidence.get("name", "")
+                evidence_desc = evidence.get("description", "").lower()
+                
+                # Check if evidence relates to this statement
+                if any(keyword in sentence.lower() for keyword in evidence_desc.split()[:3]):
+                    relevant_evidence.append(evidence_name)
+            
+            # Generate dynamic press response based on character knowledge
+            press_response = ""
+            if character_data:
+                hidden_knowledge = character_data.get("what_he_hides", [])
+                if hidden_knowledge and is_lie:
+                    press_response = f"The witness shows discomfort when pressed about this detail."
+                else:
+                    press_response = f"The witness provides additional details about the situation."
+            else:
+                press_response = "The witness has nothing more to add."
+            
+            statement = {
+                "id": statement_id,
+                "text": sentence + ".",
+                "is_lie": is_lie,
+                "press_response": press_response,
+                "truth_level": "fabricated" if is_lie else "accurate"
+            }
+            
+            # Add contradiction evidence if this is a lie
+            if is_lie and relevant_evidence:
+                statement["contradicting_evidence"] = relevant_evidence[:2]  # Max 2 pieces
+                statement["success_response"] = f"OBJECTION! The evidence contradicts this testimony!"
+                statement["failure_response"] = f"That evidence doesn't contradict this part of the testimony."
+            
+            statements.append(statement)
+            statement_id = chr(ord(statement_id) + 1)
+        
+        # Generate victory conditions
+        lies_count = sum(1 for stmt in statements if stmt.get("is_lie", False))
+        critical_lies = [stmt["id"] for stmt in statements if stmt.get("is_lie", False)]
+        
+        victory_condition = {
+            "required_contradictions": max(1, lies_count // 2),
+            "critical_lies": critical_lies,
+            "success_message": f"{witness_name}'s testimony has been thoroughly discredited! The contradictions are clear!"
+        }
+        
+        # Create penalty system
+        penalty_system = {
+            "enabled": True,
+            "max_wrong_presentations": 5,
+            "penalty_effects": {
+                "1-2": "The judge looks displeased with your evidence presentation",
+                "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+                "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+            },
+            "failure_consequences": {
+                "max_penalties_reached": f"GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against {witness_name}!"
+            }
+        }
+        
+        # Create full cross-examination structure
+        cross_exam_data = {
+            "witness_name": witness_name,
+            "statements": statements,
+            "victory_condition": victory_condition,
+            "penalty_system": penalty_system,
+            "generated_from": "backbone_files",
+            "source_testimony": true_testimony
+        }
+        
+        return {
+            "success": True,
+            "cross_exam_data": cross_exam_data,
+            "witness_name": witness_name,
+            "statements_generated": len(statements),
+            "lies_detected": lies_count
+        }
+    
+    def auto_generate_trial_statements_for_case(self) -> Dict[str, Any]:
+        """Auto-generate trial statements for all witnesses in a case"""
+        
+        if self.case_type == "simple_improvisation":
+            return {"error": "Simple improvisation cases don't have backbone files for generation"}
+        
+        # Get available witnesses from backbone
+        try:
+            witness_testimonies_file = self.case_path / "backbone" / "witness_testimonies.json"
+            if not witness_testimonies_file.exists():
+                return {"error": "No witness testimonies file found"}
+            
+            with open(witness_testimonies_file, 'r') as f:
+                witness_testimonies = json.load(f)
+                
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            return {"error": f"Failed to load witness testimonies: {e}"}
+        
+        witnesses = witness_testimonies.get("true_testimonies_before_fabrication", [])
+        if not witnesses:
+            return {"error": "No witnesses found in backbone files"}
+        
+        # Generate statements for each witness
+        generated_statements = {}
+        total_statements = 0
+        total_lies = 0
+        
+        for witness_data in witnesses:
+            witness_name = witness_data["witness"]
+            result = self.generate_trial_statements_from_backbone(witness_name)
+            
+            if result.get("success", False):
+                witness_key = f"{witness_name.lower().replace(' ', '_')}_cross_exam"
+                generated_statements[witness_key] = result["cross_exam_data"]
+                total_statements += result["statements_generated"]
+                total_lies += result["lies_detected"]
+        
+        if not generated_statements:
+            return {"error": "Failed to generate statements for any witnesses"}
+        
+        # Save to trial_statements.json
+        statements_file = self.case_path / "game_state" / "trial_statements.json"
+        
+        try:
+            with open(statements_file, 'w') as f:
+                json.dump(generated_statements, f, indent=2)
+        except Exception as e:
+            return {"error": f"Failed to save trial statements: {e}"}
+        
+        return {
+            "success": True,
+            "witnesses_generated": len(generated_statements),
+            "total_statements": total_statements,
+            "total_lies": total_lies,
+            "file_saved": str(statements_file),
+            "witnesses": list(generated_statements.keys())
+        }
+    
+    def adapt_case_for_interactive_trial(self) -> Dict[str, Any]:
+        """Automatically adapt any case to support interactive trials"""
+        
+        adaptation_results = {
+            "case_type": self.case_type,
+            "adaptations_made": [],
+            "warnings": [],
+            "success": True
+        }
+        
+        # Check if trial statements already exist
+        statements_file = self.case_path / "game_state" / "trial_statements.json"
+        if statements_file.exists():
+            adaptation_results["warnings"].append("Trial statements already exist - no adaptation needed")
+            return adaptation_results
+        
+        # Simple improvisation cases - create basic interactive structure
+        if self.case_type == "simple_improvisation":
+            # Create evidence based on what's been collected during investigation
+            evidence_collected = self.current_state.get("evidence_collected", [])
+            
+            if not evidence_collected:
+                adaptation_results["warnings"].append("No evidence collected yet - run investigation first")
+                return adaptation_results
+            
+            # Create a basic witness based on the case opening or client info
+            client_name = self.client_name or "Unknown Client"
+            
+            # Generate basic statements from evidence
+            statements = []
+            for i, evidence in enumerate(evidence_collected[:5]):
+                statement_id = chr(ord('A') + i)
+                
+                # Make some statements lies based on evidence descriptions
+                is_lie = "inconsistencies" in evidence["name"].lower() or "location" in evidence["name"].lower()
+                
+                statement = {
+                    "id": statement_id,
+                    "text": f"The evidence shows that {evidence['description']}.",
+                    "is_lie": is_lie,
+                    "press_response": "The witness provides more details about this evidence.",
+                    "truth_level": "fabricated" if is_lie else "accurate"
+                }
+                
+                if is_lie:
+                    statement["contradicting_evidence"] = [evidence["name"]]
+                    statement["success_response"] = f"OBJECTION! This contradicts the evidence we found!"
+                    statement["failure_response"] = "That evidence doesn't contradict this statement."
+                
+                statements.append(statement)
+            
+            # Create cross-examination structure
+            cross_exam_data = {
+                f"prosecution_witness_cross_exam": {
+                    "witness_name": "Prosecution Witness",
+                    "statements": statements,
+                    "victory_condition": {
+                        "required_contradictions": 1,
+                        "critical_lies": [stmt["id"] for stmt in statements if stmt.get("is_lie", False)],
+                        "success_message": "The prosecution's case has been undermined by the evidence!"
+                    },
+                    "penalty_system": {
+                        "enabled": True,
+                        "max_wrong_presentations": 5,
+                        "penalty_effects": {
+                            "1-2": "The judge looks skeptical of your approach",
+                            "3-4": "The prosecutor objects to your evidence presentation",
+                            "5+": "The judge warns you about wasting the court's time"
+                        },
+                        "failure_consequences": {
+                            "max_penalties_reached": "GAME OVER: Your case has been undermined by poor evidence presentation!"
+                        }
+                    },
+                    "generated_from": "simple_case_adaptation",
+                    "evidence_basis": [e["name"] for e in evidence_collected]
+                }
+            }
+            
+            # Save the generated statements
+            try:
+                with open(statements_file, 'w') as f:
+                    json.dump(cross_exam_data, f, indent=2)
+                adaptation_results["adaptations_made"].append("Created basic trial statements from investigation evidence")
+            except Exception as e:
+                adaptation_results["success"] = False
+                adaptation_results["warnings"].append(f"Failed to save trial statements: {e}")
+                return adaptation_results
+        
+        # Complex cases with backbone - use dynamic generation
+        elif self.case_type == "complex":
+            result = self.auto_generate_trial_statements_for_case()
+            if result.get("success", False):
+                adaptation_results["adaptations_made"].append(f"Generated statements for {result['witnesses_generated']} witnesses from backbone")
+                adaptation_results["witnesses_generated"] = result["witnesses_generated"]
+                adaptation_results["total_statements"] = result["total_statements"]
+            else:
+                adaptation_results["success"] = False
+                adaptation_results["warnings"].append(result.get("error", "Failed to generate from backbone"))
+                return adaptation_results
+        
+        # Ensure trial state is properly initialized for new format
+        trial_phase = self.trial_state.get("trial_phase")
+        trial_status = self.trial_state.get("trial_status") 
+        
+        if not trial_phase or trial_status == "not_started":
+            # Update to new trial state format
+            if self.case_type == "simple_improvisation":
+                self.trial_state.update(self.create_simple_trial_state())
+            else:
+                # Update complex case trial state to new format
+                self.trial_state.update({
+                    "trial_phase": "not_started",
+                    "current_witness": None,
+                    "witnesses_examined": [],
+                    "evidence_presented": [],
+                    "objections_sustained": 0,
+                    "objections_overruled": 0,
+                    "trial_gates": {
+                        "opening_statements": {"status": "pending", "completed_at": None},
+                        "witness_examination": {"status": "pending", "completed_at": None},
+                        "final_argument": {"status": "pending", "completed_at": None}
+                    },
+                    "trial_ready": True,
+                    "last_updated": None
+                })
+                
+            self.save_trial_state_to_file()
+            adaptation_results["adaptations_made"].append("Updated trial state to new interactive format")
+        
+        # Add evidence to investigation state if not present
+        evidence_collected = self.current_state.get("evidence_collected", [])
+        if not evidence_collected and self.case_type == "complex":
+            # Load evidence from backbone if available
+            try:
+                evidence_chain_file = self.case_path / "backbone" / "evidence_chain.json"
+                if evidence_chain_file.exists():
+                    with open(evidence_chain_file, 'r') as f:
+                        evidence_chain = json.load(f)
+                    
+                    for evidence in evidence_chain.get("evidence_pieces", [])[:3]:  # Add first 3 pieces
+                        self.add_evidence(evidence["name"], evidence["description"])
+                    
+                    adaptation_results["adaptations_made"].append("Added initial evidence from backbone to investigation")
+            except Exception as e:
+                adaptation_results["warnings"].append(f"Could not load evidence from backbone: {e}")
+        
+        return adaptation_results
+    
+    def get_trial_progress(self) -> Dict[str, Any]:
+        """Get comprehensive trial progress and next actions"""
+        if self.trial_state["trial_phase"] == "not_started":
+            return {
+                "phase": "not_started",
+                "ready_for_trial": self.is_trial_ready(),
+                "next_action": "start_trial" if self.is_trial_ready() else "complete_investigation"
+            }
+        
+        # Check if we're in cross-examination
+        current_exam = self.trial_state.get("current_cross_exam")
+        if current_exam and not current_exam.get("game_over", False):
+            witness_name = current_exam["witness"]
+            victory_status = self.check_cross_examination_victory()
+            
+            return {
+                "phase": "cross_examination",
+                "current_witness": witness_name,
+                "victory_achieved": victory_status.get("victory_achieved", False),
+                "successful_contradictions": current_exam["successful_contradictions"],
+                "penalty_count": current_exam.get("penalty_count", 0),
+                "next_action": "continue_cross_examination" if not victory_status.get("victory_achieved", False) else "end_cross_examination"
+            }
+        
+        # Determine what witnesses are available for cross-examination
+        available_witnesses = self.get_available_witnesses_for_cross_examination()
+        examined_witnesses = self.trial_state.get("witnesses_examined", [])
+        
+        if available_witnesses and len(examined_witnesses) < len(available_witnesses):
+            unexamined = [w for w in available_witnesses if w not in examined_witnesses]
+            return {
+                "phase": "witness_examination",
+                "available_witnesses": available_witnesses,
+                "examined_witnesses": examined_witnesses,
+                "next_witness": unexamined[0] if unexamined else None,
+                "next_action": f"start_cross_examination_{unexamined[0].replace(' ', '_')}" if unexamined else "closing_arguments"
+            }
+        
+        # All witnesses examined or no witnesses available
+        return {
+            "phase": "closing_arguments",
+            "all_witnesses_examined": True,
+            "trial_complete": True,
+            "next_action": "closing_arguments"
+        }
+    
+    def get_available_witnesses_for_cross_examination(self) -> List[str]:
+        """Get list of witnesses available for cross-examination"""
+        # Check if we have trial statements files
+        statements_file = self.case_path / "game_state" / "trial_statements.json"
+        if not statements_file.exists():
+            return []
+        
+        with open(statements_file, 'r') as f:
+            statements_data = json.load(f)
+        
+        # Extract witness names from cross-examination data
+        witnesses = []
+        for key in statements_data.keys():
+            if key.endswith("_cross_exam"):
+                witness_data = statements_data[key]
+                witness_name = witness_data.get("witness_name", "")
+                if witness_name:
+                    witnesses.append(witness_name)
+        
+        return witnesses
+    
+    def suggest_next_trial_action(self) -> Dict[str, Any]:
+        """Suggest the next action based on trial progress"""
+        progress = self.get_trial_progress()
+        
+        suggestions = {
+            "not_started": "Use --start-trial to begin the trial phase",
+            "cross_examination": f"Continue cross-examining {progress.get('current_witness', 'the witness')} or use --end-cross-examination",
+            "witness_examination": f"Start cross-examining {progress.get('next_witness', 'the next witness')}",
+            "closing_arguments": "Prepare closing arguments - trial evidence phase complete"
+        }
+        
+        suggestion = suggestions.get(progress["phase"], "Continue with trial proceedings")
+        
+        return {
+            "phase": progress["phase"],
+            "suggestion": suggestion,
+            "specific_command": progress.get("next_action", ""),
+            "progress_details": progress
+        }
+    
+    def check_cross_examination_victory(self) -> Dict[str, Any]:
+        """Check if cross-examination victory conditions are met"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        witness_name = current_exam["witness"]
+        cross_exam_data = self.load_trial_statements(witness_name)
+        
+        if "error" in cross_exam_data:
+            return cross_exam_data
+        
+        victory_condition = cross_exam_data.get("victory_condition", {})
+        required_contradictions = victory_condition.get("required_contradictions", 1)
+        critical_lies = victory_condition.get("critical_lies", [])
+        
+        successful_contradictions = current_exam["successful_contradictions"]
+        
+        # Check if critical lies were exposed
+        critical_exposed = 0
+        for presentation in current_exam["evidence_presented"]:
+            if presentation["success"] and presentation["statement_id"] in critical_lies:
+                critical_exposed += 1
+        
+        victory_achieved = (
+            successful_contradictions >= required_contradictions and
+            critical_exposed > 0
+        )
+        
+        return {
+            "victory_achieved": victory_achieved,
+            "successful_contradictions": successful_contradictions,
+            "required_contradictions": required_contradictions,
+            "critical_lies_exposed": critical_exposed,
+            "total_critical_lies": len(critical_lies),
+            "victory_message": victory_condition.get("success_message", "Cross-examination completed successfully!")
+        }
+    
+    def end_cross_examination(self) -> Dict[str, Any]:
+        """End the current cross-examination"""
+        current_exam = self.trial_state.get("current_cross_exam")
+        if not current_exam:
+            return {"error": "No cross-examination in progress"}
+        
+        # Check victory status
+        victory_status = self.check_cross_examination_victory()
+        
+        # Add to witnesses examined
+        witness_name = current_exam["witness"]
+        examined_witnesses = self.trial_state.get("witnesses_examined", [])
+        if witness_name not in examined_witnesses:
+            examined_witnesses.append(witness_name)
+        
+        # Update trial state
+        self.trial_state["witnesses_examined"] = examined_witnesses
+        self.trial_state["current_witness"] = None
+        self.trial_state["trial_phase"] = "witness_examination"
+        
+        # Archive the cross-examination results
+        cross_exam_history = self.trial_state.get("cross_examination_history", [])
+        cross_exam_history.append({
+            "witness": witness_name,
+            "successful_contradictions": current_exam["successful_contradictions"],
+            "failed_presentations": current_exam["failed_presentations"],
+            "statements_pressed": current_exam["statements_pressed"],
+            "victory_achieved": victory_status.get("victory_achieved", False)
+        })
+        
+        self.trial_state["cross_examination_history"] = cross_exam_history
+        self.trial_state["current_cross_exam"] = None
+        
+        self.save_trial_state_to_file()
+        
+        return {
+            "success": True,
+            "witness": witness_name,
+            "victory_status": victory_status,
+            "summary": f"Cross-examination of {witness_name} completed."
+        }
 
 def main():
     """Command line interface for testing"""
@@ -951,6 +2246,33 @@ def main():
     parser.add_argument('--action-check', nargs='+', help='Make action check: action_description [difficulty] [evidence_count] [character_trust] [additional_modifier]')
     parser.add_argument('--dice-history', action='store_true', help='Show recent dice roll history')
     parser.add_argument('--client-name', action='store_true', help='Show client name for dialogue substitution')
+    parser.add_argument('--generate-name', nargs='?', const='', help='Generate unique character name (optional role hint)')
+    parser.add_argument('--generate-names', type=int, metavar='COUNT', help='Generate multiple unique character names')
+    parser.add_argument('--name-suggestions', help='Get character name suggestions based on description')
+    parser.add_argument('--create-family', type=int, metavar='SIZE', help='Create entire family of specified size')
+    parser.add_argument('--family-surname', help='Specific surname for family creation')
+    parser.add_argument('--add-family-member', help='Add family member to existing character (format: "existing_name:relationship")')
+    parser.add_argument('--surname-suggestions', nargs='+', help='Get surname suggestions avoiding these existing names')
+    
+    # Cross-examination commands
+    parser.add_argument('--start-cross-examination', metavar='WITNESS_NAME', help='Start cross-examination of specified witness')
+    parser.add_argument('--press', metavar='STATEMENT_ID', help='Press witness for more details on statement (A, B, C, etc.)')
+    parser.add_argument('--present', nargs=2, metavar=('STATEMENT_ID', 'EVIDENCE_NAME'), help='Present evidence against statement')
+    parser.add_argument('--check-victory', action='store_true', help='Check cross-examination victory status')
+    parser.add_argument('--end-cross-examination', action='store_true', help='End current cross-examination')
+    parser.add_argument('--show-statements', action='store_true', help='Show current witness statements')
+    parser.add_argument('--hint', nargs='?', const='', metavar='STATEMENT_ID', help='Get hint for cross-examination (optional statement ID for specific hint)')
+    parser.add_argument('--trial-status', action='store_true', help='Show comprehensive trial progress and next actions')
+    parser.add_argument('--generate-trial-statements', action='store_true', help='Auto-generate trial statements from backbone files')
+    parser.add_argument('--generate-witness-statements', metavar='WITNESS_NAME', help='Generate statements for specific witness from backbone')
+    parser.add_argument('--present-combination', nargs='+', help='Present multiple evidence pieces together against statement (format: STATEMENT_ID EVIDENCE1 EVIDENCE2 ...)')
+    parser.add_argument('--adapt-case', action='store_true', help='Automatically adapt case for interactive trials')
+    
+    # Enhanced narrative save system commands
+    parser.add_argument('--create-narrative-save', help='Create narrative save for current gate')
+    parser.add_argument('--restore-narrative', help='Restore narrative context from save file')
+    parser.add_argument('--list-narrative-saves', action='store_true', help='List all narrative saves')
+    parser.add_argument('--narrative-summary', help='Generate context summary from narrative save')
     
     args = parser.parse_args()
     
@@ -1051,6 +2373,230 @@ def main():
                 print("⚖️  Trial started!")
             else:
                 print("❌ Trial not ready yet. Complete more investigation gates first.")
+        
+        # Cross-examination command handlers
+        if args.start_cross_examination:
+            result = manager.start_cross_examination(args.start_cross_examination)
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"⚖️  {result['message']}")
+                print(f"\n=== CROSS-EXAMINATION: {result['witness']} ===")
+                for stmt in result['statements']:
+                    print(f"{stmt['id']}. {stmt['text']}")
+                print(f"\nCommands: press [A-E] | present [A-E] [evidence_name] | check-victory | end-cross-examination")
+        
+        if args.press:
+            result = manager.press_statement(args.press.upper())
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"💬 PRESS: {result['statement_text']}")
+                print(f"👤 WITNESS: {result['response']}")
+        
+        if args.present:
+            statement_id, evidence_name = args.present
+            result = manager.present_evidence_against_statement(statement_id.upper(), evidence_name)
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"📋 PRESENT: {evidence_name} against statement {statement_id.upper()}")
+                print(f"📜 STATEMENT: {result['statement_text']}")
+                if result['contradiction_found']:
+                    print(f"🎯 {result['response']}")
+                    if 'judge_reaction' in result:
+                        print(f"⚖️  JUDGE: {result['judge_reaction']}")
+                else:
+                    if result.get('game_over', False):
+                        print(f"💀 GAME OVER: {result['response']}")
+                        print(f"⚠️  Total Penalties: {result['penalty_count']}")
+                        return 1  # Exit with error code for game over
+                    else:
+                        print(f"❌ {result['response']}")
+                        if 'prosecutor_reaction' in result:
+                            print(f"👨‍💼 PROSECUTOR: {result['prosecutor_reaction']}")
+                        
+                        # Show penalty information if applied
+                        if result.get('penalty_applied', False):
+                            print(f"⚠️  PENALTY: {result['penalty_message']}")
+                            print(f"📊 Penalty Count: {result['penalty_count']}/{result['max_penalties']}")
+                            if 'penalty_reaction' in result:
+                                print(f"⚖️  JUDGE: {result['penalty_reaction']}")
+        
+        if args.present_combination:
+            if len(args.present_combination) < 3:
+                print("❌ Evidence combination requires: statement_id evidence1 evidence2 [evidence3...]")
+            else:
+                statement_id = args.present_combination[0].upper()
+                evidence_names = args.present_combination[1:]
+                
+                result = manager.present_evidence_combination(statement_id, evidence_names)
+                if "error" in result:
+                    print(f"❌ {result['error']}")
+                else:
+                    print(f"📋 PRESENT COMBINATION: {', '.join(evidence_names)} against statement {statement_id}")
+                    print(f"📜 STATEMENT: {result['statement_text']}")
+                    
+                    if result.get('game_over', False):
+                        print(f"💀 GAME OVER: {result['response']}")
+                        return 1
+                    elif result['contradiction_found']:
+                        print(f"🎯 {result['response']}")
+                        print(f"⚡ COMBINATION TYPE: {result['combination_type']}")
+                    else:
+                        print(f"❌ {result['response']}")
+                        if result.get('penalty_applied', False):
+                            print(f"⚠️  PENALTY: {result['penalty_message']}")
+                            print(f"📊 Penalty Count: {result['penalty_count']}")
+        
+        if args.check_victory:
+            result = manager.check_cross_examination_victory()
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"\n=== CROSS-EXAMINATION STATUS ===")
+                print(f"Contradictions Found: {result['successful_contradictions']}/{result['required_contradictions']}")
+                print(f"Critical Lies Exposed: {result['critical_lies_exposed']}/{result['total_critical_lies']}")
+                if result['victory_achieved']:
+                    print(f"🏆 VICTORY! {result['victory_message']}")
+                else:
+                    print("⏳ Continue cross-examination to achieve victory conditions")
+        
+        if args.end_cross_examination:
+            result = manager.end_cross_examination()
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"⚖️  {result['summary']}")
+                victory_status = result['victory_status']
+                if victory_status['victory_achieved']:
+                    print(f"🏆 {victory_status['victory_message']}")
+                else:
+                    print("Cross-examination ended without achieving victory conditions")
+        
+        if args.show_statements:
+            current_exam = manager.trial_state.get("current_cross_exam")
+            if not current_exam:
+                print("❌ No cross-examination in progress")
+            else:
+                witness_name = current_exam["witness"]
+                cross_exam_data = manager.load_trial_statements(witness_name)
+                if "error" in cross_exam_data:
+                    print(f"❌ {cross_exam_data['error']}")
+                else:
+                    print(f"\n=== CROSS-EXAMINATION: {witness_name} ===")
+                    for stmt in cross_exam_data['statements']:
+                        print(f"{stmt['id']}. {stmt['text']}")
+                    print(f"\nCommands: press [A-E] | present [A-E] [evidence_name]")
+        
+        if args.hint is not None:
+            statement_id = args.hint.upper() if args.hint else None
+            result = manager.get_hint(statement_id)
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                if result['hint_type'] == 'statement_specific':
+                    print(f"\n💡 HINT for Statement {result['statement_id']}:")
+                    print(f"📜 Statement: {result['statement_text']}")
+                    print(f"🔍 Hint: {result['hint_text']}")
+                else:
+                    print(f"\n💡 GENERAL HINT:")
+                    print(f"🔍 {result['hint_text']}")
+                    
+                    progress = result['progress_info']
+                    print(f"\n📊 Your Progress:")
+                    print(f"   ✅ Successful contradictions: {progress['successful_contradictions']}")
+                    print(f"   ❌ Failed presentations: {progress['failed_presentations']}")
+                    print(f"   ⚠️  Penalties: {progress['penalty_count']}")
+                    print(f"   💬 Statements pressed: {progress['statements_pressed']}")
+                    print(f"   🎯 Unchallenged lies remaining: {progress['unchallenged_lies']}")
+        
+        if args.trial_status:
+            suggestion = manager.suggest_next_trial_action()
+            progress = suggestion['progress_details']
+            
+            print(f"\n⚖️  TRIAL STATUS")
+            print(f"Current Phase: {progress['phase'].replace('_', ' ').title()}")
+            
+            if progress['phase'] == 'not_started':
+                print(f"Trial Ready: {progress['ready_for_trial']}")
+            elif progress['phase'] == 'cross_examination':
+                print(f"Current Witness: {progress['current_witness']}")
+                print(f"Victory Achieved: {progress['victory_achieved']}")
+                print(f"Successful Contradictions: {progress['successful_contradictions']}")
+                print(f"Penalty Count: {progress['penalty_count']}")
+            elif progress['phase'] == 'witness_examination':
+                print(f"Available Witnesses: {', '.join(progress['available_witnesses'])}")
+                print(f"Examined: {', '.join(progress['examined_witnesses'])}")
+                if progress['next_witness']:
+                    print(f"Next Witness: {progress['next_witness']}")
+            elif progress['phase'] == 'closing_arguments':
+                print(f"All Witnesses Examined: {progress['all_witnesses_examined']}")
+                print(f"Trial Complete: {progress['trial_complete']}")
+            
+            print(f"\n💡 Next Action: {suggestion['suggestion']}")
+            if suggestion['specific_command']:
+                print(f"🔧 Suggested Command: --{suggestion['specific_command'].replace('_', '-')}")
+        
+        if args.generate_trial_statements:
+            result = manager.auto_generate_trial_statements_for_case()
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"✅ Generated trial statements successfully!")
+                print(f"📊 Statistics:")
+                print(f"   Witnesses: {result['witnesses_generated']}")
+                print(f"   Total Statements: {result['total_statements']}")
+                print(f"   Contradictable Lies: {result['total_lies']}")
+                print(f"💾 Saved to: {result['file_saved']}")
+                print(f"\n🎯 Generated cross-examinations for:")
+                for witness in result['witnesses']:
+                    print(f"   - {witness.replace('_cross_exam', '').replace('_', ' ').title()}")
+        
+        if args.generate_witness_statements:
+            result = manager.generate_trial_statements_from_backbone(args.generate_witness_statements)
+            if "error" in result:
+                print(f"❌ {result['error']}")
+            else:
+                print(f"✅ Generated statements for {result['witness_name']}")
+                print(f"📊 Statistics:")
+                print(f"   Statements: {result['statements_generated']}")
+                print(f"   Lies: {result['lies_detected']}")
+                print(f"\n🎯 Cross-examination data:")
+                cross_exam = result['cross_exam_data']
+                for stmt in cross_exam['statements']:
+                    lie_indicator = "🔴" if stmt['is_lie'] else "🟢"
+                    print(f"   {stmt['id']}. {lie_indicator} {stmt['text']}")
+        
+        if args.adapt_case:
+            result = manager.adapt_case_for_interactive_trial()
+            print(f"\n🔧 CASE ADAPTATION RESULTS")
+            print(f"Case Type: {result['case_type']}")
+            
+            if result['success']:
+                print("✅ Adaptation completed successfully!")
+                
+                if result['adaptations_made']:
+                    print(f"\n🛠️  Adaptations Made:")
+                    for adaptation in result['adaptations_made']:
+                        print(f"   ✅ {adaptation}")
+                
+                if 'witnesses_generated' in result:
+                    print(f"\n📊 Generation Statistics:")
+                    print(f"   Witnesses: {result['witnesses_generated']}")
+                    print(f"   Statements: {result['total_statements']}")
+                
+                if result['warnings']:
+                    print(f"\n⚠️  Warnings:")
+                    for warning in result['warnings']:
+                        print(f"   ⚠️  {warning}")
+                        
+                print(f"\n🎯 Your case is now ready for interactive trials!")
+                print(f"Use --trial-status to see available actions.")
+            else:
+                print("❌ Adaptation failed!")
+                for warning in result['warnings']:
+                    print(f"   ❌ {warning}")
         
         if args.interview:
             if manager.interview_witness(args.interview):
@@ -1221,6 +2767,91 @@ def main():
         if args.client_name:
             client_name = manager.get_client_name()
             print(f"👤 Client Name: {client_name}")
+        
+        if args.generate_name is not None:
+            role_hint = args.generate_name if args.generate_name else None
+            name = manager.name_generator.generate_unique_name(role_hint)
+            print(f"🎭 Generated Name: {name}")
+            if role_hint:
+                print(f"   Role Hint: {role_hint}")
+        
+        if args.generate_names:
+            names = manager.name_generator.generate_multiple_names(args.generate_names)
+            print(f"🎭 Generated {args.generate_names} Names:")
+            for i, name in enumerate(names, 1):
+                print(f"   {i}. {name}")
+        
+        if args.name_suggestions:
+            suggestions = manager.name_generator.get_character_suggestions(args.name_suggestions)
+            print(f"🎭 Name Suggestions for '{args.name_suggestions}':")
+            for key, name in suggestions.items():
+                print(f"   {key}: {name}")
+        
+        if args.create_family:
+            family = manager.name_generator.create_family(args.create_family, args.family_surname)
+            print(f"👨‍👩‍👧‍👦 Created family of {args.create_family}:")
+            for role, name in family.items():
+                print(f"   {role}: {name}")
+            manager.name_generator.save_used_names()
+        
+        if args.add_family_member:
+            try:
+                if ':' not in args.add_family_member:
+                    print("❌ Error: Format should be 'existing_name:relationship'")
+                else:
+                    existing_name, relationship = args.add_family_member.split(':', 1)
+                    new_member = manager.name_generator.add_family_member_to_existing(existing_name.strip(), relationship.strip())
+                    print(f"👥 Added family member: {new_member}")
+                    print(f"   Relationship to {existing_name}: {relationship}")
+                    manager.name_generator.save_used_names()
+            except ValueError as e:
+                print(f"❌ Error: {e}")
+        
+        if args.surname_suggestions:
+            suggestions = manager.name_generator.get_family_surname_suggestions(args.surname_suggestions)
+            print(f"📝 Surname suggestions (avoiding conflicts with: {', '.join(args.surname_suggestions)}):")
+            for i, surname in enumerate(suggestions, 1):
+                print(f"   {i}. {surname}")
+        
+        # Enhanced narrative save system commands
+        if args.create_narrative_save:
+            # This requires interactive input for narrative context
+            print("🎭 Creating narrative save requires comprehensive context.")
+            print("Use the complete_gate method with narrative_context parameter in gameplay.")
+            print(f"Gate: {args.create_narrative_save}")
+        
+        if args.restore_narrative:
+            try:
+                narrative_save = manager.narrative_save_system.restore_narrative_context(args.restore_narrative)
+                summary = manager.narrative_save_system.generate_context_summary(narrative_save)
+                print(summary)
+            except FileNotFoundError:
+                print(f"❌ Narrative save not found: {args.restore_narrative}")
+            except Exception as e:
+                print(f"❌ Error restoring narrative: {e}")
+        
+        if args.list_narrative_saves:
+            saves = manager.narrative_save_system.list_narrative_saves()
+            if saves:
+                print("📚 Available Narrative Saves:")
+                for save in saves:
+                    print(f"   {save['filename']}")
+                    print(f"      Gate: {save['gate_name']}")
+                    print(f"      Time: {save['timestamp']}")
+                    print(f"      Charges: {save['charges']}")
+                    print()
+            else:
+                print("📚 No narrative saves found.")
+        
+        if args.narrative_summary:
+            try:
+                narrative_save = manager.narrative_save_system.restore_narrative_context(args.narrative_summary)
+                summary = manager.narrative_save_system.generate_context_summary(narrative_save)
+                print(summary)
+            except FileNotFoundError:
+                print(f"❌ Narrative save not found: {args.narrative_summary}")
+            except Exception as e:
+                print(f"❌ Error generating summary: {e}")
         
     except Exception as e:
         print(f"❌ Error: {e}")

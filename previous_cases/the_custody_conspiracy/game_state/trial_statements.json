@@ -1,0 +1,99 @@
+{
+  "eddie_torres_(defendant)_cross_exam": {
+    "witness_name": "Eddie Torres (Defendant)",
+    "statements": [
+      {
+        "id": "A",
+        "text": "I remember being in the van with Officer Kane.",
+        "is_lie": false,
+        "press_response": "The witness has nothing more to add.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B",
+        "text": "He was asking about my time in juvie.",
+        "is_lie": false,
+        "press_response": "The witness has nothing more to add.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "Then everything went black.",
+        "is_lie": false,
+        "press_response": "The witness has nothing more to add.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "D",
+        "text": "Next thing I knew, people were screaming and there was blood.",
+        "is_lie": false,
+        "press_response": "The witness has nothing more to add.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 1,
+      "critical_lies": [],
+      "success_message": "Eddie Torres (Defendant)'s testimony has been thoroughly discredited! The contradictions are clear!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge looks displeased with your evidence presentation",
+        "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+        "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against Eddie Torres (Defendant)!"
+      }
+    },
+    "generated_from": "backbone_files",
+    "source_testimony": "I remember being in the van with Officer Kane. He was asking about my time in juvie. Then everything went black. Next thing I knew, people were screaming and there was blood."
+  },
+  "captain_derek_walsh_cross_exam": {
+    "witness_name": "Captain Derek Walsh",
+    "statements": [
+      {
+        "id": "A",
+        "text": "I arrived on scene after the incident.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B",
+        "text": "Officer Kane was a good man.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "Eddie Torres has a history of violence against authority figures.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 1,
+      "critical_lies": [],
+      "success_message": "Captain Derek Walsh's testimony has been thoroughly discredited! The contradictions are clear!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge looks displeased with your evidence presentation",
+        "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+        "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against Captain Derek Walsh!"
+      }
+    },
+    "generated_from": "backbone_files",
+    "source_testimony": "I arrived on scene after the incident. Officer Kane was a good man. Eddie Torres has a history of violence against authority figures."
+  }
+}

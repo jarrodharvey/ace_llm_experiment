@@ -1,6 +1,6 @@
 # AI Courtroom Mystery Game Development Project
 
-This project is an iterative game design experiment to create interactive text-based courtroom mystery games inspired by the Ace Attorney series, where the game master is an AI.
+This project creates interactive text-based courtroom mystery games inspired by the Ace Attorney series, where the game master is an AI.
 
 The experiment successfully combines:
 - **Fun** - Engaging puzzle-solving and dramatic courtroom battles
@@ -11,46 +11,28 @@ The experiment successfully combines:
 ## Project Organization
 
 **Directory Structure:**
-- **Active cases**: Named by case title in `lowercase_with_underscores` format (e.g., `the_gallery_gambit`)
+- **Active cases**: Named by case title in `lowercase_with_underscores` format
 - **Archive**: All previous experimental cases stored in `previous_cases/` directory
-- **Guidelines**: Legacy guideline files archived; all methodology now consolidated in this CLAUDE.md
-
-**Naming Convention:**
-- Case directories use descriptive names based on case titles
-- Example: "The Gallery Gambit" → `the_gallery_gambit/`
-- No more version numbers; each case stands independently by name
+- **Lessons learned**: See [`docs/reference/lessons-learned-archive.md`](docs/reference/lessons-learned-archive.md)
 
 ## Core Architecture: Improvisation-First Strategy
 
-**Simplified Case Creation (Default):**
-The current methodology prioritizes immediate improvisation with minimal pre-planning:
+**Simplified Case Creation:**
+The methodology prioritizes immediate improvisation with minimal pre-planning:
 - **Real-world inspiration** provides thematic foundation without extensive planning
 - **Dramatic opening scene** sets the stage for improvised investigation  
 - **Full game state management** supports complex improvisation during gameplay
 - **Progressive gate system** maintains case pacing and trial triggers
 
-**Configuration-Driven Extensibility:**
-All case patterns and complexity levels managed in `config/case_patterns.json`:
-- **Simple improvisation** (default): Just inspiration summary + opening scene
-- **Complex scaffolding** (available): Full backbone/obstacles/solution structure
-- **Loose coupling** - Scripts reference configuration, enabling easy scaling
-- **Future-proof architecture** - Add complexity without rebuilding
-
-**Progressive Gate System (Preserved):**
-- **Investigation gates** build evidence and expose conspiracy through improvisation
-- **Trial gates** provide dramatic courtroom confrontations  
-- **Automatic trial trigger** when investigation gates complete
-- **Final resolution** through cross-examination and evidence presentation
-
 **AI Collaboration Framework:**
 - **Claude**: Improvised investigation, logical consistency, character development, state management
-- **ChatGPT**: Opening scene generation, complex obstacles (when needed), theatrical elements
+- **ChatGPT**: Opening scene generation, theatrical elements
 
 When asked to consult with ChatGPT on something, the api key can be found in openai_key.txt.
 
 ## COMMANDS - GLOBAL
 
-**create new game**: Create a new case using the simplified improvisation-first workflow
+**create new game**: Create a new case using the improvisation-first workflow
 - **Command**: `python3 scripts/create_new_game_orchestrator.py`
 - **Process**: Streamlined inspiration → opening → ready for improvisation
 - **Step 1**: Real-world legal case inspiration fetched automatically
@@ -58,39 +40,27 @@ When asked to consult with ChatGPT on something, the api key can be found in ope
 - **Step 3**: ChatGPT generates dramatic opening scene from case summary
 - **Step 4**: Case ready for improvised gameplay with full state management
 - **Result**: Case directory with `real_life_case_summary.txt` + `case_opening.txt` + `game_state/`
-- **Complex scaffolding**: Available via `scripts/create_new_game_orchestrator_complex.py` when needed
 
-**Case Creation Recovery Commands:**
-When case creation fails or encounters issues, use recovery mode to diagnose and fix problems:
-
-- **Diagnose**: `python3 scripts/create_new_game_orchestrator.py --recovery diagnose --target-case {case_name}`
-  - Analyzes case structure, identifies missing files, checks template completion
-  - Provides specific recommendations for fixing issues
-  - Non-destructive analysis of case state
-  
-- **Reset Phase**: `python3 scripts/create_new_game_orchestrator.py --recovery reset-phase --target-case {case_name}`
-  - Rolls back to previous phase when current phase fails
-  - Automatically cleans up corrupted files from failed phase
-  - Updates state file to allow resuming from earlier point
-  
-- **Fix Files**: `python3 scripts/create_new_game_orchestrator.py --recovery fix-files --target-case {case_name}`
-  - Attempts automatic repair of common file issues
-  - Moves misplaced ChatGPT outputs to correct locations
-  - Creates missing directories, encodes solution files
-  - Initializes missing game state files
-  
-- **Clean Start**: `python3 scripts/create_new_game_orchestrator.py --recovery clean-start --target-case {case_name}`
-  - **DESTRUCTIVE**: Completely removes case directory and state files
-  - Requires confirmation: type "DELETE {case_name}" to proceed
-  - Use when case is irreparably corrupted
-  - After deletion, restart with `python3 scripts/create_new_game_orchestrator.py`
-
-**Recovery Workflow:** See [recovery workflow examples](docs/examples/recovery-workflow.md) for detailed command usage and troubleshooting steps.
+**CRITICAL ERROR HANDLING REQUIREMENT:**
+When case creation errors occur, you MUST identify and fix the root cause rather than pursuing manual workarounds:
+- **Step 1**: Analyze the specific error message and trace to its source code location
+- **Step 2**: Fix the underlying issue in the appropriate script or configuration
+- **Step 3**: Test the fix to ensure it resolves the problem completely
+- **Step 4**: Update documentation or tests if the fix reveals a systemic issue
+- **NEVER**: Skip error analysis in favor of manual case creation or workarounds
+- **NEVER**: Ignore broken scripts and proceed with partial implementations
 
 **start game {DIRECTORY_NAME}**: Start playing a fresh improvisation-first game at DIRECTORY_NAME
-- **MANDATORY**: First activate virtual environment: `source venv/bin/activate`
-- **Opening**: Displays `case_opening.txt` content, wait for "next"
-- **Next scene**: Generate random verb + protagonist activity (not detention center!)
+- **MANDATORY VALIDATION FIRST**: Run comprehensive pre-game validation with root cause analysis
+- **Validation Command**: `python3 scripts/start_game_validator.py {DIRECTORY_NAME}`
+- **ZERO TOLERANCE RULE**: If validation fails, you MUST investigate and fix root causes before proceeding
+- **NO WORKAROUNDS**: Never attempt manual fixes, partial starts, or validation bypasses
+- **Opening Display Logic**: 
+  - Read and display the contents of `{DIRECTORY_NAME}/case_opening.txt`
+  - End with "Type 'next' to continue"
+  - Wait for user to type "next" before proceeding
+  - After "next", use `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --resume` to begin gameplay
+- **Game Flow**: Validation → opening text → user types "next" → state manager takes over
 - **Full improvisation**: Use state management, random inspiration, dice rolls
 - **Gate system**: Investigation gates → automatic trial trigger → courtroom battles
 - Must create save point before beginning: `--save "game_start"`
@@ -143,7 +113,6 @@ When case creation fails or encounters issues, use recovery mode to diagnose and
 - `--start-trial` - Initiate trial phase (validates readiness automatically)
 
 **Pure Random Inspiration (Entropy Prevention):**
-- `--inspire {category}` - Get inspiration from specific category (legacy cases only)
 - `--inspire-random` - Get pure random word inspiration
 - `--inspire-contextual` - Get pure random word with context details
 - `--must-inspire {context}` - FORCING FUNCTION for off-script responses (uses pure random)
@@ -152,6 +121,39 @@ When case creation fails or encounters issues, use recovery mode to diagnose and
 - `--action-check {action} [difficulty] [evidence_count] [character_trust] [additional_modifier]` - Make action check with contextual modifiers
 - `--dice-history` - Show recent dice roll history
 - `--client-name` - Show client name for dialogue substitution
+
+**Character Name Generation (Anti-Repetition):**
+- `--generate-name [role]` - Generate unique character name with optional role hint (e.g., "judge", "prosecutor")
+- `--generate-names {count}` - Generate multiple unique character names at once
+- `--name-suggestions "{description}"` - Get multiple name options based on character description
+- **Uniqueness Guarantee**: Names automatically avoid duplicates from entire project history
+- **Supported Roles**: Judge, prosecutor, witness (role hints influence name style but don't guarantee patterns)
+- **Usage**: Use for all new character creation to prevent repetitive names across cases
+
+**Family Relationship Management:**
+- `--create-family {size} [--family-surname {surname}]` - Create entire family with shared surname
+- `--add-family-member "{existing_name}:{relationship}"` - Add family member to existing character
+- `--surname-suggestions {existing_names...}` - Get surname suggestions avoiding conflicts
+- **Supported Relationships**: spouse, sibling, parent, child, father, mother, son, daughter, brother, sister
+- **Automatic Surname Sharing**: Family members automatically share surnames
+- **Family Tracking**: System tracks which surnames belong to which families
+- **Usage Examples**:
+  - `--create-family 3` → Creates parents + child with shared surname
+  - `--add-family-member "John Smith:brother"` → Creates "FirstName Smith" as John's brother
+  - `--surname-suggestions "John Doe" "Jane Smith"` → Suggests surnames not conflicting with Doe/Smith
+
+**Interactive Trial System (Cross-Examination):**
+- `--start-cross-examination "{witness_name}"` - Begin cross-examination of specified witness
+- `--press {statement_id}` - Press witness for more details on statement (A, B, C, etc.)
+- `--present {statement_id} "{evidence_name}"` - Present evidence against specific statement
+- `--hint [statement_id]` - Get context-aware hint (general or for specific statement)
+- `--check-victory` - Check cross-examination victory status and progress
+- `--end-cross-examination` - End current cross-examination session
+- `--show-statements` - Display current witness statements and available commands
+- **Authentic Ace Attorney Experience**: OBJECTION! moments, evidence-based puzzle solving, penalty system
+- **Dynamic Responses**: Forcing function generates unique dramatic reactions for every trial
+- **Victory Conditions**: Must expose critical lies through correct evidence presentation
+- **Penalty System**: Wrong evidence presentations accumulate penalties, leading to game over if excessive
 
 ### Gameplay Integration Requirements:
 
@@ -185,6 +187,14 @@ python3 scripts/game_state_manager.py {case} --status
 # Then deliver content based on current state
 ```
 
+### **CONTEXT RESTORATION (After context window break):**
+```bash
+# MANDATORY: Restore complete narrative context first
+python3 scripts/game_state_manager.py {case} --list-narrative-saves
+python3 scripts/game_state_manager.py {case} --restore-narrative {latest_save.json}
+# Then continue with normal ON-SCRIPT or OFF-SCRIPT responses
+```
+
 ### **OFF-SCRIPT (Improvised with inspiration + dice):**
 ```bash
 # MANDATORY: Use forcing function for ALL improvisation
@@ -203,9 +213,11 @@ python3 scripts/game_state_manager.py {case} --roll [modifier] [description]
 
 **NO EXCEPTIONS:** Every response must use either state manager retrieval OR forced inspiration. No improvisation without entropy prevention. ALL actions with reasonable chance of failure MUST be rolled for.
 
-**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. If you catch yourself allowing automatic success for challenging actions, STOP and roll dice first. **If you see repetitive random words, STOP and activate the virtual environment first.** No exceptions.
+**CONTEXT WINDOW PROTOCOL:** When continuing a case after context window break, ALWAYS restore narrative context first using `--restore-narrative`. Never guess or assume case details.
 
-**PURE RANDOM WORDS:** The system now uses completely random English words via the wonderwords package for maximum creative forcing. No categories or thematic guidance - pure entropy prevention.
+**ENFORCEMENT:** If you catch yourself about to improvise without using `--must-inspire`, STOP immediately and run the forcing function first. If you catch yourself allowing automatic success for challenging actions, STOP and roll dice first. **If you see repetitive random words, STOP and activate the virtual environment first.** If continuing a case without context restoration, STOP and restore narrative context first. No exceptions.
+
+**PURE RANDOM WORDS:** The system uses completely random English words via the wonderwords package for maximum creative forcing. No categories or thematic guidance - pure entropy prevention.
 
 ### State Management Integration:
 
@@ -218,13 +230,13 @@ python3 scripts/game_state_manager.py {case} --roll [modifier] [description]
 - **MANDATORY:** Use `--must-inspire` for ALL improvised character dialogue, plot developments, and reactions
 - **MANDATORY:** Apply A-to-C process with provided PURE RANDOM word before delivering content
 - **MANDATORY:** Use `--action-check` or `--roll` for ALL actions with reasonable chance of failure
-- **NEW:** No category selection needed - system provides completely random words for maximum creative constraint
 
 **State Files Location:**
 - Main state: `{case_directory}/game_state/investigation_progress.json`
 - Trial state: `{case_directory}/game_state/trial_progress.json`
 - Save points: `{case_directory}/saves/`
 - Dice rolls: `{case_directory}/game_state/dice_rolls.json`
+- **Enhanced narrative saves**: `{case_directory}/narrative_saves/`
 
 ### D&D Style Action Resolution System:
 
@@ -261,13 +273,45 @@ Whenever a player attempts an action that has a **reasonable chance of failure**
 - **Bad Failure (2-4)**: Significant failure, trust loss
 - **Critical Failure (1)**: Catastrophic failure, major consequences
 
+### Enhanced Narrative Save System (Context Window Solution):
+
+**PROBLEM SOLVED:** Context window breaks cause narrative drift - cases shift from assault to murder, victims change identity, evidence significance is lost.
+
+**PERMANENT SOLUTION:** Comprehensive narrative saves at every stage gate completion automatically preserve complete case context.
+
+**Automatic Narrative Preservation:**
+- **Complete case facts**: Charges, victim status, defendant details, incident summary
+- **Evidence significance**: Not just "what" but "why it matters" and trial implications
+- **Character dynamics**: Relationships, secrets, credibility issues, player interactions
+- **Plot threads**: Unresolved mysteries, dramatic stakes, emotional investment
+- **Legal strategy**: Approach, key arguments, expected objections, evidence presentation plan
+
+**Seamless Context Restoration:**
+```bash
+# List available narrative saves for case
+python3 scripts/game_state_manager.py {case} --list-narrative-saves
+
+# Restore complete narrative context from any save
+python3 scripts/game_state_manager.py {case} --restore-narrative {filename.json}
+
+# Get context summary for specific save
+python3 scripts/game_state_manager.py {case} --narrative-summary {filename.json}
+```
+
+**GUARANTEED CONTINUITY:** No more "who died?" confusion. Cases maintain perfect narrative coherence across any context window break.
+
+**Implementation Details:**
+- **Automatic creation**: Enhanced saves trigger on every gate completion
+- **Comprehensive context**: Captures narrative essence beyond game mechanics
+- **Natural language summaries**: Generated for immediate context restoration
+- **Zero data loss**: All critical details preserved for seamless gameplay continuation
+
 ### Dynamic Structure Support:
 
 The game state manager automatically detects:
-- **Case length** (1-day, 2-day, 3-day) from RNG scaffolding
+- **Case length** (1-day, 2-day, 3-day) from case structure
 - **Gate structure** from actual case files
 - **Trial trigger points** based on case length patterns
-- **Custom vs. standard** gate structures with validation
 
 **Case Length Patterns:**
 - **1-day cases:** Trial trigger after 0 investigation gates (immediate trial)
@@ -286,7 +330,6 @@ The game state manager automatically detects:
 - Use `--validate` to check for structural issues
 - Use `--summary` to see complete case state
 - Use `--list-saves` to verify save integrity
-- Check case files if dynamic detection fails
 
 **EMERGENCY TROUBLESHOOTING:**
 - **Repetitive random words:** Virtual environment not activated - Run `source venv/bin/activate` first
@@ -302,10 +345,6 @@ The game state manager automatically detects:
 **summarize case**: Summarize the facts of the case without spoilers
 
 **! [debug message]**: Switch to technical support mode for troubleshooting
-
-## GAME STATE MANAGEMENT EXAMPLES
-
-For detailed command usage examples, see [game state management examples](docs/examples/game-state-management.md).
 
 ## MASTER RULES
 
@@ -333,223 +372,9 @@ When creating new games:
 
 - **STRICT NO SPOILERS DURING CREATION** - Never reveal in case creation responses: killer identity, real motives, plot twists, evidence locations, character secrets, framing mechanisms, or case resolution. Only discuss general themes and case structure
 - **Two-phase structure is mandatory** - Both investigation and trial phases required
-- **Logical backbone first** - Build consistent evidence chains before adding obstacles  
 - **Evidence presentation gates** - Story-driven progression locks, not arbitrary percentages
-- **True testimonies → fabricated contradictions** - ChatGPT adds lies that can be proven false with evidence
 - **Semantic naming** - Use case title in lowercase_with_underscores format for directory names
 - **TEST ALL NEW FEATURES** - Any new scripts, modifications, or methodology changes must include comprehensive unit tests before implementation
-
----
-
-# CASE CREATION METHODOLOGY
-
-## Orchestrated Case Creation Workflow
-
-**COMMAND:** `python3 scripts/create_new_game_orchestrator.py`
-
-**Complete Multi-Phase Process with Claude Intervention Points:**
-
-### **Phase 0: Inspiration Generation**
-- **Automated**: Fetches real-world legal case (unencrypted for analysis)
-- **Pause**: Claude analyzes case content for themes, crime types, settings
-- **Claude Task**: Derive appropriate case name from inspiration
-- **Resume**: `--resume <state_file> --case-name <chosen_name>`
-
-### **Phase 1: Case Scaffolding** 
-- **Automated**: Creates directory structure using shared configuration
-- **Automated**: Generates gate structure, templates, game state files
-- **Pause**: Claude fills backbone template files with creative content
-- **Claude Task**: Complete all backbone/*.json files using inspiration
-- **Resume**: `--resume <state_file> --phase phase_2`
-
-### **Phase 2: ChatGPT Consultation Preparation**
-- **Automated**: Validates backbone files are completed
-- **Pause**: Claude prepares and runs ChatGPT consultations
-- **Claude Task**: Customize ChatGPT prompts, run consultations for obstacles/trials
-- **Resume**: `--resume <state_file> --phase phase_3`
-
-### **Phase 3: Validation and Completion**
-- **Automated**: Validates ChatGPT outputs exist
-- **Pause**: Claude validates consistency and completes solution files
-- **Claude Task**: Validate obstacles vs backbone, complete/encode solution files  
-- **Resume**: `--resume <state_file> --phase complete`
-
-### **Phase Complete: Ready for Gameplay**
-- **Automated**: Final validation, cleanup, ready message
-- **Output**: Fully playable case ready for `start game <case_name>`
-
-**Automated Steps:**
-1. **Shared Configuration System** - All patterns defined in `config/case_patterns.json`
-2. **RNG Case Length Determination** - Randomly selects from configured case lengths
-3. **Dynamic Gate Generation** - Uses configuration for consistent gate structures
-4. **Directory Structure Creation** - Based on configurable requirements
-5. **Inspiration Pool Generation** - Uses configured categories for entropy prevention
-6. **Template File Creation** - All backbone components from shared templates
-7. **Game State Initialization** - Proper state tracking with configuration validation
-8. **Structure Validation** - Ensures consistency with shared configuration
-
-**Configurable Gate Structures:**
-- **1-Day (Trial Only):** 3 gates, 30-45 min - Like "The First Turnabout"
-- **2-Day (Investigation + Trial):** 4 gates, 45-60 min - Like "Turnabout Corner"
-- **3-Day (Full Structure):** 6 gates, 60-90 min - Like "Turnabout Goodbyes"
-- **Extensible:** Add new patterns in `config/case_patterns.json` without modifying scripts
-- **Validation:** Automatic detection and consistency checking across all scripts
-
-**Output:** 
-- Fully scaffolded case with inspiration-driven name
-- Authentic courtroom mystery pacing from shared configuration
-- Loose coupling ensures maintainable, extensible system
-- Ready for Claude creative content development
-
-## Phase 1: Real Life Inspiration + Logical Backbone (Claude Only)
-
-**Step 1:** Real-world inspiration is automatically generated during orchestration process
-
-Use encrypted real case details to inspire fictional elements. Consult ChatGPT to fill gaps where safety guidelines prevent direct adaptation.
-
-**Step 2:** Fill backbone template files with creative content:
-
-Build the foundation for BOTH investigation and trial phases:
-
-### Logical Structure Development
-
-### Investigation Backbone:
-- **Case structure** - Crime, victim, suspect, physical evidence
-- **Evidence chain** - How each piece connects to prove innocence
-- **Character facts** - Who knows what, when, and why
-- **Truth timeline** - Actual sequence of events
-- **Evidence presentation gates** - Logical story-driven progression points
-
-### Trial Backbone:
-- **Witness testimonies** - TRUE statements before ChatGPT fabrication
-- **Trial structure** - Courtroom progression and victory conditions
-- **Cross-examination targets** - Which evidence contradicts which lies
-
-### File Structure:
-```
-case_name/
-├── backbone/
-│   ├── case_structure.json
-│   ├── evidence_chain.json  
-│   ├── character_facts.json
-│   ├── truth_timeline.json
-│   ├── witness_testimonies.json    # TRUE testimonies
-│   └── trial_structure.json       
-├── obstacles/                      # ChatGPT's work
-│   ├── investigation_obstacles.json
-│   └── trial_fabrications.json    
-├── solution/                       # Encoded final files
-│   ├── evidence_requirements.json
-│   ├── character_behaviors.json
-│   └── integrated_case.json
-└── game_state/
-    ├── investigation_progress.json
-    └── trial_progress.json
-```
-
-### Quality Check:
-- Every evidence piece logically connected?
-- Character motivations realistic?
-- Timeline physically possible?
-- TRUE testimonies contain contradictable information?
-- Evidence presentation gates story-driven and exciting?
-
-## Phase 2: ChatGPT Obstacle Design
-
-### Phase 2A: Investigation Obstacles
-
-For detailed ChatGPT consultation commands and prompting templates, see [ChatGPT consultation examples](docs/examples/chatgpt-consultation.md).
-
-## Phase 3: Integration and Validation (Claude)
-
-### Investigation Validation:
-- Check every obstacle against logical backbone
-- Ensure evidence presentation gates make narrative sense  
-- Verify Psyche-Lock scenarios have logical solutions
-- Confirm character knowledge stays consistent
-
-### Trial Validation:
-- **CRITICAL**: Every fabricated lie must be contradictable by available evidence
-- Ensure prosecutor's zany traits don't break evidence logic
-- Confirm witness breakdowns follow logically from evidence presentation
-- Validate "impossible but logical" elements have actual explanations
-- **TRIAL ENFORCEMENT**: Verify trial obstacles force courtroom resolution regardless of pre-trial discoveries
-- **PROSECUTION PERSISTENCE**: Ensure prosecutor fights case even with contradictory evidence
-- **WITNESS UNRELIABILITY**: Confirm witnesses will lie/mislead in court despite truth being known
-
-### Success Metrics:
-- **Logic Consistency**: 10/10 (no contradictions allowed)
-- **Excitement Level**: 8+/10 for BOTH phases
-- **Authentic Courtroom Mystery Feel**: Captures signature investigation → trial gameplay loop
-
-Remember: no spoilers! Discuss the case in general terms.
-
----
-
-# GAME OPERATION PROCEDURES
-
-## Starting New Games
-
-### Pre-Game Setup:
-1. **MANDATORY: Activate virtual environment** - `source venv/bin/activate`
-2. Verify directory contains backbone/, obstacles/, solution/, game_state/
-3. Confirm solution files are BASE64 encoded
-4. Check two-phase structure is complete
-5. **Pure random inspiration system** automatically available for improvisation during gameplay
-
-### Opening Scene Guidelines:
-- Present client as appearing guilty with overwhelming evidence
-- Show client being uncooperative (trauma, distrust, blackmail)
-- Establish hostile environment where NPCs don't want to help
-- Create sense of hopelessness and uphill battle
-- Provide case basics (victim, crime, charges) but no solutions
-
-### Information Revelation Rules:
-**Reveal:** Case basics, client's apparent guilt, investigation starting points
-**Don't Reveal:** Real killer identity, actual motives, exonerating evidence locations, plot twists
-
-## Continuing Games
-
-### State Assessment:
-1. **MANDATORY: Activate virtual environment** - `source venv/bin/activate`
-2. Load game_state files to understand current progress
-3. Review evidence_found.json and character_relationships.json  
-4. Check failed_attempts.log for credibility impact
-5. Verify location_progress.json for accessibility
-
-### Resumption Best Practices:
-- Provide "Previously..." recap without spoilers
-- Remind player of current objectives and challenges
-- Mention recent discoveries without revealing future plot
-- Establish current scene and available actions
-- Character attitudes based on interaction history
-
-### Progression Management:
-**Early Game (0-25%):** Basic obstacles, unfriendly characters, obvious evidence locations
-**Mid Game (25-75%):** Complex relationships, evidence requiring connection, active resistance  
-**Late Game (75-100%):** High-stakes confrontations, complex evidence chains, desperate characters
-
-## Trial Phase Operations
-
-### Cross-Examination Mechanics:
-- Present witness testimony with fabricated lies
-- Player identifies contradictions and presents evidence
-- Dramatic witness breakdowns when lies exposed
-- Prosecutor objects and maintains false narrative
-- Assistant hint system when player stuck
-
-### Victory Conditions:
-- Case MUST be resolved through courtroom battle
-- Evidence presentation exposes all lies
-- Real killer identified through trial process
-- Client exonerated through player skill
-
-### CRITICAL TRIAL ENFORCEMENT:
-- **Pre-trial evidence discovery** sets up courtroom battles, never resolves cases
-- **Prosecution must resist** even with contradictory evidence found
-- **Witnesses must lie** in court regardless of pre-trial revelations
-- **Legal realism does NOT override game mechanics** - dramatic trial battles are mandatory
-- **Judge must require formal trial** even when evidence seems conclusive
 
 ---
 
@@ -583,18 +408,6 @@ For detailed A-to-C process examples, see [improvisation examples](docs/examples
 
 ---
 
-# ADMIN MODE GUIDELINES
-
-**admin mode**: Enter strategic partnership mode for project planning and development
-
-For detailed admin mode guidelines, collaboration patterns, and development insights, see [admin mode guidelines](docs/reference/admin-mode-guidelines.md).
-
----
-
-# TROUBLESHOOTING AND QUALITY ASSURANCE
-
-For detailed success/failure indicators, debug procedures, and troubleshooting guidance, see [success and failure indicators](docs/troubleshooting/success-failure-indicators.md).
-
 # TESTING AND QUALITY ASSURANCE
 
 ## Unit Test Requirements
@@ -603,24 +416,8 @@ For detailed success/failure indicators, debug procedures, and troubleshooting g
 
 ### Test Coverage Standards:
 - **Core Business Logic:** 100% test coverage required for game state management, evidence handling, character trust, gate transitions
-- **Configuration System:** All case length patterns, gate structures, and validation logic must be tested
 - **Integration Points:** Script interactions and data persistence must have integration tests
 - **Error Handling:** All error conditions and edge cases must be tested
-
-### Test Implementation Process:
-
-**When Adding New Features:**
-1. **Write tests first** (TDD approach) or immediately after feature implementation
-2. **Test both success and failure paths** for all new functionality
-3. **Include edge cases** and boundary condition testing
-4. **Mock external dependencies** (file system, packages, APIs)
-5. **Verify backwards compatibility** with existing functionality
-
-**Required Test Categories:**
-- **Unit Tests:** Individual function/method testing in isolation
-- **Integration Tests:** Script coordination and data flow testing
-- **Regression Tests:** Ensure changes don't break existing functionality
-- **Configuration Tests:** Validate shared configuration system integrity
 
 ### Running Tests:
 
@@ -632,34 +429,6 @@ python -m pytest tests/ -v
 
 **Test Suite Must Pass:** No commits allowed with failing tests
 
-**Continuous Testing:** Run tests after any modification to:
-- Game state management logic
-- Configuration system changes
-- Inspiration system updates
-- Case scaffolding modifications
-- New script additions
-
-### Test Maintenance:
-
-**Test File Organization:**
-- `tests/test_game_state_manager.py` - Core business logic tests
-- `tests/test_case_config.py` - Configuration system tests  
-- `tests/test_case_scaffolding.py` - Integration and scaffolding tests
-- `tests/conftest.py` - Shared fixtures and test utilities
-
-**When Refactoring:**
-1. **Run existing tests first** to establish baseline
-2. **Modify tests as needed** to match new interfaces
-3. **Ensure test coverage remains complete** after refactoring
-4. **Add new tests** for any new code paths introduced
-
-**Test Quality Standards:**
-- **Clear test names** describing what is being tested
-- **Isolated tests** that don't depend on each other
-- **Fast execution** (entire suite should run in <30 seconds)
-- **Deterministic results** (no flaky tests)
-- **Comprehensive assertions** that verify expected behavior
-
 ### Failure Response Protocol:
 
 **When Tests Fail:**
@@ -669,14 +438,104 @@ python -m pytest tests/ -v
 4. **Verify fix** with multiple test runs
 5. **Add additional tests** if gap in coverage discovered
 
-**Test-Driven Development Priority:**
-- **Methodology changes** must be tested before implementation
-- **Bug fixes** must include regression tests
-- **Performance improvements** must maintain test coverage
-- **New scripts** must include comprehensive test suites
+---
 
-This testing framework ensures system reliability as the project continues evolving through iterative experimentation and methodology refinement.
+## START GAME RULES (PERMANENT)
+
+**MANDATORY:** All game startup attempts MUST follow these permanent rules to ensure system integrity and prevent gameplay failures.
+
+### **Rule 1: Comprehensive Pre-Game Validation (REQUIRED)**
+
+**Before ANY game startup:**
+```bash
+# MANDATORY: Use validation-only command
+source venv/bin/activate
+python3 scripts/start_game_validator.py {case_name}
+```
+
+**After validation passes:**
+- Claude displays case opening text from `case_opening.txt`
+- Claude waits for user to type "next"
+- Claude then uses game state manager to begin gameplay
+
+**ZERO TOLERANCE POLICY:**
+- **If validation fails**: STOP immediately and fix root causes
+- **No manual workarounds**: Never bypass validation or attempt partial fixes
+- **No assumptions**: Never assume "it will work anyway"
+- **Root cause analysis**: Investigate WHY each error occurred and fix the underlying issue
+
+### **Rule 2: Virtual Environment Enforcement**
+
+**CRITICAL REQUIREMENT:**
+- Virtual environment MUST be activated before ANY game operations
+- Command: `source venv/bin/activate`
+- Validation will BLOCK game start if environment not active
+- **NO EXCEPTIONS**: Even for "quick tests" or "just checking"
+
+### **Rule 3: System Integrity Validation**
+
+**Comprehensive checks include:**
+- **Case Structure**: File/directory requirements for case type
+- **File Integrity**: JSON syntax, content validation, encoding
+- **Game State Manager**: Initialization and validation capabilities
+- **Dependencies**: Required packages and environment setup
+
+### **Rule 4: Error Response Protocol**
+
+**When validation fails:**
+1. **READ the error messages completely** - don't guess or assume
+2. **Identify root cause** - trace error to its source component
+3. **Fix the underlying issue** - not just the symptom
+4. **Re-run validation** - confirm fix resolves the problem
+5. **Document pattern** - if systemic, update prevention measures
+
+**PROHIBITED responses:**
+- Manual file creation to "work around" missing structure
+- Partial game starts with "we'll fix it later"
+- Ignoring warnings or treating them as unimportant
+- Bypassing validation "just this once"
+
+### **Rule 5: Quality Gate Enforcement**
+
+**Game startup is BLOCKED until:**
+- ✅ All validation phases pass
+- ✅ Virtual environment confirmed active
+- ✅ Case structure validated for type
+- ✅ GameStateManager initializes successfully
+
+**NO EXCEPTIONS** - even for:
+- "Simple test runs"
+- "I know it will work"
+- "Just want to check quickly"
+- "It worked before"
+
+### **Rule 6: Continuous Monitoring**
+
+**During gameplay:**
+- Monitor for any system errors or inconsistencies
+- If issues emerge, STOP and run diagnostics
+- Apply same root cause analysis principles
+- Never continue with compromised system state
+
+### **Validation Tools Available:**
+
+**Primary (Validation Only):**
+- `python3 scripts/start_game_validator.py {case_name}` - Comprehensive validation
+
+**Diagnostic:**
+- `python3 scripts/game_state_manager.py {case_name} --validate` - State validation
+- `python3 scripts/game_state_manager.py {case_name} --resume` - Begin gameplay after validation
+
+### **Enforcement Priority:**
+
+These rules take **ABSOLUTE PRECEDENCE** over:
+- Convenience or speed
+- "It probably works" assumptions  
+- Desire to start quickly
+- Previous successful runs
+
+**Remember:** Prevention of issues is always better than debugging gameplay failures mid-session.
 
 ---
 
-This methodology represents the current state of iterative development, capturing insights that create authentic courtroom mystery experiences through AI collaboration. The RNG-based gate system ensures each case feels unique while maintaining proper pacing inspired by the Ace Attorney series. As an ongoing experiment in continuous improvement, this approach will evolve based on future discoveries and refinements - with comprehensive testing ensuring stability throughout the evolution process. 
+This methodology represents the current state of iterative development, capturing insights that create authentic courtroom mystery experiences through AI collaboration. The improvisation-first approach ensures each case feels unique while maintaining proper pacing inspired by the Ace Attorney series.

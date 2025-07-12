@@ -1,13 +1,12 @@
 {
   "case_types": {
     "simple_improvisation": {
-      "name": "Simple Improvisation",
-      "description": "Lightweight improvisation-first cases with minimal pre-planning",
+      "name": "Simple Improvisation", 
+      "description": "Improvisation-first cases with minimal pre-planning",
       "required_files": ["real_life_case_summary.txt", "case_opening.txt"],
       "optional_directories": ["game_state", "saves"],
       "gates": ["opening", "investigation", "trial"],
       "trial_trigger_after": 1,
-      "supports_complex_scaffolding": true,
       "estimated_time": "45-90 minutes",
       "workflow": "inspiration → case_opening → full_improvisation"
     }
@@ -76,29 +75,12 @@
   ],
   "case_structure_requirements": {
     "mandatory_files": {
-      "backbone": [
-        "case_structure.json",
-        "character_facts.json",
-        "evidence_chain.json",
-        "truth_timeline.json",
-        "witness_testimonies.json",
-        "trial_structure.json"
-      ],
       "game_state": [
         "investigation_progress.json",
         "trial_progress.json"
-      ],
-      "solution": [
-        "evidence_requirements.json",
-        "character_behaviors.json",
-        "integrated_case.json"
       ]
     },
     "optional_files": {
-      "obstacles": [
-        "chatgpt_obstacles_v1.json",
-        "trial_fabrications.json"
-      ],
       "evidence": [],
       "saves": []
     }
@@ -126,10 +108,7 @@
   "default_settings": {
     "case_creation": {
       "default_type": "simple_improvisation",
-      "auto_generate_inspiration": true,
-      "require_base64_encoding": false,
-      "create_chatgpt_templates": false,
-      "validate_structure": false
+      "auto_generate_inspiration": true
     },
     "game_state": {
       "auto_backup_frequency": "every_gate_completion",

@@ -55,12 +55,12 @@ def minimal_case_structure(temp_case_dir):
     
     investigation_state = {
         "investigation_gates": {
-            "gate1": "pending",
-            "gate2": "pending", 
-            "gate3": "pending"
+            "investigation_day_1": "pending",
+            "investigation_day_2": "pending", 
+            "brief_investigation": "pending"
         },
         "current_phase": "investigation",
-        "case_length": 1,
+        "case_length": 3,
         "evidence_collected": [],
         "character_trust_levels": {},
         "witnesses_interviewed": [],

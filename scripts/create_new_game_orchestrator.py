@@ -101,8 +101,9 @@ class SimpleCaseCreator:
         try:
             result = subprocess.run([
                 "python3", str(Path(__file__).parent / "chatgpt_consultant.py"),
-                "--prompt", chatgpt_prompt,
-                "--output", str(case_path / "case_opening.txt")
+                chatgpt_prompt,
+                "--output", str(case_path / "case_opening.txt"),
+                "--content-only"
             ], cwd=self.base_path, capture_output=True, text=True, timeout=60)
             
             if result.returncode != 0:

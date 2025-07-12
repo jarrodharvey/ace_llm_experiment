@@ -14,8 +14,8 @@ class TestGameStateManager:
         manager = GameStateManager(str(minimal_case_structure))
         
         assert manager.case_name == "test_case"
-        assert manager.case_length == 1
-        assert len(manager.gates) == 3
+        assert manager.case_length == 3
+        assert len(manager.gates) == 6  # 3-day case: 3 investigation + 3 trial gates
         assert manager.current_state["current_phase"] == "investigation"
     
     def test_gate_transitions(self, minimal_case_structure):
@@ -23,11 +23,11 @@ class TestGameStateManager:
         manager = GameStateManager(str(minimal_case_structure))
         
         # Test starting a gate
-        assert manager.start_gate("gate1") == True
-        assert manager.current_state["investigation_gates"]["gate1"] == "in_progress"
+        assert manager.start_gate("investigation_day_1") == True
+        assert manager.current_state["investigation_gates"]["investigation_day_1"] == "in_progress"
         
         # Test completing a gate
-        assert manager.complete_gate("gate1") == True
+        assert manager.complete_gate("investigation_day_1") == True
     
     def test_client_name_loading(self, minimal_case_structure):
         """Test client name loading and substitution"""
@@ -100,20 +100,13 @@ class TestGameStateManager:
         """Test trial trigger based on case length and completed gates"""
         manager = GameStateManager(str(minimal_case_structure))
         
-        # 1-day case should be trial ready immediately (0 investigation gates required)
-        assert manager.is_trial_ready() == True
-        
-        # Simulate 3-day case by updating case_length
-        manager.case_length = 3
-        manager.current_state["case_length"] = 3
-        
-        # Should not be trial ready with 0 completed gates
+        # 3-day case should not be trial ready with 0 completed gates
         assert manager.is_trial_ready() == False
         
         # Complete 3 gates (trigger point for 3-day case)
-        manager.complete_gate("gate1")
-        manager.complete_gate("gate2") 
-        manager.complete_gate("gate3")
+        manager.complete_gate("investigation_day_1")
+        manager.complete_gate("investigation_day_2") 
+        manager.complete_gate("brief_investigation")
         
         # Now should be trial ready
         assert manager.is_trial_ready() == True
@@ -123,7 +116,7 @@ class TestGameStateManager:
         manager = GameStateManager(str(minimal_case_structure))
         
         # Make some changes
-        manager.start_gate("gate1")
+        manager.start_gate("investigation_day_1")
         manager.add_evidence("save_test", "Evidence before save")
         manager.update_character_trust("witness1", 2)
         
@@ -131,18 +124,18 @@ class TestGameStateManager:
         assert manager.create_save_point("test_save") == True
         
         # Make more changes
-        manager.complete_gate("gate1")
+        manager.complete_gate("investigation_day_1")
         manager.add_evidence("after_save", "Evidence after save")
         
         # Verify changes
-        assert manager.current_state["investigation_gates"]["gate1"] == "completed"
+        assert manager.current_state["investigation_gates"]["investigation_day_1"] == "completed"
         assert len(manager.current_state["evidence_collected"]) == 2
         
         # Restore save point
         assert manager.restore_save_point("test_save") == True
         
         # Verify restoration
-        assert manager.current_state["investigation_gates"]["gate1"] == "in_progress"
+        assert manager.current_state["investigation_gates"]["investigation_day_1"] == "in_progress"
         assert len(manager.current_state["evidence_collected"]) == 1
         assert manager.current_state["character_trust_levels"]["witness1"] == 7
     
@@ -153,17 +146,17 @@ class TestGameStateManager:
         # 0 completed gates
         assert manager.get_progress_percentage() == 0.0
         
-        # 1 completed gate (1/3)
-        manager.complete_gate("gate1")
+        # 1 completed gate (1/6)
+        manager.complete_gate("investigation_day_1")
+        assert abs(manager.get_progress_percentage() - 16.666666666666668) < 0.1
+        
+        # 2 completed gates (2/6)
+        manager.complete_gate("investigation_day_2")
         assert abs(manager.get_progress_percentage() - 33.33333333333333) < 0.1
         
-        # 2 completed gates (2/3)
-        manager.complete_gate("gate2")
-        assert abs(manager.get_progress_percentage() - 66.66666666666666) < 0.1
-        
-        # 3 completed gates (3/3)
-        manager.complete_gate("gate3")
-        assert manager.get_progress_percentage() == 100.0
+        # 3 completed gates (3/6)
+        manager.complete_gate("brief_investigation")
+        assert manager.get_progress_percentage() == 50.0
 
 class TestInspirationSystem:
     """Test the pure random inspiration system"""
@@ -261,8 +254,8 @@ class TestUtilityFunctions:
         # Should include next gate action
         assert any("Work on" in action for action in actions)
         
-        # Should include trial action for 1-day case (trial ready immediately)
-        assert "Start trial" in actions
+        # For 3-day case, should not include trial action initially
+        assert "Start trial" not in actions
     
     def test_get_current_status(self, minimal_case_structure):
         """Test status information generation"""
@@ -271,10 +264,10 @@ class TestUtilityFunctions:
         status = manager.get_current_status()
         
         assert status["case_name"] == "test_case"
-        assert status["case_length"] == 1
-        assert status["total_gates"] == 3
+        assert status["case_length"] == 3
+        assert status["total_gates"] == 6  # 3-day case has 6 total gates
         assert status["progress_percentage"] == 0.0
-        assert status["trial_ready"] == True
+        assert status["trial_ready"] == False  # 3-day case not trial ready initially
         assert status["evidence_collected"] == 0
         assert status["witnesses_interviewed"] == 0
     
@@ -283,13 +276,13 @@ class TestUtilityFunctions:
         manager = GameStateManager(str(minimal_case_structure))
         
         # Make some progress
-        manager.start_gate("gate1")
+        manager.start_gate("investigation_day_1")
         manager.add_evidence("resume_test", "Test evidence")
         
         summary = manager.generate_resume_summary()
         
         assert "test_case" in summary
-        assert "1-day case" in summary
-        assert "Gate 1" in summary or "gate1" in summary
+        assert "3-day case" in summary
+        assert "Gate 1" in summary or "investigation_day_1" in summary
         assert "resume_test" in summary
-        assert "TRIAL READY" in summary  # 1-day case is always trial ready
+        assert "TRIAL READY" not in summary  # 3-day case not trial ready initially

@@ -1,0 +1,210 @@
+{
+  "leonard_morse_cross_exam": {
+    "witness_name": "Leonard Morse",
+    "statements": [
+      {
+        "id": "A",
+        "text": "I was in my office reviewing client files when I heard Miranda screaming from the conference room.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B",
+        "text": "I rushed over and found her standing over Richard's body, looking shocked.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "She was holding her coffee cup and trembling.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "D",
+        "text": "I immediately called 911 and tried to secure the scene.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 1,
+      "critical_lies": [],
+      "success_message": "Leonard Morse's testimony has been thoroughly discredited! The contradictions are clear!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge looks displeased with your evidence presentation",
+        "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+        "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against Leonard Morse!"
+      }
+    },
+    "generated_from": "backbone_files",
+    "source_testimony": "I was in my office reviewing client files when I heard Miranda screaming from the conference room. I rushed over and found her standing over Richard's body, looking shocked. She was holding her coffee cup and trembling. I immediately called 911 and tried to secure the scene."
+  },
+  "dr._sarah_kim_cross_exam": {
+    "witness_name": "Dr. Sarah Kim",
+    "statements": [
+      {
+        "id": "A",
+        "text": "The victim died from digitalis poisoning, commonly found in foxglove plants.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B",
+        "text": "Based on stomach contents and blood levels, death occurred approximately 11:30 AM.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "The concentration was high enough to cause rapid cardiac arrest.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "D",
+        "text": "This was definitely intentional poisoning, not accidental.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 1,
+      "critical_lies": [],
+      "success_message": "Dr. Sarah Kim's testimony has been thoroughly discredited! The contradictions are clear!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge looks displeased with your evidence presentation",
+        "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+        "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against Dr. Sarah Kim!"
+      }
+    },
+    "generated_from": "backbone_files",
+    "source_testimony": "The victim died from digitalis poisoning, commonly found in foxglove plants. Based on stomach contents and blood levels, death occurred approximately 11:30 AM. The concentration was high enough to cause rapid cardiac arrest. This was definitely intentional poisoning, not accidental."
+  },
+  "detective_ray_martinez_cross_exam": {
+    "witness_name": "Detective Ray Martinez",
+    "statements": [
+      {
+        "id": "A",
+        "text": "Miranda Chen was found alone with the victim immediately after death.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B",
+        "text": "Her coffee cup tested positive for digitalis traces.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "She had a documented conflict with the victim over work performance.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "D",
+        "text": "Physical evidence and motive point clearly to her as the perpetrator.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 1,
+      "critical_lies": [],
+      "success_message": "Detective Ray Martinez's testimony has been thoroughly discredited! The contradictions are clear!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge looks displeased with your evidence presentation",
+        "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+        "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against Detective Ray Martinez!"
+      }
+    },
+    "generated_from": "backbone_files",
+    "source_testimony": "Miranda Chen was found alone with the victim immediately after death. Her coffee cup tested positive for digitalis traces. She had a documented conflict with the victim over work performance. Physical evidence and motive point clearly to her as the perpetrator."
+  },
+  "janet_ellis_cross_exam": {
+    "witness_name": "Janet Ellis",
+    "statements": [
+      {
+        "id": "A",
+        "text": "I manage the office security system and maintain access logs.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B",
+        "text": "On the morning of the murder, Miranda badged in at 8:15 AM and Leonard arrived at 8:30 AM.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "Richard came in at 10:45 AM.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "D",
+        "text": "The coffee machine in the kitchen was serviced the week before and working normally.",
+        "is_lie": false,
+        "press_response": "The witness provides additional details about the situation.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 1,
+      "critical_lies": [],
+      "success_message": "Janet Ellis's testimony has been thoroughly discredited! The contradictions are clear!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge looks displeased with your evidence presentation",
+        "3-4": "The prosecutor objects and the judge warns you about irrelevant evidence",
+        "5+": "The judge threatens to hold you in contempt for wasting the court's time"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: Your repeated irrelevant evidence presentations have undermined your case against Janet Ellis!"
+      }
+    },
+    "generated_from": "backbone_files",
+    "source_testimony": "I manage the office security system and maintain access logs. On the morning of the murder, Miranda badged in at 8:15 AM and Leonard arrived at 8:30 AM. Richard came in at 10:45 AM. The coffee machine in the kitchen was serviced the week before and working normally."
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "current_phase": "ready_to_start",
+  "current_phase": "trial",
   "case_length": 1,
   "investigation_gates": {
     "trial_opening": "completed",
