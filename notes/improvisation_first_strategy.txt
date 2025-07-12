@@ -1,0 +1,60 @@
+Read through notes/improvised_investigation_planned_trials.txt for background.
+
+PROPOSED STRATEGY
+
+Following careful consideration I would like to go with an improvisation first approach.  this means that cases from now on will rely extremely heavily on improvisation.  more on that later.
+
+The phantom ledger was great.  a lot of hard work went into the codebase and documentation for planned components, however.  besides the emotional impact of losing all of that work,  it's entirely possible some of it could turn out to be useful later on and deleting it would be a waste.
+
+ARCHIVED FEATURE DOCUMENT
+
+ to start off with lets create a document called archived_features.log listing all of the features (code/documents/text snippets) that will need to be cut. 
+
+I currently have a git repo that is up to date with the current state. It is my understanding that "git reflog" can be used for file restoration. The document should contain, for each cut feature:
+
+1. A timestamp
+2. the name of the cut feature
+3. A description
+4. How to restore the feature
+
+ the objective being that we have a document that makes it easy to reference cut features and easily restore them if needed.
+
+NEW SYSTEM
+
+***create new game***  is now much simpler  in what it does.
+
+ I want to retain the functionality to pull down the details of a real life case to prevent repetitive core concepts.
+
+after reviewing the facts of the real life case you are still to create a directory with the case's name.
+
+create a summary of the real life case in the new case directory, real_life_case_summary.txt. 
+
+provide this real life summary to chatgpt with this prompt:
+
+"below is a summary of a real life legal case  selected completely at random from the state records of the new south wales court of appeals. it will be used to inspire a game that is in turn inspired by the Ace Attorney games.  the ace attorney games usually begin with a dramatic scene showing a murder. In the Ace Attorney style, write a dramatic opening inspired by these details."
+
+save chatgpt's response as case_opening.txt. append to the end "type 'next' to continue".
+
+This means that all the case directory will start off with is the files real_life_case_summary.txt and case_opening.txt - much more lightweight!
+
+***start new game***
+
+Print the content of "case_opening.txt". No need to provide a menu of options as the case isn't interactive yet. I will just type "next".
+
+ for the next scene I do not want the protagonist  beginning in a detention centre!
+
+generate a random word that is a VERB.  use this verb to inspire what the protagonist is doing when we meet them. It must be unrelated to the case. They will be hearing from their client soon enough!
+
+After that proceed with the case as normal. All rules still apply as normal but we are going fully improvised still, with the same rules and systems in place. 
+
+WHAT TO DO NOW
+
+ the first thing to do is to prepare the archived features document  containing everything that will be no longer needed. This includes both code and documentation. Remember it is  critical to keep what we know works.
+
+ the next thing to do is to consult with me what you will be getting rid of, with a list of everything to be removed that I can sign off on.
+
+ the next thing to do after that is to remove it all, and implement the new system. This  will likely require a fairly comprehensive overhaul with nearly all of the code and doco being changed in some way. Do not touch anything that we know from experience makes a good case!
+
+THE FUTURE
+
+ once these changes are made we should have a nice simplified doco/codebase that we know works well, and should be easier to tweak any required changes - and restore anything removed by accident!
