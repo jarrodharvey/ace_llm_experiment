@@ -20,50 +20,45 @@ The experiment successfully combines:
 - Example: "The Gallery Gambit" → `the_gallery_gambit/`
 - No more version numbers; each case stands independently by name
 
-## Core Architecture: Current Preferred Methodology
+## Core Architecture: Improvisation-First Strategy
 
-**Shared Configuration System:**
-All case patterns, gate structures, and inspiration categories are centrally managed in `config/case_patterns.json`:
-- **Loose coupling** - Scripts reference shared configuration, not hardcoded values
-- **Extensibility** - Add new case lengths/patterns without modifying multiple scripts  
-- **Consistency** - All scripts use identical definitions and validation rules
-- **Maintainability** - Single point of change for case requirements
+**Simplified Case Creation (Default):**
+The current methodology prioritizes immediate improvisation with minimal pre-planning:
+- **Real-world inspiration** provides thematic foundation without extensive planning
+- **Dramatic opening scene** sets the stage for improvised investigation  
+- **Full game state management** supports complex improvisation during gameplay
+- **Progressive gate system** maintains case pacing and trial triggers
 
-**Dynamic Case Structure (Config-Based):**
-Cases are automatically generated using configurable patterns inspired by Ace Attorney pacing:
+**Configuration-Driven Extensibility:**
+All case patterns and complexity levels managed in `config/case_patterns.json`:
+- **Simple improvisation** (default): Just inspiration summary + opening scene
+- **Complex scaffolding** (available): Full backbone/obstacles/solution structure
+- **Loose coupling** - Scripts reference configuration, enabling easy scaling
+- **Future-proof architecture** - Add complexity without rebuilding
 
-- **1-Day Cases:** Trial-only (3 gates, 30-45 min) - Inspired by "The First Turnabout"
-- **2-Day Cases:** Brief investigation + extended trial (4 gates, 45-60 min) - Inspired by "Turnabout Corner"  
-- **3-Day Cases:** Full investigation + dramatic trial (6 gates, 60-90 min) - Inspired by "Turnabout Goodbyes"
-
-**Progressive Gate System:**
-- **Investigation gates** build evidence and expose conspiracy
-- **Trial gates** provide dramatic courtroom confrontations
-- **Automatic trial trigger** when investigation gates complete (configurable trigger points)
+**Progressive Gate System (Preserved):**
+- **Investigation gates** build evidence and expose conspiracy through improvisation
+- **Trial gates** provide dramatic courtroom confrontations  
+- **Automatic trial trigger** when investigation gates complete
 - **Final resolution** through cross-examination and evidence presentation
 
-**Inspiration-First Creation Process:**
-- **Real-world legal cases** provide encrypted inspiration for fictional adaptation
-- **Claude derives case names** from thematic analysis of inspiration content
-- **Semi-automated workflow** with strategic pause points for creative input
-- **Entropy prevention** through forced random word inspiration for improvisation
-
 **AI Collaboration Framework:**
-- **Claude**: Logical backbone, consistency validation, evidence chains, case orchestration
-- **ChatGPT**: Creative obstacles, theatrical trial elements, dramatic flair
+- **Claude**: Improvised investigation, logical consistency, character development, state management
+- **ChatGPT**: Opening scene generation, complex obstacles (when needed), theatrical elements
 
 When asked to consult with ChatGPT on something, the api key can be found in openai_key.txt.
 
 ## COMMANDS - GLOBAL
 
-**create new game**: Create a new case following the inspiration-first methodology below
+**create new game**: Create a new case using the simplified improvisation-first workflow
 - **Command**: `python3 scripts/create_new_game_orchestrator.py`
-- **Process**: Multi-phase orchestration with Claude intervention points
-- **Phase 0**: Real-world legal case inspiration → Claude derives case name  
-- **Phase 1**: Automated scaffolding → Claude fills backbone templates
-- **Phase 2**: Claude prepares ChatGPT consultations → Obstacle/trial design
-- **Phase 3**: Claude validates and completes solution files
-- Uses shared configuration system for consistent case structures
+- **Process**: Streamlined inspiration → opening → ready for improvisation
+- **Step 1**: Real-world legal case inspiration fetched automatically
+- **Step 2**: Claude analyzes inspiration and derives case name
+- **Step 3**: ChatGPT generates dramatic opening scene from case summary
+- **Step 4**: Case ready for improvised gameplay with full state management
+- **Result**: Case directory with `real_life_case_summary.txt` + `case_opening.txt` + `game_state/`
+- **Complex scaffolding**: Available via `scripts/create_new_game_orchestrator_complex.py` when needed
 
 **Case Creation Recovery Commands:**
 When case creation fails or encounters issues, use recovery mode to diagnose and fix problems:
@@ -92,9 +87,12 @@ When case creation fails or encounters issues, use recovery mode to diagnose and
 
 **Recovery Workflow:** See [recovery workflow examples](docs/examples/recovery-workflow.md) for detailed command usage and troubleshooting steps.
 
-**start game {DIRECTORY_NAME}**: Start playing a fresh game at DIRECTORY_NAME
+**start game {DIRECTORY_NAME}**: Start playing a fresh improvisation-first game at DIRECTORY_NAME
 - **MANDATORY**: First activate virtual environment: `source venv/bin/activate`
-- Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --status --actions`
+- **Opening**: Displays `case_opening.txt` content, wait for "next"
+- **Next scene**: Generate random verb + protagonist activity (not detention center!)
+- **Full improvisation**: Use state management, random inspiration, dice rolls
+- **Gate system**: Investigation gates → automatic trial trigger → courtroom battles
 - Must create save point before beginning: `--save "game_start"`
 
 **continue game {DIRECTORY_NAME}**: Continue playing an in-progress game at DIRECTORY_NAME  

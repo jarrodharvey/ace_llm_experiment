@@ -1,4 +1,22 @@
 {
+  "case_types": {
+    "simple_improvisation": {
+      "name": "Simple Improvisation",
+      "description": "Lightweight improvisation-first cases with minimal pre-planning",
+      "required_files": ["real_life_case_summary.txt", "case_opening.txt"],
+      "optional_directories": ["game_state", "saves"],
+      "gates": ["opening", "investigation", "trial"],
+      "trial_trigger_after": 1,
+      "supports_complex_scaffolding": true,
+      "estimated_time": "45-90 minutes",
+      "workflow": "inspiration → case_opening → full_improvisation"
+    }
+  },
+  "gate_structures": {
+    "1": ["trial_opening", "first_witness_battle", "final_revelation"],
+    "2": ["investigation_day", "trial_opening", "cross_examination", "final_battle"], 
+    "3": ["investigation_day_1", "investigation_day_2", "brief_investigation", "trial_day_1", "trial_day_2", "final_victory"]
+  },
   "case_lengths": {
     "1": {
       "name": "Trial Only",
@@ -107,10 +125,11 @@
   },
   "default_settings": {
     "case_creation": {
+      "default_type": "simple_improvisation",
       "auto_generate_inspiration": true,
-      "require_base64_encoding": true,
-      "create_chatgpt_templates": true,
-      "validate_structure": true
+      "require_base64_encoding": false,
+      "create_chatgpt_templates": false,
+      "validate_structure": false
     },
     "game_state": {
       "auto_backup_frequency": "every_gate_completion",
