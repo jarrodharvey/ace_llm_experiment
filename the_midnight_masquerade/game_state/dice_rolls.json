@@ -62,5 +62,21 @@
     "description": "Investigate mask fragment for identifying details",
     "timestamp": "2025-07-13T01:28:04.291202",
     "success_level": "success"
+  },
+  {
+    "base_roll": 19,
+    "modifier": 3,
+    "total": 20,
+    "description": "Request court investigation into VM artisan records",
+    "timestamp": "2025-07-13T01:32:51.623962",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 8,
+    "modifier": 5,
+    "total": 13,
+    "description": "Present motion to dismiss charges",
+    "timestamp": "2025-07-13T01:37:09.080974",
+    "success_level": "success"
   }
 ]

@@ -90,6 +90,20 @@
       "usage_context": "investigating ornate masquerade mask fragment with gold and burgundy coloring, looking for clues about third party presence",
       "gate": "unknown",
       "location": "unknown"
+    },
+    {
+      "word": "familiarity",
+      "category": "pure_random",
+      "usage_context": "requesting court investigation into VM artisan records to identify custom mask maker and potential client who lost fragment",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "smile",
+      "category": "pure_random",
+      "usage_context": "presenting motion to dismiss charges against David based on mask evidence pointing to Margaret Silverton as real perpetrator",
+      "gate": "unknown",
+      "location": "unknown"
     }
   ],
   "evidence_collected": [
@@ -116,6 +130,11 @@
     {
       "name": "Artisan Maker's Mark",
       "description": "Tiny embossed 'VM' symbol on mask fragment indicating professional theatrical mask maker, suggests expensive custom piece",
+      "discovered_at": "Gate: unknown"
+    },
+    {
+      "name": "Margaret Silverton's Custom Mask",
+      "description": "Burgundy and gold mask ordered from Victoria Masterson artisan, delivered 2 days before incident, client claimed to barely know victim",
       "discovered_at": "Gate: unknown"
     }
   ],

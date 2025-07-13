@@ -12,6 +12,7 @@ from case_config import get_config_manager
 from dice_system import DiceRoller
 from character_name_generator import CharacterNameGenerator
 from enhanced_save_system import NarrativeSaveSystem
+from red_herring_system import RedHerringClassifier
 
 class GameStateManager:
     def __init__(self, case_path: str):
@@ -46,6 +47,9 @@ class GameStateManager:
         
         # Initialize character name generator
         self.name_generator = CharacterNameGenerator(str(self.case_path))
+        
+        # Initialize red herring classification system
+        self.red_herring_classifier = RedHerringClassifier(str(self.case_path))
         
         # Initialize enhanced narrative save system
         self.narrative_save_system = NarrativeSaveSystem(str(self.case_path))
@@ -2254,6 +2258,16 @@ def main():
     parser.add_argument('--add-family-member', help='Add family member to existing character (format: "existing_name:relationship")')
     parser.add_argument('--surname-suggestions', nargs='+', help='Get surname suggestions avoiding these existing names')
     
+    # Red herring system commands
+    parser.add_argument('--classify-character', nargs='+', metavar='ARG', help='Classify character: CHARACTER_NAME CASE_LENGTH [ROLE_HINT] (optional role hint for weighting)')
+    parser.add_argument('--check-character-role', metavar='CHARACTER_NAME', help='Check existing character classification')
+    parser.add_argument('--list-classifications', action='store_true', help='List all character classifications for GM reference')
+    parser.add_argument('--classification-stats', action='store_true', help='Show classification statistics for current case')
+    parser.add_argument('--generate-name-classified', nargs='?', const='', help='Generate name with automatic classification (optional role hint)')
+    parser.add_argument('--generate-age', nargs='?', const='', help='Generate appropriate age for role (optional role hint)')
+    parser.add_argument('--generate-occupation', nargs=2, metavar=('AGE', 'ROLE'), help='Generate occupation for given age and role')
+    parser.add_argument('--show-spoilers', action='store_true', help='Show character classifications and killer identities (for testing/GM reference only)')
+    
     # Cross-examination commands
     parser.add_argument('--start-cross-examination', metavar='WITNESS_NAME', help='Start cross-examination of specified witness')
     parser.add_argument('--press', metavar='STATEMENT_ID', help='Press witness for more details on statement (A, B, C, etc.)')
@@ -2812,6 +2826,164 @@ def main():
             print(f"📝 Surname suggestions (avoiding conflicts with: {', '.join(args.surname_suggestions)}):")
             for i, surname in enumerate(suggestions, 1):
                 print(f"   {i}. {surname}")
+        
+        # Red herring system commands
+        if args.classify_character:
+            if len(args.classify_character) < 2:
+                print("❌ Error: --classify-character requires CHARACTER_NAME and CASE_LENGTH")
+            else:
+                character_name = args.classify_character[0]
+                case_length_str = args.classify_character[1]
+                role_hint = args.classify_character[2] if len(args.classify_character) > 2 else None
+                
+                try:
+                    case_length = int(case_length_str)
+                    classification = manager.red_herring_classifier.classify_character(character_name, case_length, role_hint)
+                    
+                    if args.show_spoilers:
+                        print(f"🎭 Character Classification:")
+                        print(f"   Name: {character_name}")
+                        print(f"   Case Length: {case_length} days")
+                        if role_hint:
+                            print(f"   Role Hint: {role_hint}")
+                        print(f"   Role: {classification}")
+                        
+                        # Calculate and show weighted probability
+                        weighted_prob = manager.red_herring_classifier.get_weighted_probability(case_length, role_hint)
+                        if classification == "true_killer":
+                            print(f"   ⚠️  Weighted killer probability was: {weighted_prob*100:.1f}%")
+                        else:
+                            print(f"   🎭 Weighted killer probability was: {weighted_prob*100:.1f}%")
+                        
+                        base_prob = 1.0/(case_length+1)*100
+                        role_weight = manager.red_herring_classifier._get_role_weight(role_hint)
+                        print(f"   📊 Base: {base_prob:.1f}% × Role weight: {role_weight:.1f}x")
+                    else:
+                        print(f"🎭 Character Classified:")
+                        print(f"   Name: {character_name}")
+                        print(f"   Case Length: {case_length} days")
+                        if role_hint:
+                            print(f"   Role Hint: {role_hint}")
+                        print(f"   ✅ Classification recorded (use --show-spoilers to reveal)")
+                        weighted_prob = manager.red_herring_classifier.get_weighted_probability(case_length, role_hint)
+                        print(f"   📊 Role-weighted killer probability: {weighted_prob*100:.1f}%")
+                except ValueError:
+                    print("❌ Error: Case length must be a number (1, 2, or 3)")
+        
+        if args.check_character_role:
+            role = manager.red_herring_classifier.get_character_role(args.check_character_role)
+            if role:
+                if args.show_spoilers:
+                    print(f"🎭 Character Role Check:")
+                    print(f"   Name: {args.check_character_role}")
+                    print(f"   Classification: {role}")
+                else:
+                    print(f"🎭 Character Status:")
+                    print(f"   Name: {args.check_character_role}")
+                    print(f"   ✅ Has been classified (use --show-spoilers to reveal)")
+            else:
+                print(f"❓ Character '{args.check_character_role}' has not been classified yet")
+        
+        if args.list_classifications:
+            classifications = manager.red_herring_classifier.get_all_classifications()
+            if classifications:
+                if args.show_spoilers:
+                    print("🎭 All Character Classifications:")
+                    killers = manager.red_herring_classifier.get_potential_killers()
+                    red_herrings = manager.red_herring_classifier.get_red_herrings()
+                    
+                    if killers:
+                        print(f"\n   🔪 Potential Killers ({len(killers)}):")
+                        for killer in killers:
+                            print(f"      • {killer}")
+                    
+                    if red_herrings:
+                        print(f"\n   🎭 Red Herrings ({len(red_herrings)}):")
+                        for herring in red_herrings:
+                            print(f"      • {herring}")
+                else:
+                    print("🎭 Character Classifications:")
+                    print(f"   Total Characters: {len(classifications)}")
+                    print("   ✅ All classifications recorded")
+                    print("   💡 Use --show-spoilers to reveal identities")
+            else:
+                print("❓ No characters have been classified yet")
+        
+        if args.classification_stats:
+            stats = manager.red_herring_classifier.get_classification_stats(manager.case_length)
+            print("📊 Classification Statistics:")
+            print(f"   Case Length: {stats['case_length']} days")
+            print(f"   Total Characters: {stats['total_characters']}")
+            
+            if args.show_spoilers:
+                print(f"   Potential Killers: {stats['potential_killers']}")
+                print(f"   Red Herrings: {stats['red_herrings']}")
+                if stats['total_characters'] > 0:
+                    print(f"   Actual Killer Rate: {stats['actual_killer_rate']*100:.1f}%")
+                    print(f"   Actual Red Herring Rate: {stats['actual_red_herring_rate']*100:.1f}%")
+            
+            print(f"   Expected Killer Rate: {stats['expected_killer_rate']*100:.1f}%")
+            print(f"   Expected Red Herring Rate: {stats['expected_red_herring_rate']*100:.1f}%")
+            
+            if not args.show_spoilers and stats['total_characters'] > 0:
+                print("   💡 Use --show-spoilers to see actual distribution")
+        
+        if args.generate_name_classified is not None:
+            role_hint = args.generate_name_classified if args.generate_name_classified else None
+            name, classification, age, occupation = manager.name_generator.generate_name_with_classification(manager.case_length, role_hint)
+            
+            if args.show_spoilers:
+                print(f"🎭 Generated Name with Classification:")
+                print(f"   Name: {name}")
+                print(f"   Age: {age}")
+                print(f"   Occupation: {occupation}")
+                print(f"   Classification: {classification}")
+                print(f"   Case Length: {manager.case_length} days")
+                if role_hint:
+                    print(f"   Role Hint: {role_hint}")
+                # Calculate and show weighted probability
+                weighted_prob = manager.red_herring_classifier.get_weighted_probability(manager.case_length, role_hint)
+                if classification == "true_killer":
+                    print(f"   ⚠️  Weighted killer probability was: {weighted_prob*100:.1f}%")
+                    base_prob = 1.0/(manager.case_length+1)*100
+                    role_weight = manager.red_herring_classifier._get_role_weight(role_hint)
+                    print(f"   📊 Base: {base_prob:.1f}% × Role weight: {role_weight:.1f}x")
+                else:
+                    print(f"   🎭 Weighted killer probability was: {weighted_prob*100:.1f}%")
+                    base_prob = 1.0/(manager.case_length+1)*100
+                    role_weight = manager.red_herring_classifier._get_role_weight(role_hint)
+                    print(f"   📊 Base: {base_prob:.1f}% × Role weight: {role_weight:.1f}x")
+            else:
+                print(f"🎭 Generated Character:")
+                print(f"   Name: {name}")
+                print(f"   Age: {age}")
+                print(f"   Occupation: {occupation}")
+                print(f"   Case Length: {manager.case_length} days")
+                if role_hint:
+                    print(f"   Role Hint: {role_hint}")
+                print(f"   ✅ Classification recorded (use --show-spoilers to reveal)")
+                weighted_prob = manager.red_herring_classifier.get_weighted_probability(manager.case_length, role_hint)
+                print(f"   📊 Role-weighted killer probability: {weighted_prob*100:.1f}%")
+        
+        if args.generate_age is not None:
+            role_hint = args.generate_age if args.generate_age else None
+            age = manager.name_generator.generate_age(role_hint)
+            print(f"🎂 Generated Age:")
+            print(f"   Age: {age}")
+            if role_hint:
+                print(f"   Role Hint: {role_hint}")
+        
+        if args.generate_occupation:
+            try:
+                age_str, role = args.generate_occupation
+                age = int(age_str)
+                occupation = manager.name_generator.generate_occupation(age, role)
+                print(f"💼 Generated Occupation:")
+                print(f"   Age: {age}")
+                print(f"   Role: {role}")
+                print(f"   Occupation: {occupation}")
+            except ValueError:
+                print("❌ Error: Age must be a number")
         
         # Enhanced narrative save system commands
         if args.create_narrative_save:

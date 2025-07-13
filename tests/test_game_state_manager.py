@@ -139,6 +139,33 @@ class TestGameStateManager:
         assert len(manager.current_state["evidence_collected"]) == 1
         assert manager.current_state["character_trust_levels"]["witness1"] == 7
     
+    def test_manual_save_game_functionality(self, minimal_case_structure):
+        """Test manual save game functionality for context window breaks"""
+        manager = GameStateManager(str(minimal_case_structure))
+        
+        # Simulate player progress
+        manager.start_gate("investigation_day_1")
+        manager.add_evidence("key_evidence", "Important clue found")
+        manager.update_character_trust("witness1", 3)
+        
+        # Test manual save with timestamp format
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        save_name = f"manual_save_{timestamp}"
+        
+        assert manager.create_save_point(save_name) == True
+        
+        # Verify save was created and can be listed
+        saves = manager.list_save_points()
+        save_names = [save["name"] for save in saves]
+        assert save_name in save_names
+        
+        # Test that save contains current state
+        assert manager.restore_save_point(save_name) == True
+        assert manager.current_state["investigation_gates"]["investigation_day_1"] == "in_progress"
+        assert len(manager.current_state["evidence_collected"]) == 1
+        assert manager.current_state["character_trust_levels"]["witness1"] == 8  # 5 base + 3
+    
     def test_progress_calculation(self, minimal_case_structure):
         """Test progress percentage calculation"""
         manager = GameStateManager(str(minimal_case_structure))

@@ -466,5 +466,105 @@ class TestFamilyNameGeneratorCLI:
             assert "Surname suggestions:" in captured.out
 
 
+class TestAgeAndOccupationGeneration:
+    """Test age and occupation generation features"""
+    
+    def setup_method(self):
+        self.generator = CharacterNameGenerator()
+    
+    def test_age_generation_without_role(self):
+        """Test age generation without role hint"""
+        age = self.generator.generate_age()
+        assert isinstance(age, int)
+        assert 18 <= age <= 75
+    
+    def test_age_generation_with_role_hints(self):
+        """Test age generation with various role hints"""
+        # Judge should be older and experienced
+        judge_age = self.generator.generate_age("judge")
+        assert 40 <= judge_age <= 70
+        
+        # Student should be younger
+        student_age = self.generator.generate_age("student")
+        assert 18 <= student_age <= 30
+        
+        # Security guard should be in physical job range
+        guard_age = self.generator.generate_age("security guard")
+        assert 21 <= guard_age <= 55
+        
+        # Doctor should need extensive education
+        doctor_age = self.generator.generate_age("doctor")
+        assert 30 <= doctor_age <= 70
+    
+    def test_occupation_generation_with_role_mapping(self):
+        """Test occupation generation with role hint mapping"""
+        # Direct role mappings should work
+        assert self.generator.generate_occupation(35, "detective") == "detective"
+        assert self.generator.generate_occupation(45, "judge") == "judge"
+        assert self.generator.generate_occupation(20, "student") == "student"
+        assert self.generator.generate_occupation(30, "doctor") == "doctor"
+        assert self.generator.generate_occupation(25, "security guard") == "security guard"
+    
+    def test_occupation_generation_without_role(self):
+        """Test occupation generation without role hint"""
+        # Should generate random occupation using Faker
+        occupation = self.generator.generate_occupation(35, None)
+        assert isinstance(occupation, str)
+        assert len(occupation) > 0
+        
+        # Young adults might get student randomly
+        occupation_young = self.generator.generate_occupation(19, None)
+        assert isinstance(occupation_young, str)
+        assert len(occupation_young) > 0
+    
+    def test_generate_name_with_classification_includes_age_occupation(self):
+        """Test that name generation includes age and occupation"""
+        # Create a temporary case directory for testing
+        import tempfile
+        import shutil
+        temp_dir = tempfile.mkdtemp()
+        temp_case = Path(temp_dir) / "test_case"
+        temp_case.mkdir(exist_ok=True)
+        (temp_case / "game_state").mkdir(exist_ok=True)
+        
+        try:
+            generator_with_case = CharacterNameGenerator(str(temp_case))
+            
+            # Test with role hint
+            result = generator_with_case.generate_name_with_classification(2, "judge")
+            assert isinstance(result, tuple)
+            assert len(result) == 4
+            
+            name, classification, age, occupation = result
+            assert isinstance(name, str)
+            assert classification in ["true_killer", "red_herring"]
+            assert isinstance(age, int)
+            assert isinstance(occupation, str)
+            
+            # Judge should have appropriate age and occupation
+            assert 40 <= age <= 70
+            assert occupation == "judge"
+            
+        finally:
+            shutil.rmtree(temp_dir)
+    
+    def test_age_consistency_for_roles(self):
+        """Test that generated ages are consistent with role requirements"""
+        roles_with_education = ["lawyer", "attorney", "prosecutor", "doctor", "physician"]
+        
+        for role in roles_with_education:
+            age = self.generator.generate_age(role)
+            # These roles require higher education, so minimum age should be reasonable
+            assert age >= 25, f"{role} should be at least 25 due to education requirements"
+    
+    def test_occupation_fallback_to_faker(self):
+        """Test that occupation falls back to Faker for unrecognized roles"""
+        occupation = self.generator.generate_occupation(30, "alien investigator")
+        assert isinstance(occupation, str)
+        assert len(occupation) > 0
+        # Should not be "alien investigator" since it's not in our mapping
+        assert occupation != "alien investigator"
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

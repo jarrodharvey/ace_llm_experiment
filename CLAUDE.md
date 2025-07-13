@@ -126,9 +126,38 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 - `--generate-name [role]` - Generate unique character name with optional role hint (e.g., "judge", "prosecutor")
 - `--generate-names {count}` - Generate multiple unique character names at once
 - `--name-suggestions "{description}"` - Get multiple name options based on character description
+- `--generate-age [role]` - Generate appropriate age for character with optional role-based constraints
+- `--generate-occupation {age} {role}` - Generate occupation for specific age and role combination
 - **Uniqueness Guarantee**: Names automatically avoid duplicates from entire project history
-- **Supported Roles**: Judge, prosecutor, witness (role hints influence name style but don't guarantee patterns)
+- **Age Generation**: Role-appropriate ages (judges: 40-70, students: 18-30, security: 21-55, etc.)
+- **Occupation Mapping**: Role hints map to appropriate occupations (detective→detective, student→student)
+- **Faker Integration**: Fallback to Faker's job generator for creative occupations when no role mapping exists
+- **Supported Roles**: Judge, prosecutor, witness, detective, police, lawyer, doctor, security guard, student, etc.
 - **Usage**: Use for all new character creation to prevent repetitive names across cases
+
+**Red Herring Classification System (Anti-Pattern Prevention):**
+- `--generate-name-classified [role]` - Generate complete character (name, age, occupation) with automatic killer/red herring classification
+- `--classify-character "{character_name}" {case_length} [role_hint]` - Manually classify character with optional role weighting
+- `--check-character-role "{character_name}"` - Check existing character classification (GM reference only)
+- `--list-classifications` - List all killer/red herring classifications for case (GM reference only)
+- `--classification-stats` - Show classification statistics and expected probabilities
+- `--show-spoilers` - **TESTING ONLY**: Reveal actual classifications (never use during gameplay)
+- **Case-Length Scaling**: Base killer probability decreases with case length (1-day: 50%, 2-day: 33%, 3-day: 25%)
+- **Role-Based Weighting**: Role types affect killer probability for narrative realism:
+  - **High Authority (0.3x)**: detective, judge, police, client, prosecutor, doctor - Rare but shocking twists
+  - **Normal Authority (1.0x)**: witness, lawyer, court staff, journalist - Standard probability  
+  - **High Suspicion (1.8x)**: security guard, business rival, ex-partner, family member, debtor - Likely suspects
+- **Combined Probabilities**: Final probability = Base probability × Role weight (capped at 95%)
+- **Examples**: 
+  - 1-day detective: 50% × 0.3 = 15% killer chance (Christie-style rare twist)
+  - 3-day security guard: 25% × 1.8 = 45% killer chance (obvious suspect)
+  - 2-day witness: 33% × 1.0 = 33% killer chance (normal)
+- **Deterministic RNG**: Same character name + role always gets same classification (based on name + role hash)
+- **Base64 Storage**: Classifications stored in encrypted format to prevent player spoilers
+- **Spoiler Protection**: Commands hide classifications during gameplay unless `--show-spoilers` is used
+- **Purpose**: Prevents predictable patterns while creating appropriate narrative tension and surprise
+- **Usage**: Always provide role hints when generating characters to ensure proper weighting
+- **CRITICAL**: Never use `--show-spoilers` during actual gameplay - only for testing and debugging
 
 **Family Relationship Management:**
 - `--create-family {size} [--family-surname {surname}]` - Create entire family with shared surname
@@ -358,6 +387,7 @@ When playing games, you are the game master:
 - **"?" prompts** - If I begin with "?" I want a brief reminder (less than two sentences). Example: "? victim" returns the victim's name only
 - **evidence request** - If I simply type "evidence" list and describe the evidence I've gathered so far, courtroom mystery style
 - **profiles request** - If I simply type "profiles" list and describe the people I've met so far, courtroom mystery style
+- **save game request** - If I simply type "save game" create a manual save point using game state manager: `--save "manual_save_[timestamp]"` allowing me to close/reopen context window
 - **Option lists** - End every response with 3-5 available actions. Not too many (overwhelming) or too few (removes agency)
 - **Uphill battle** - Characters should be hostile/uncooperative by default, requiring evidence presentation to make progress
 - **Evidence presentation gates** - Progression locked until player presents specific evidence to specific characters

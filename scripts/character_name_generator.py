@@ -18,6 +18,12 @@ class CharacterNameGenerator:
         self.used_names = self._load_used_names()
         self.surname_families = self._load_surname_families()  # Track which surnames belong to which families
         
+        # Initialize red herring classifier if case path provided
+        self.red_herring_classifier = None
+        if case_path:
+            from red_herring_system import RedHerringClassifier
+            self.red_herring_classifier = RedHerringClassifier(case_path)
+        
     def _load_used_names(self) -> Set[str]:
         """Load all character names already used in the project to avoid duplicates"""
         used_names = set()
@@ -92,13 +98,14 @@ class CharacterNameGenerator:
         # Allow periods and other common name characters (Dr., Jr., etc.)
         return len(words) >= 2 and all(word.replace('.', '').isalpha() for word in words)
     
-    def generate_unique_name(self, role: Optional[str] = None) -> str:
+    def generate_unique_name(self, role: Optional[str] = None, age: Optional[int] = None) -> str:
         """
         Generate a unique character name not used elsewhere in the project
         
         Args:
             role: Optional role hint (e.g., "judge", "prosecutor", "witness")
                  Can influence name style but doesn't guarantee specific patterns
+            age: Optional age for the character (affects name style)
         
         Returns:
             A unique full name (first + last)
@@ -127,6 +134,120 @@ class CharacterNameGenerator:
         # Fallback if we somehow can't generate a unique name
         # This should be extremely rare with faker's name pool
         return f"{self.fake.first_name()} {self.fake.last_name()}-{self.fake.random_number(digits=3)}"
+    
+    def generate_age(self, role: Optional[str] = None) -> int:
+        """
+        Generate appropriate age for character based on role.
+        
+        Args:
+            role: Optional role hint that may influence age range
+            
+        Returns:
+            Age between 18-75, adjusted for role appropriateness
+        """
+        if not role:
+            return self.fake.random_int(min=18, max=75)
+        
+        role_lower = role.lower().strip()
+        
+        # Age ranges based on role requirements
+        if role_lower in ["judge", "magistrate"]:
+            # Judges typically older, experienced
+            return self.fake.random_int(min=40, max=70)
+        elif role_lower in ["detective", "investigator", "police", "cop"]:
+            # Law enforcement, broad range but typically experienced
+            return self.fake.random_int(min=25, max=65)
+        elif role_lower in ["prosecutor", "district attorney", "da", "lawyer", "attorney"]:
+            # Legal professionals need law school + experience
+            return self.fake.random_int(min=28, max=65)
+        elif role_lower in ["doctor", "physician", "medical examiner", "coroner"]:
+            # Medical professionals need extensive education
+            return self.fake.random_int(min=30, max=70)
+        elif role_lower in ["client", "defendant"]:
+            # Can be any adult age
+            return self.fake.random_int(min=18, max=75)
+        elif role_lower in ["witness", "bystander"]:
+            # Any adult age
+            return self.fake.random_int(min=18, max=80)
+        elif role_lower in ["security", "security guard", "guard"]:
+            # Physical job, typically younger to middle-aged
+            return self.fake.random_int(min=21, max=55)
+        elif role_lower in ["student"]:
+            # Students can be adult learners too
+            return self.fake.random_int(min=18, max=30)
+        else:
+            # Default range for other roles
+            return self.fake.random_int(min=18, max=75)
+    
+    def generate_occupation(self, age: int, role: Optional[str] = None) -> str:
+        """
+        Generate appropriate occupation based on age and optional role hint.
+        
+        Args:
+            age: Character's age
+            role: Optional role hint that may override occupation
+            
+        Returns:
+            Occupation string
+        """
+        # Under 18 should be student (though our system generates 18+ only)
+        if age < 18:
+            return "student"
+        
+        # If role hint matches a profession, use it directly
+        if role:
+            role_lower = role.lower().strip()
+            profession_map = {
+                "detective": "detective", "investigator": "private investigator",
+                "police": "police officer", "cop": "police officer",
+                "judge": "judge", "magistrate": "magistrate",
+                "prosecutor": "prosecutor", "district attorney": "district attorney",
+                "lawyer": "lawyer", "attorney": "attorney", "counsel": "defense attorney",
+                "doctor": "doctor", "physician": "physician", 
+                "medical examiner": "medical examiner", "coroner": "coroner",
+                "security": "security guard", "security guard": "security guard", "guard": "security officer",
+                "journalist": "journalist", "reporter": "reporter",
+                "court clerk": "court clerk", "bailiff": "bailiff", "stenographer": "court stenographer",
+                "student": "student"
+            }
+            
+            if role_lower in profession_map:
+                return profession_map[role_lower]
+        
+        # For student age range (18-22), chance of being student
+        if 18 <= age <= 22 and self.fake.random_int(1, 3) == 1:
+            return "student"
+        
+        # Generate random occupation using Faker
+        return self.fake.job()
+    
+    def generate_name_with_classification(self, case_length: int, role: Optional[str] = None) -> tuple[str, str, int, str]:
+        """
+        Generate a unique character name with age, occupation, and automatic classification for red herring system.
+        
+        Args:
+            case_length: Case length (1, 2, or 3 days) for classification probability
+            role: Optional role hint for name generation, age, occupation, and classification weighting
+            
+        Returns:
+            Tuple of (full_name, classification, age, occupation)
+        """
+        if not self.red_herring_classifier:
+            # Fallback if no classifier available
+            full_name = self.generate_unique_name(role)
+            age = self.generate_age(role)
+            occupation = self.generate_occupation(age, role)
+            return full_name, "unknown", age, occupation
+        
+        # Generate unique name, age, and occupation
+        full_name = self.generate_unique_name(role)
+        age = self.generate_age(role)
+        occupation = self.generate_occupation(age, role)
+        
+        # Classify character role with role-based weighting
+        classification = self.red_herring_classifier.classify_character(full_name, case_length, role)
+        
+        return full_name, classification, age, occupation
     
     def generate_family_member(self, family_surname: str, relationship: str = "sibling", 
                              reference_name: Optional[str] = None) -> str:
