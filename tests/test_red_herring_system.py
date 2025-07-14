@@ -69,21 +69,21 @@ class TestRedHerringSystem(unittest.TestCase):
         # Test 1-day case (1/2 = 50% killer rate)
         day1_killers = 0
         for char in test_characters:
-            if self.classifier._generate_role(char, 1) == "true_killer":
+            if self.classifier._generate_role(char, 1) == "killer":
                 day1_killers += 1
         day1_rate = day1_killers / len(test_characters)
         
         # Test 2-day case (1/3 = 33% killer rate)  
         day2_killers = 0
         for char in test_characters:
-            if self.classifier._generate_role(char, 2) == "true_killer":
+            if self.classifier._generate_role(char, 2) == "killer":
                 day2_killers += 1
         day2_rate = day2_killers / len(test_characters)
         
         # Test 3-day case (1/4 = 25% killer rate)
         day3_killers = 0
         for char in test_characters:
-            if self.classifier._generate_role(char, 3) == "true_killer":
+            if self.classifier._generate_role(char, 3) == "killer":
                 day3_killers += 1
         day3_rate = day3_killers / len(test_characters)
         
@@ -141,7 +141,8 @@ class TestRedHerringSystem(unittest.TestCase):
         self.assertEqual(stats['case_length'], 1)
         self.assertEqual(stats['total_characters'], 3)
         self.assertEqual(stats['expected_killer_rate'], 0.5)
-        self.assertEqual(stats['expected_red_herring_rate'], 0.5)
+        self.assertEqual(stats['expected_conspirator_rate'], 0.2)
+        self.assertEqual(stats['expected_red_herring_rate'], 0.3)
     
     def test_role_lists(self):
         """Test that role lists are correctly maintained"""
@@ -149,16 +150,19 @@ class TestRedHerringSystem(unittest.TestCase):
         self.classifier.classify_character("Alice Wonder", 3)
         self.classifier.classify_character("Bob Builder", 3)
         
-        killers = self.classifier.get_potential_killers()
+        killers = self.classifier.get_killers()
+        conspirators = self.classifier.get_conspirators()
         herrings = self.classifier.get_red_herrings()
         
         # Verify lists contain correct characters
         self.assertIsInstance(killers, list)
+        self.assertIsInstance(conspirators, list)
         self.assertIsInstance(herrings, list)
-        self.assertEqual(len(killers) + len(herrings), 2)
+        self.assertEqual(len(killers) + len(conspirators) + len(herrings), 2)
         
-        # Verify no overlap
-        self.assertEqual(len(set(killers) & set(herrings)), 0)
+        # Verify no overlap between any categories
+        all_characters = set(killers) | set(conspirators) | set(herrings)
+        self.assertEqual(len(all_characters), len(killers) + len(conspirators) + len(herrings))
     
     def test_spoiler_protection(self):
         """Test that classification can be hidden for spoiler protection"""
