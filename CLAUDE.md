@@ -30,6 +30,30 @@ The methodology prioritizes immediate improvisation with minimal pre-planning:
 
 When asked to consult with ChatGPT on something, the api key can be found in openai_key.txt.
 
+## EVERGREEN EXPERIMENT RULE
+
+**CRITICAL AI DIRECTIVE:** This project is an evergreen experiment focused on continuous improvement without legacy burden.
+
+**NEVER IMPLEMENT BACKWARD COMPATIBILITY:**
+- **No legacy case support** - Old cases that break with new features should be archived
+- **No migration scripts** - System updates apply to new cases only
+- **No backward compatibility layers** - Clean, modern implementation always takes precedence
+- **No legacy code paths** - Remove outdated functionality completely when updating
+
+**RATIONALE:**
+- **Prevents codebase bloat** - Maintains clean, focused implementation
+- **Accelerates development** - No need to consider legacy constraints
+- **Improves AI logic** - No complex compatibility decision trees
+- **Encourages innovation** - Freedom to implement better solutions without compromise
+
+**WHEN SYSTEM CHANGES BREAK EXISTING CASES:**
+1. **Archive broken cases** to `previous_cases/` directory
+2. **Update documentation** to reflect new methodology
+3. **Create fresh test cases** using new system
+4. **Focus on forward progress** - no time spent on legacy support
+
+**ENFORCEMENT:** Any AI suggestion of backward compatibility should be immediately rejected in favor of clean, modern implementation.
+
 ## COMMANDS - GLOBAL
 
 **create new game**: Create a new case using the improvisation-first workflow
@@ -173,15 +197,17 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 
 **Interactive Trial System (Cross-Examination):**
 - `--start-cross-examination "{witness_name}"` - Begin cross-examination of specified witness
-- `--press {statement_id}` - Press witness for more details on statement (A, B, C, etc.)
-- `--present {statement_id} "{evidence_name}"` - Present evidence against specific statement
+- `--press {statement_id}` - Press witness for more details on statement (A, B, C, etc.) - **INFORMATION ONLY**
+- `--present {statement_id} "{evidence_name}"` - Present evidence against specific statement - **CASE PROGRESS**
 - `--hint [statement_id]` - Get context-aware hint (general or for specific statement)
 - `--check-victory` - Check cross-examination victory status and progress
 - `--end-cross-examination` - End current cross-examination session
 - `--show-statements` - Display current witness statements and available commands
 - **Authentic Ace Attorney Experience**: OBJECTION! moments, evidence-based puzzle solving, penalty system
-- **Dynamic Responses**: Forcing function generates unique dramatic reactions for every trial
-- **Victory Conditions**: Must expose critical lies through correct evidence presentation
+- **Press vs. Present Distinction**: Press actions provide clarifying information only; evidence presentation creates dramatic OBJECTION moments and advances the case
+- **Clean UI**: During cross-examination, Available Actions menu is suppressed for cleaner interface; statements and command reminders shown instead
+- **OBJECTION Moments**: Evidence presentation triggers authentic courtroom drama with forced inspiration for unique responses
+- **Victory Conditions**: Must expose critical lies through correct evidence presentation, not pressing
 - **Penalty System**: Wrong evidence presentations accumulate penalties, leading to game over if excessive
 
 ### Gameplay Integration Requirements:
@@ -389,6 +415,7 @@ When playing games, you are the game master:
 - **profiles request** - If I simply type "profiles" list and describe the people I've met so far, courtroom mystery style
 - **save game request** - If I simply type "save game" create a manual save point using game state manager: `--save "manual_save_[timestamp]"` allowing me to close/reopen context window
 - **Option lists** - End every response with 3-5 available actions. Not too many (overwhelming) or too few (removes agency)
+- **Cross-examination UI** - During cross-examination, suppress "Available Actions" menu. Instead show witness statements A-E and command reminders: `press [A-E]` | `present [A-E] "[evidence_name]"` | `check-victory` | `end-cross-examination`
 - **Uphill battle** - Characters should be hostile/uncooperative by default, requiring evidence presentation to make progress
 - **Evidence presentation gates** - Progression locked until player presents specific evidence to specific characters
 - **MANDATORY STATE MANAGEMENT** - Use game state manager for ALL interactions: start/complete gates, add evidence, update trust, track progress

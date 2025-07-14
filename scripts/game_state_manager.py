@@ -623,6 +623,29 @@ class GameStateManager:
         """Get context-appropriate available actions"""
         actions = []
         
+        # Cross-examination specific actions take priority
+        current_exam = self.trial_state.get("current_cross_exam")
+        if current_exam and self.trial_state.get("trial_phase") == "cross_examination":
+            witness_name = current_exam["witness"]
+            cross_exam_data = self.load_trial_statements(witness_name)
+            
+            if "statements" in cross_exam_data:
+                # Show witness statements as primary actions
+                for stmt in cross_exam_data["statements"]:
+                    stmt_preview = stmt["text"][:60] + "..." if len(stmt["text"]) > 60 else stmt["text"]
+                    actions.append(f"Press statement {stmt['id']}: '{stmt_preview}'")
+                
+                # Show evidence presentation options
+                evidence_list = self.current_state.get("evidence_collected", [])
+                if evidence_list:
+                    actions.append("Present evidence against a statement")
+                
+                # Cross-examination meta actions
+                actions.append("Check cross-examination progress")
+                actions.append("End cross-examination")
+                
+                return actions
+        
         # Always available
         actions.append("Check current status")
         
@@ -1212,13 +1235,12 @@ class GameStateManager:
             self.trial_state["current_cross_exam"] = current_exam
             self.save_trial_state_to_file()
         
-        # Use pre-written response if available, otherwise generate dynamic response
+        # Use pre-written response if available, otherwise generate subtle clarification response
         base_response = statement.get("press_response", "")
         if not base_response:
-            dynamic_response = self.generate_dramatic_response(
-                f"pressing witness about {statement['text'][:50]}...", 
-                "press"
-            )
+            # Press responses should be information-only, not dramatic revelations
+            clarification_context = f"witness clarifying details about {statement['text'][:50]}..."
+            dynamic_response = self.generate_press_clarification(clarification_context)
         else:
             dynamic_response = base_response
         
@@ -1416,6 +1438,56 @@ class GameStateManager:
             # Fallback for any errors
             return "The courtroom holds its breath as the evidence is presented."
     
+    def generate_press_clarification(self, context: str) -> str:
+        """Generate subtle clarification response for press actions (information-only)"""
+        # Press actions should provide clarifying details, not dramatic revelations
+        # These are meant to give the player more information to work with
+        clarification_templates = [
+            "The witness elaborates: ",
+            "Upon further questioning, the witness adds: ",
+            "The witness clarifies their statement: ",
+            "When pressed for details, the witness explains: ",
+            "The witness provides additional information: "
+        ]
+        
+        import random
+        template = random.choice(clarification_templates)
+        return f"{template}Details emerge that may be useful for your investigation."
+    
+    def generate_objection_moment(self, statement_id: str, evidence_name: str, statement_text: str) -> str:
+        """Generate authentic Ace Attorney style OBJECTION moment"""
+        try:
+            # Get forced inspiration for unique objection style
+            inspiration = self.get_forced_inspiration(
+                f"dramatic courtroom objection moment presenting {evidence_name} against witness statement"
+            )
+            
+            if "error" in inspiration:
+                forced_word = "lightning"
+            else:
+                forced_word = inspiration.get("word", "lightning")
+            
+            # Create dramatic OBJECTION with forced word for uniqueness
+            objection_intro = f"**OBJECTION!**\n\n*You slam your hand on the defense table with the force of {forced_word}*"
+            
+            evidence_presentation = f"**This {evidence_name} directly contradicts the witness's testimony!**"
+            
+            contradiction_explanation = (
+                f"The witness claims: '{statement_text[:80]}...'\n\n"
+                f"But {evidence_name} proves otherwise! "
+                f"Like {forced_word} cutting through deception, this evidence reveals the truth!"
+            )
+            
+            return f"{objection_intro}\n\n{evidence_presentation}\n\n{contradiction_explanation}"
+            
+        except Exception as e:
+            # Fallback objection
+            return (
+                f"**OBJECTION!**\n\n"
+                f"This {evidence_name} contradicts the witness's statement!\n\n"
+                f"The truth has been revealed!"
+            )
+    
     def present_evidence_against_statement(self, statement_id: str, evidence_name: str) -> Dict[str, Any]:
         """Present evidence to contradict a witness statement"""
         current_exam = self.trial_state.get("current_cross_exam")
@@ -1463,15 +1535,14 @@ class GameStateManager:
             self.trial_state["current_cross_exam"] = current_exam
             self.save_trial_state_to_file()
             
-            # Use pre-written response if available, otherwise generate dynamic response
+            # Generate authentic OBJECTION moment
             base_response = statement.get("success_response", "")
             if not base_response:
-                dynamic_response = self.generate_dramatic_response(
-                    f"evidence {evidence_name} contradicts statement about {statement['text'][:50]}...", 
-                    "success"
+                objection_response = self.generate_objection_moment(
+                    statement_id, evidence_name, statement['text']
                 )
             else:
-                dynamic_response = base_response
+                objection_response = base_response
             
             # Add judge reaction for extra drama
             judge_reaction = self.generate_dramatic_response(
@@ -1484,7 +1555,7 @@ class GameStateManager:
                 "contradiction_found": True,
                 "statement_id": statement_id,
                 "evidence_name": evidence_name,
-                "response": dynamic_response,
+                "response": objection_response,
                 "judge_reaction": judge_reaction,
                 "statement_text": statement["text"]
             }
@@ -2889,13 +2960,19 @@ def main():
             if classifications:
                 if args.show_spoilers:
                     print("🎭 All Character Classifications:")
-                    killers = manager.red_herring_classifier.get_potential_killers()
+                    killers = manager.red_herring_classifier.get_killers()
+                    conspirators = manager.red_herring_classifier.get_conspirators()
                     red_herrings = manager.red_herring_classifier.get_red_herrings()
                     
                     if killers:
-                        print(f"\n   🔪 Potential Killers ({len(killers)}):")
+                        print(f"\n   🔪 Killers ({len(killers)}):")
                         for killer in killers:
                             print(f"      • {killer}")
+                    
+                    if conspirators:
+                        print(f"\n   🤝 Conspirators ({len(conspirators)}):")
+                        for conspirator in conspirators:
+                            print(f"      • {conspirator}")
                     
                     if red_herrings:
                         print(f"\n   🎭 Red Herrings ({len(red_herrings)}):")
@@ -2916,14 +2993,25 @@ def main():
             print(f"   Total Characters: {stats['total_characters']}")
             
             if args.show_spoilers:
-                print(f"   Potential Killers: {stats['potential_killers']}")
+                print(f"   Killers: {stats['killers']}")
+                print(f"   Conspirators: {stats['conspirators']}")
                 print(f"   Red Herrings: {stats['red_herrings']}")
                 if stats['total_characters'] > 0:
                     print(f"   Actual Killer Rate: {stats['actual_killer_rate']*100:.1f}%")
+                    print(f"   Actual Conspirator Rate: {stats['actual_conspirator_rate']*100:.1f}%")
                     print(f"   Actual Red Herring Rate: {stats['actual_red_herring_rate']*100:.1f}%")
             
             print(f"   Expected Killer Rate: {stats['expected_killer_rate']*100:.1f}%")
+            print(f"   Expected Conspirator Rate: {stats['expected_conspirator_rate']*100:.1f}%")
             print(f"   Expected Red Herring Rate: {stats['expected_red_herring_rate']*100:.1f}%")
+            
+            if stats['killer_constraint_active']:
+                print("   🚫 Killer constraint active (max 1 killer)")
+            
+            conspirator_caps = stats['conspirator_caps']
+            current_conspirators = stats['conspirators']
+            max_conspirators = conspirator_caps.get(stats['case_length'], 2)
+            print(f"   🤝 Conspirator limit: {current_conspirators}/{max_conspirators}")
             
             if not args.show_spoilers and stats['total_characters'] > 0:
                 print("   💡 Use --show-spoilers to see actual distribution")

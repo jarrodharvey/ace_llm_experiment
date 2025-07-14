@@ -63,7 +63,11 @@ class RedHerringClassifier:
     
     def classify_character(self, character_name: str, case_length: int, role_hint: Optional[str] = None) -> str:
         """
-        Generate case-length and role-aware character classification.
+        Generate two-stage character classification: killer → conspirator → red_herring.
+        
+        Stage 1: Check if character becomes killer (with uniqueness constraint)
+        Stage 2: Check if character becomes conspirator (with case-length caps)
+        Default: Character becomes red_herring
         
         Args:
             character_name: The character's full name
@@ -71,20 +75,91 @@ class RedHerringClassifier:
             role_hint: Optional role hint for weighting (e.g., "detective", "witness")
             
         Returns:
-            "true_killer" or "red_herring"
+            "killer", "conspirator", or "red_herring"
         """
         # Check if already classified
         if character_name in self.classifications:
             return self.classifications[character_name]
         
-        # Generate deterministic classification from character name, case length, and role
-        role = self._generate_role_weighted(character_name, case_length, role_hint)
+        # Stage 1: Killer classification
+        killer_classification = self._classify_killer_stage(character_name, case_length, role_hint)
+        if killer_classification == "killer":
+            self.classifications[character_name] = "killer"
+            self._save_classifications()
+            return "killer"
         
-        # Store classification
-        self.classifications[character_name] = role
+        # Stage 2: Conspirator vs Red Herring classification
+        final_classification = self._classify_conspirator_stage(character_name, case_length, role_hint)
+        self.classifications[character_name] = final_classification
         self._save_classifications()
         
-        return role
+        return final_classification
+    
+    def _classify_killer_stage(self, character_name: str, case_length: int, role_hint: Optional[str] = None) -> str:
+        """
+        Stage 1: Killer classification with uniqueness constraint.
+        
+        Args:
+            character_name: The character's full name
+            case_length: Case length determining base killer probability
+            role_hint: Role hint for weighting adjustment
+            
+        Returns:
+            "killer" or "non_killer"
+        """
+        # Check killer uniqueness constraint
+        existing_killers = self.get_killers()
+        if len(existing_killers) >= 1:
+            return "non_killer"  # Skip to stage 2
+        
+        # Use existing killer probability logic
+        killer_result = self._generate_role_weighted(character_name, case_length, role_hint)
+        return "killer" if killer_result == "killer" else "non_killer"
+    
+    def _classify_conspirator_stage(self, character_name: str, case_length: int, role_hint: Optional[str] = None) -> str:
+        """
+        Stage 2: Conspirator vs Red Herring classification with case-length caps.
+        
+        Args:
+            character_name: The character's full name
+            case_length: Case length determining conspirator probability and cap
+            role_hint: Role hint for weighting adjustment
+            
+        Returns:
+            "conspirator" or "red_herring"
+        """
+        # Conspirator configuration by case length
+        CONSPIRATOR_CONFIG = {
+            1: {"probability": 0.20, "cap": 1},  # 20% chance, cap of 1
+            2: {"probability": 0.40, "cap": 2},  # 40% chance, cap of 2
+            3: {"probability": 0.60, "cap": 3}   # 60% chance, cap of 3
+        }
+        
+        # Check conspirator cap constraint
+        existing_conspirators = self.get_conspirators()
+        config = CONSPIRATOR_CONFIG.get(case_length, {"probability": 0.40, "cap": 2})
+        
+        if len(existing_conspirators) >= config["cap"]:
+            return "red_herring"  # Cap reached, must be red herring
+        
+        # Generate conspirator probability with role weighting
+        base_probability = config["probability"]
+        role_weight = self._get_role_weight(role_hint)
+        conspirator_probability = min(0.95, base_probability * role_weight)
+        
+        # Generate deterministic seed for conspirator stage
+        seed_string = f"{character_name}:conspirator_stage"
+        if role_hint:
+            seed_string += f":{role_hint.lower()}"
+        
+        name_hash = hashlib.md5(seed_string.encode()).hexdigest()
+        seed = int(name_hash[:8], 16)
+        
+        # Set random seed for deterministic results
+        random.seed(seed)
+        roll = random.random()
+        
+        return "conspirator" if roll < conspirator_probability else "red_herring"
     
     def get_character_role(self, character_name: str) -> Optional[str]:
         """
@@ -107,15 +182,25 @@ class RedHerringClassifier:
         """
         return self.classifications.copy()
     
-    def get_potential_killers(self) -> list[str]:
+    def get_killers(self) -> list[str]:
         """
-        Get list of characters classified as potential killers.
+        Get list of characters classified as killers.
         
         Returns:
-            List of character names with "true_killer" classification
+            List of character names with "killer" classification
         """
         return [name for name, role in self.classifications.items() 
-                if role == "true_killer"]
+                if role == "killer"]
+    
+    def get_conspirators(self) -> list[str]:
+        """
+        Get list of characters classified as conspirators.
+        
+        Returns:
+            List of character names with "conspirator" classification
+        """
+        return [name for name, role in self.classifications.items() 
+                if role == "conspirator"]
     
     def get_red_herrings(self) -> list[str]:
         """
@@ -127,9 +212,19 @@ class RedHerringClassifier:
         return [name for name, role in self.classifications.items() 
                 if role == "red_herring"]
     
+    def get_potential_killers(self) -> list[str]:
+        """
+        Legacy method for backward compatibility during transition.
+        
+        Returns:
+            List of character names with "killer" classification
+        """
+        return self.get_killers()
+    
     def _generate_role_weighted(self, character_name: str, case_length: int, role_hint: Optional[str] = None) -> str:
         """
         Generate deterministic role classification with role-based weighting.
+        Used for Stage 1 killer classification.
         
         Args:
             character_name: The character's full name
@@ -137,7 +232,7 @@ class RedHerringClassifier:
             role_hint: Role hint for weighting adjustment
             
         Returns:
-            "true_killer" or "red_herring"
+            "killer" or "red_herring"
         """
         # Create deterministic seed from character name and role
         seed_string = character_name
@@ -160,7 +255,7 @@ class RedHerringClassifier:
         # Generate random number and compare to weighted probability
         roll = random.random()  # 0.0 to 1.0
         
-        return "true_killer" if roll < weighted_killer_probability else "red_herring"
+        return "killer" if roll < weighted_killer_probability else "red_herring"
     
     def _generate_role(self, character_name: str, case_length: int) -> str:
         """
@@ -255,24 +350,33 @@ class RedHerringClassifier:
             case_length: Case length for probability calculations
             
         Returns:
-            Dictionary with classification statistics
+            Dictionary with three-tier classification statistics
         """
         total_characters = len(self.classifications)
-        killers = len(self.get_potential_killers())
+        killers = len(self.get_killers())
+        conspirators = len(self.get_conspirators())
         red_herrings = len(self.get_red_herrings())
         
+        # Expected rates for three-tier system
         expected_killer_rate = 1.0 / (case_length + 1)
-        expected_red_herring_rate = 1.0 - expected_killer_rate
+        conspirator_config = {1: 0.20, 2: 0.40, 3: 0.60}
+        expected_conspirator_rate = conspirator_config.get(case_length, 0.40)
+        expected_red_herring_rate = 1.0 - expected_killer_rate - expected_conspirator_rate
         
         return {
             "total_characters": total_characters,
-            "potential_killers": killers,
+            "killers": killers,
+            "conspirators": conspirators,
             "red_herrings": red_herrings,
             "actual_killer_rate": killers / total_characters if total_characters > 0 else 0,
+            "actual_conspirator_rate": conspirators / total_characters if total_characters > 0 else 0,
             "actual_red_herring_rate": red_herrings / total_characters if total_characters > 0 else 0,
             "expected_killer_rate": expected_killer_rate,
+            "expected_conspirator_rate": expected_conspirator_rate,
             "expected_red_herring_rate": expected_red_herring_rate,
-            "case_length": case_length
+            "case_length": case_length,
+            "killer_constraint_active": len(self.get_killers()) >= 1,
+            "conspirator_caps": {1: 1, 2: 2, 3: 3}
         }
     
     def get_weighted_probability(self, case_length: int, role_hint: Optional[str] = None) -> float:
