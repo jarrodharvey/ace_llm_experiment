@@ -18,6 +18,14 @@ class CharacterNameGenerator:
         self.used_names = self._load_used_names()
         self.surname_families = self._load_surname_families()  # Track which surnames belong to which families
         
+        # Personality traits list
+        self.personality_traits = [
+            "Adamant", "Bashful", "Bold", "Brave", "Calm", "Careful", "Docile", 
+            "Gentle", "Hardy", "Hasty", "Impish", "Jolly", "Lax", "Lonely", 
+            "Mild", "Modest", "Naive", "Naughty", "Quiet", "Quirky", "Rash", 
+            "Relaxed", "Sassy", "Serious", "Timid"
+        ]
+        
         # Initialize red herring classifier if case path provided
         self.red_herring_classifier = None
         if case_path:
@@ -98,7 +106,7 @@ class CharacterNameGenerator:
         # Allow periods and other common name characters (Dr., Jr., etc.)
         return len(words) >= 2 and all(word.replace('.', '').isalpha() for word in words)
     
-    def generate_unique_name(self, role: Optional[str] = None, age: Optional[int] = None) -> str:
+    def generate_unique_name(self, role: Optional[str] = None, age: Optional[int] = None, include_personality: bool = False) -> str:
         """
         Generate a unique character name not used elsewhere in the project
         
@@ -106,9 +114,10 @@ class CharacterNameGenerator:
             role: Optional role hint (e.g., "judge", "prosecutor", "witness")
                  Can influence name style but doesn't guarantee specific patterns
             age: Optional age for the character (affects name style)
+            include_personality: Whether to include personality trait in output
         
         Returns:
-            A unique full name (first + last)
+            A unique full name (first + last), optionally with personality trait
         """
         max_attempts = 100
         
@@ -129,11 +138,22 @@ class CharacterNameGenerator:
             if full_name not in self.used_names:
                 # Add to used names to prevent future duplicates
                 self.used_names.add(full_name)
-                return full_name
+                
+                if include_personality:
+                    personality = self.generate_personality_trait()
+                    return f"{full_name} ({personality})"
+                else:
+                    return full_name
         
         # Fallback if we somehow can't generate a unique name
         # This should be extremely rare with faker's name pool
-        return f"{self.fake.first_name()} {self.fake.last_name()}-{self.fake.random_number(digits=3)}"
+        fallback_name = f"{self.fake.first_name()} {self.fake.last_name()}-{self.fake.random_number(digits=3)}"
+        
+        if include_personality:
+            personality = self.generate_personality_trait()
+            return f"{fallback_name} ({personality})"
+        else:
+            return fallback_name
     
     def generate_age(self, role: Optional[str] = None) -> int:
         """
@@ -221,33 +241,44 @@ class CharacterNameGenerator:
         # Generate random occupation using Faker
         return self.fake.job()
     
-    def generate_name_with_classification(self, case_length: int, role: Optional[str] = None) -> tuple[str, str, int, str]:
+    def generate_personality_trait(self) -> str:
         """
-        Generate a unique character name with age, occupation, and automatic classification for red herring system.
+        Generate a random personality trait for a character.
+        
+        Returns:
+            A single personality trait from the predefined list
+        """
+        return self.fake.random_element(self.personality_traits)
+    
+    def generate_name_with_classification(self, case_length: int, role: Optional[str] = None) -> tuple[str, str, int, str, str]:
+        """
+        Generate a unique character name with age, occupation, personality, and automatic classification for red herring system.
         
         Args:
             case_length: Case length (1, 2, or 3 days) for classification probability
             role: Optional role hint for name generation, age, occupation, and classification weighting
             
         Returns:
-            Tuple of (full_name, classification, age, occupation)
+            Tuple of (full_name, classification, age, occupation, personality)
         """
         if not self.red_herring_classifier:
             # Fallback if no classifier available
             full_name = self.generate_unique_name(role)
             age = self.generate_age(role)
             occupation = self.generate_occupation(age, role)
-            return full_name, "unknown", age, occupation
+            personality = self.generate_personality_trait()
+            return full_name, "unknown", age, occupation, personality
         
-        # Generate unique name, age, and occupation
+        # Generate unique name, age, occupation, and personality
         full_name = self.generate_unique_name(role)
         age = self.generate_age(role)
         occupation = self.generate_occupation(age, role)
+        personality = self.generate_personality_trait()
         
         # Classify character role with role-based weighting
         classification = self.red_herring_classifier.classify_character(full_name, case_length, role)
         
-        return full_name, classification, age, occupation
+        return full_name, classification, age, occupation, personality
     
     def generate_family_member(self, family_surname: str, relationship: str = "sibling", 
                              reference_name: Optional[str] = None) -> str:

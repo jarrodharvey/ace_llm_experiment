@@ -2323,6 +2323,8 @@ def main():
     parser.add_argument('--client-name', action='store_true', help='Show client name for dialogue substitution')
     parser.add_argument('--generate-name', nargs='?', const='', help='Generate unique character name (optional role hint)')
     parser.add_argument('--generate-names', type=int, metavar='COUNT', help='Generate multiple unique character names')
+    parser.add_argument('--generate-name-personality', nargs='?', const='', help='Generate unique character name with personality trait (optional role hint)')
+    parser.add_argument('--generate-personality', action='store_true', help='Generate random personality trait')
     parser.add_argument('--name-suggestions', help='Get character name suggestions based on description')
     parser.add_argument('--create-family', type=int, metavar='SIZE', help='Create entire family of specified size')
     parser.add_argument('--family-surname', help='Specific surname for family creation')
@@ -2866,6 +2868,17 @@ def main():
             for i, name in enumerate(names, 1):
                 print(f"   {i}. {name}")
         
+        if args.generate_name_personality is not None:
+            role_hint = args.generate_name_personality if args.generate_name_personality else None
+            name = manager.name_generator.generate_unique_name(role_hint, include_personality=True)
+            print(f"🎭 Generated Name with Personality: {name}")
+            if role_hint:
+                print(f"   Role Hint: {role_hint}")
+        
+        if args.generate_personality:
+            personality = manager.name_generator.generate_personality_trait()
+            print(f"🎭 Generated Personality Trait: {personality}")
+        
         if args.name_suggestions:
             suggestions = manager.name_generator.get_character_suggestions(args.name_suggestions)
             print(f"🎭 Name Suggestions for '{args.name_suggestions}':")
@@ -3018,13 +3031,14 @@ def main():
         
         if args.generate_name_classified is not None:
             role_hint = args.generate_name_classified if args.generate_name_classified else None
-            name, classification, age, occupation = manager.name_generator.generate_name_with_classification(manager.case_length, role_hint)
+            name, classification, age, occupation, personality = manager.name_generator.generate_name_with_classification(manager.case_length, role_hint)
             
             if args.show_spoilers:
                 print(f"🎭 Generated Name with Classification:")
                 print(f"   Name: {name}")
                 print(f"   Age: {age}")
                 print(f"   Occupation: {occupation}")
+                print(f"   Personality: {personality}")
                 print(f"   Classification: {classification}")
                 print(f"   Case Length: {manager.case_length} days")
                 if role_hint:
@@ -3046,6 +3060,7 @@ def main():
                 print(f"   Name: {name}")
                 print(f"   Age: {age}")
                 print(f"   Occupation: {occupation}")
+                print(f"   Personality: {personality}")
                 print(f"   Case Length: {manager.case_length} days")
                 if role_hint:
                     print(f"   Role Hint: {role_hint}")

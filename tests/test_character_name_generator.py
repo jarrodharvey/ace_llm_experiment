@@ -533,20 +533,69 @@ class TestAgeAndOccupationGeneration:
             # Test with role hint
             result = generator_with_case.generate_name_with_classification(2, "judge")
             assert isinstance(result, tuple)
-            assert len(result) == 4
+            assert len(result) == 5
             
-            name, classification, age, occupation = result
+            name, classification, age, occupation, personality = result
             assert isinstance(name, str)
-            assert classification in ["true_killer", "red_herring"]
+            assert classification in ["true_killer", "red_herring", "conspirator"]
             assert isinstance(age, int)
             assert isinstance(occupation, str)
+            assert isinstance(personality, str)
             
             # Judge should have appropriate age and occupation
             assert 40 <= age <= 70
             assert occupation == "judge"
             
+            # Personality should be from the predefined list
+            expected_traits = [
+                "Adamant", "Bashful", "Bold", "Brave", "Calm", "Careful", "Docile", 
+                "Gentle", "Hardy", "Hasty", "Impish", "Jolly", "Lax", "Lonely", 
+                "Mild", "Modest", "Naive", "Naughty", "Quiet", "Quirky", "Rash", 
+                "Relaxed", "Sassy", "Serious", "Timid"
+            ]
+            assert personality in expected_traits
+            
         finally:
             shutil.rmtree(temp_dir)
+    
+    def test_personality_trait_generation(self):
+        """Test that personality traits are generated correctly"""
+        expected_traits = [
+            "Adamant", "Bashful", "Bold", "Brave", "Calm", "Careful", "Docile", 
+            "Gentle", "Hardy", "Hasty", "Impish", "Jolly", "Lax", "Lonely", 
+            "Mild", "Modest", "Naive", "Naughty", "Quiet", "Quirky", "Rash", 
+            "Relaxed", "Sassy", "Serious", "Timid"
+        ]
+        
+        # Test single personality trait generation
+        personality = self.generator.generate_personality_trait()
+        assert personality in expected_traits
+        
+        # Test that different calls can produce different traits
+        personalities = [self.generator.generate_personality_trait() for _ in range(20)]
+        assert len(set(personalities)) > 1  # Should have some variety
+    
+    def test_name_generation_with_personality(self):
+        """Test name generation with personality traits"""
+        # Test basic name with personality
+        name_with_personality = self.generator.generate_unique_name(include_personality=True)
+        assert "(" in name_with_personality
+        assert ")" in name_with_personality
+        
+        # Extract personality from name
+        personality = name_with_personality.split("(")[1].split(")")[0]
+        expected_traits = [
+            "Adamant", "Bashful", "Bold", "Brave", "Calm", "Careful", "Docile", 
+            "Gentle", "Hardy", "Hasty", "Impish", "Jolly", "Lax", "Lonely", 
+            "Mild", "Modest", "Naive", "Naughty", "Quiet", "Quirky", "Rash", 
+            "Relaxed", "Sassy", "Serious", "Timid"
+        ]
+        assert personality in expected_traits
+        
+        # Test name generation without personality
+        name_without_personality = self.generator.generate_unique_name(include_personality=False)
+        assert "(" not in name_without_personality
+        assert ")" not in name_without_personality
     
     def test_age_consistency_for_roles(self):
         """Test that generated ages are consistent with role requirements"""

@@ -149,18 +149,21 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 **Character Name Generation (Anti-Repetition):**
 - `--generate-name [role]` - Generate unique character name with optional role hint (e.g., "judge", "prosecutor")
 - `--generate-names {count}` - Generate multiple unique character names at once
+- `--generate-name-personality [role]` - Generate unique character name with personality trait (e.g., "Bold", "Timid")
+- `--generate-personality` - Generate random personality trait from predefined list
 - `--name-suggestions "{description}"` - Get multiple name options based on character description
 - `--generate-age [role]` - Generate appropriate age for character with optional role-based constraints
 - `--generate-occupation {age} {role}` - Generate occupation for specific age and role combination
 - **Uniqueness Guarantee**: Names automatically avoid duplicates from entire project history
 - **Age Generation**: Role-appropriate ages (judges: 40-70, students: 18-30, security: 21-55, etc.)
 - **Occupation Mapping**: Role hints map to appropriate occupations (detective→detective, student→student)
+- **Personality Traits**: Each character randomly assigned one of 25 traits: Adamant, Bashful, Bold, Brave, Calm, Careful, Docile, Gentle, Hardy, Hasty, Impish, Jolly, Lax, Lonely, Mild, Modest, Naive, Naughty, Quiet, Quirky, Rash, Relaxed, Sassy, Serious, Timid
 - **Faker Integration**: Fallback to Faker's job generator for creative occupations when no role mapping exists
 - **Supported Roles**: Judge, prosecutor, witness, detective, police, lawyer, doctor, security guard, student, etc.
 - **Usage**: Use for all new character creation to prevent repetitive names across cases
 
 **Red Herring Classification System (Anti-Pattern Prevention):**
-- `--generate-name-classified [role]` - Generate complete character (name, age, occupation) with automatic killer/red herring classification
+- `--generate-name-classified [role]` - Generate complete character (name, age, occupation, personality) with automatic killer/red herring classification
 - `--classify-character "{character_name}" {case_length} [role_hint]` - Manually classify character with optional role weighting
 - `--check-character-role "{character_name}"` - Check existing character classification (GM reference only)
 - `--list-classifications` - List all killer/red herring classifications for case (GM reference only)
