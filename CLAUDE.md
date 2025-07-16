@@ -220,6 +220,18 @@ When case creation errors occur, you MUST identify and fix the root cause rather
   - `--add-family-member "John Smith:brother"` → Creates "FirstName Smith" as John's brother
   - `--surname-suggestions "John Doe" "Jane Smith"` → Suggests surnames not conflicting with Doe/Smith
 
+**Murder Escalation System (Non-Murder to Murder):**
+- `--check-escalation-status` - Show murder escalation status, probabilities, and remaining gates
+- `--force-escalation` - Force murder escalation at current gate (GM override for dramatic timing)
+- `--escalation-narrative {crime_type}` - Get narrative suggestions for escalating specific crime types
+- **Automatic Escalation**: 50% chance at each gate start for non-murder cases
+- **Mandatory Final Gate**: Murder escalation guaranteed at final investigation gate if not already escalated
+- **Ace Attorney Pattern**: Follows "The Stolen Turnabout" model of escalating stakes
+- **Supported Escalations**: Burglary → Victim dies from injuries, Theft → Witness elimination, Assault → Escalated violence, Fraud → Accomplice silenced
+- **GM Integration**: Escalation triggers dramatic notification with narrative hooks and evidence recontextualization guidance
+- **Preserves Evidence**: Existing evidence gains new murder significance rather than being replaced
+- **Perfect Timing**: Escalation at gate start ensures investigation time for new murder evidence
+
 **Interactive Trial System (Cross-Examination):**
 - `--start-cross-examination "{witness_name}"` - Begin cross-examination of specified witness
 - `--press {statement_id}` - Press witness for more details on statement (A, B, C, etc.) - **INFORMATION ONLY**

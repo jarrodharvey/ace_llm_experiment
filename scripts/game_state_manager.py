@@ -57,6 +57,9 @@ class GameStateManager:
         # Load client name for dialogue substitution
         self.client_name = self.load_client_name()
         
+        # Initialize murder escalation system
+        self.initialize_murder_escalation()
+        
     def detect_case_type(self) -> str:
         """Auto-detect case type from file structure"""
         # Check for complex case structure
@@ -281,8 +284,178 @@ class GameStateManager:
         """Substitute [Client Name] placeholder with actual client name in text"""
         return text.replace("[Client Name]", self.client_name)
     
+    # Murder Escalation System
+    
+    def initialize_murder_escalation(self) -> None:
+        """Initialize murder escalation system state"""
+        if "murder_escalation" not in self.current_state:
+            self.current_state["murder_escalation"] = {
+                "escalated": False,
+                "escalation_checks": [],
+                "original_crime": "unknown",
+                "escalation_gate": None
+            }
+    
+    def detect_case_crime_type(self) -> str:
+        """Detect the original crime type from case opening"""
+        try:
+            opening_file = self.case_path / "case_opening.txt"
+            if opening_file.exists():
+                with open(opening_file, 'r') as f:
+                    opening_text = f.read().lower()
+                
+                # Check for murder indicators first
+                if any(word in opening_text for word in ["murder", "killed", "dead body", "corpse", "homicide"]):
+                    return "murder"
+                
+                # Check for other crime types
+                if any(word in opening_text for word in ["burglary", "burglar", "break-in", "breaking and entering"]):
+                    return "burglary"
+                elif any(word in opening_text for word in ["theft", "stolen", "robbery", "robbed"]):
+                    return "theft"
+                elif any(word in opening_text for word in ["assault", "attacked", "beaten"]):
+                    return "assault"
+                elif any(word in opening_text for word in ["fraud", "embezzlement", "scam"]):
+                    return "fraud"
+                
+            return "unknown"
+        except Exception:
+            return "unknown"
+    
+    def check_murder_escalation(self, gate_name: str) -> bool:
+        """Check if murder escalation should occur at this gate"""
+        # Initialize escalation state if needed
+        if "murder_escalation" not in self.current_state:
+            self.initialize_murder_escalation()
+            # Set original crime type
+            self.current_state["murder_escalation"]["original_crime"] = self.detect_case_crime_type()
+        
+        escalation_state = self.current_state["murder_escalation"]
+        
+        # Skip if already escalated
+        if escalation_state["escalated"]:
+            return False
+        
+        # Skip if already a murder case
+        if escalation_state["original_crime"] == "murder":
+            return False
+        
+        # Skip if already checked this gate
+        if gate_name in escalation_state["escalation_checks"]:
+            return False
+        
+        # Add to checked gates
+        escalation_state["escalation_checks"].append(gate_name)
+        
+        # Get investigation gates only (exclude trial gates)
+        investigation_gates = [g for g in self.gates if "trial" not in g.lower()]
+        
+        # Mandatory escalation on final investigation gate
+        if gate_name == investigation_gates[-1]:
+            return True
+        
+        # 50% chance escalation on other gates
+        roll_result = self.dice_roller.roll_d20(description=f"Murder escalation check for gate '{gate_name}'")
+        roll_total = roll_result["total"]
+        escalation_occurs = roll_total >= 11  # 50% chance (11-20)
+        
+        # Update the description based on result
+        roll_result["description"] = f"Murder escalation check for gate '{gate_name}' - {'ESCALATED' if escalation_occurs else 'No escalation'}"
+        
+        return escalation_occurs
+    
+    def escalate_to_murder(self, gate_name: str) -> None:
+        """Escalate case to murder with dramatic notification"""
+        escalation_state = self.current_state["murder_escalation"]
+        
+        # Mark as escalated
+        escalation_state["escalated"] = True
+        escalation_state["escalation_gate"] = gate_name
+        
+        # Get escalation narrative
+        original_crime = escalation_state["original_crime"]
+        escalation_narrative = self.get_escalation_narrative(original_crime, gate_name)
+        
+        # Display dramatic escalation message
+        print("\n" + "="*60)
+        print("🚨 CASE ESCALATION: MURDER REVEALED! 🚨")
+        print("="*60)
+        print(f"Original Crime: {original_crime.title()}")
+        print(f"Escalation Gate: {gate_name}")
+        print(f"Escalation Type: {escalation_narrative['type']}")
+        print(f"\nNarrative Hook: {escalation_narrative['description']}")
+        print(f"\nGM Guidance: {escalation_narrative['gm_guidance']}")
+        print("="*60)
+        
+        # Save state
+        self.save_current_state_to_file()
+    
+    def get_escalation_narrative(self, original_crime: str, gate_name: str) -> Dict[str, str]:
+        """Get narrative suggestions for murder escalation"""
+        escalation_patterns = {
+            "burglary": {
+                "type": "Victim Dies from Injuries",
+                "description": "The victim has died from injuries sustained during the burglary. What seemed like a simple break-in has become a murder investigation.",
+                "gm_guidance": "Consider: Did the victim die from the initial attack, or were they killed to prevent identification? Recontextualize existing evidence as murder clues."
+            },
+            "theft": {
+                "type": "Witness Elimination",
+                "description": "Someone who witnessed the theft has been found dead. The thief killed them to prevent identification.",
+                "gm_guidance": "Consider: Who saw the theft? How did the killer learn they were a witness? Use existing evidence to build the murder timeline."
+            },
+            "assault": {
+                "type": "Escalated Violence",
+                "description": "The assault victim has succumbed to their injuries. The attacker is now facing murder charges.",
+                "gm_guidance": "Consider: Was the death intentional or accidental? Did the attacker try to cover up the escalation? Look for evidence of consciousness of guilt."
+            },
+            "fraud": {
+                "type": "Accomplice Silenced",
+                "description": "A key figure in the fraud scheme has been found dead. Someone killed them to prevent their testimony.",
+                "gm_guidance": "Consider: Who had the most to lose from the accomplice's testimony? How does this change the financial motive? Follow the money trail."
+            },
+            "unknown": {
+                "type": "Hidden Murder Revealed",
+                "description": "What appeared to be a minor crime was actually a cover-up for murder. The true crime has been revealed.",
+                "gm_guidance": "Consider: How long has the murder been hidden? What was the original crime meant to conceal? Use pure random inspiration for unique twist."
+            }
+        }
+        
+        return escalation_patterns.get(original_crime, escalation_patterns["unknown"])
+    
+    def is_murder_case(self) -> bool:
+        """Check if case has escalated to murder"""
+        if "murder_escalation" not in self.current_state:
+            self.initialize_murder_escalation()
+            original_crime = self.detect_case_crime_type()
+            self.current_state["murder_escalation"]["original_crime"] = original_crime
+            return original_crime == "murder"
+        
+        escalation_state = self.current_state["murder_escalation"]
+        return escalation_state["escalated"] or escalation_state["original_crime"] == "murder"
+    
+    def get_escalation_status(self) -> Dict[str, Any]:
+        """Get current escalation status and probabilities"""
+        if "murder_escalation" not in self.current_state:
+            self.initialize_murder_escalation()
+            self.current_state["murder_escalation"]["original_crime"] = self.detect_case_crime_type()
+        
+        escalation_state = self.current_state["murder_escalation"]
+        investigation_gates = [g for g in self.gates if "trial" not in g.lower()]
+        
+        return {
+            "is_murder_case": self.is_murder_case(),
+            "original_crime": escalation_state["original_crime"],
+            "escalated": escalation_state["escalated"],
+            "escalation_gate": escalation_state.get("escalation_gate"),
+            "gates_checked": escalation_state["escalation_checks"],
+            "remaining_gates": [g for g in investigation_gates if g not in escalation_state["escalation_checks"]],
+            "final_gate_mandatory": investigation_gates[-1] if investigation_gates else None
+        }
+    
     def get_current_status(self) -> Dict[str, Any]:
         """Get comprehensive current status"""
+        escalation_status = self.get_escalation_status()
+        
         return {
             "case_name": self.case_name,
             "case_length": self.case_length,
@@ -294,7 +467,8 @@ class GameStateManager:
             "trial_ready": self.is_trial_ready(),
             "current_location": self.current_state.get("current_location", "unknown"),
             "evidence_collected": len(self.current_state.get("evidence_collected", [])),
-            "witnesses_interviewed": len(self.current_state.get("witnesses_interviewed", []))
+            "witnesses_interviewed": len(self.current_state.get("witnesses_interviewed", [])),
+            "murder_escalation": escalation_status
         }
     
     def get_completed_gates(self) -> List[str]:
@@ -348,13 +522,17 @@ class GameStateManager:
         return True
     
     def start_gate(self, gate_name: str) -> bool:
-        """Mark a gate as in progress"""
+        """Mark a gate as in progress and check for murder escalation"""
         if gate_name not in self.gates:
             raise ValueError(f"Gate '{gate_name}' not found in case structure. Available gates: {self.gates}")
         
         current_status = self.current_state["investigation_gates"].get(gate_name)
         if current_status in ["completed", "in_progress"]:
             return False  # Already started or completed
+        
+        # Check for murder escalation at gate start
+        if self.check_murder_escalation(gate_name):
+            self.escalate_to_murder(gate_name)
         
         # Update state
         self.current_state["investigation_gates"][gate_name] = "in_progress"
@@ -2344,6 +2522,11 @@ def main():
     parser.add_argument('--check-killer-status', action='store_true', help='Check if true killer character has been generated yet')
     parser.add_argument('--remove-character', metavar='CHARACTER_NAME', help='Remove character from classification system')
     
+    # Murder escalation commands
+    parser.add_argument('--check-escalation-status', action='store_true', help='Show murder escalation status and probabilities')
+    parser.add_argument('--force-escalation', action='store_true', help='Force murder escalation at current gate (GM override)')
+    parser.add_argument('--escalation-narrative', help='Get escalation narrative for specific crime type')
+    
     # Cross-examination commands
     parser.add_argument('--start-cross-examination', metavar='WITNESS_NAME', help='Start cross-examination of specified witness')
     parser.add_argument('--press', metavar='STATEMENT_ID', help='Press witness for more details on statement (A, B, C, etc.)')
@@ -2379,6 +2562,21 @@ def main():
             print(f"Current Location: {status['current_location']}")
             print(f"Evidence Collected: {status['evidence_collected']}")
             print(f"Witnesses Interviewed: {status['witnesses_interviewed']}")
+            
+            # Murder escalation status
+            escalation = status['murder_escalation']
+            print(f"\nMurder Escalation:")
+            print(f"  Original Crime: {escalation['original_crime'].title()}")
+            print(f"  Is Murder Case: {'Yes' if escalation['is_murder_case'] else 'No'}")
+            if escalation['escalated']:
+                print(f"  🚨 ESCALATED at gate: {escalation['escalation_gate']}")
+            elif escalation['original_crime'] != 'murder':
+                print(f"  Gates Checked: {escalation['gates_checked']}")
+                remaining = escalation['remaining_gates']
+                if remaining:
+                    print(f"  Remaining Gates: {remaining}")
+                    if escalation['final_gate_mandatory'] in remaining:
+                        print(f"  ⚠️  Mandatory escalation at: {escalation['final_gate_mandatory']}")
             
             if status['gates_completed']:
                 print(f"\nCompleted Gates: {', '.join(status['gates_completed'])}")
@@ -3182,6 +3380,45 @@ def main():
                 print(f"✅ Character '{character_name}' removed from classification system")
             else:
                 print(f"❌ Character '{character_name}' not found in classification system")
+        
+        # Murder escalation commands
+        if args.check_escalation_status:
+            status = manager.get_escalation_status()
+            print(f"🔍 MURDER ESCALATION STATUS")
+            print(f"   Original Crime: {status['original_crime'].title()}")
+            print(f"   Is Murder Case: {'Yes' if status['is_murder_case'] else 'No'}")
+            print(f"   Escalated: {'Yes' if status['escalated'] else 'No'}")
+            
+            if status['escalated']:
+                print(f"   Escalation Gate: {status['escalation_gate']}")
+            else:
+                print(f"   Gates Checked: {status['gates_checked']}")
+                print(f"   Remaining Gates: {status['remaining_gates']}")
+                if status['final_gate_mandatory']:
+                    print(f"   Final Gate (Mandatory): {status['final_gate_mandatory']}")
+                    if status['remaining_gates'] and status['final_gate_mandatory'] in status['remaining_gates']:
+                        print(f"   ⚠️  Murder escalation guaranteed at final gate!")
+        
+        if args.force_escalation:
+            current_gate = manager.get_next_gate()
+            if current_gate:
+                if manager.get_escalation_status()['escalated']:
+                    print(f"❌ Case has already escalated to murder")
+                elif manager.get_escalation_status()['original_crime'] == 'murder':
+                    print(f"❌ Case is already a murder case")
+                else:
+                    manager.escalate_to_murder(current_gate)
+                    print(f"✅ Murder escalation forced at gate: {current_gate}")
+            else:
+                print(f"❌ No current gate to escalate from")
+        
+        if args.escalation_narrative:
+            crime_type = args.escalation_narrative.lower()
+            narrative = manager.get_escalation_narrative(crime_type, "example_gate")
+            print(f"🎭 ESCALATION NARRATIVE: {crime_type.title()} → Murder")
+            print(f"   Type: {narrative['type']}")
+            print(f"   Description: {narrative['description']}")
+            print(f"   GM Guidance: {narrative['gm_guidance']}")
         
     except Exception as e:
         print(f"❌ Error: {e}")
