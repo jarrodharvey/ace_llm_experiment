@@ -27,8 +27,17 @@ The methodology prioritizes immediate improvisation with minimal pre-planning:
 **AI Collaboration Framework:**
 - **Claude**: Improvised investigation, logical consistency, character development, state management
 - **ChatGPT**: Opening scene generation, theatrical elements
+- **Context7 MCP Server**: Code examples, setup instructions, library/API documentation
 
 When asked to consult with ChatGPT on something, the api key can be found in openai_key.txt.
+
+**CONTEXT7 MCP SERVER INTEGRATION:**
+When requests involve:
+- **Code examples** - Implementation patterns, syntax demonstrations, library usage
+- **Setup or configuration steps** - Installation guides, environment setup, tool configuration
+- **Library/API documentation** - Framework references, method signatures, parameter explanations
+
+**MANDATORY:** Use Context7 MCP server tools (prefixed with `mcp__`) to provide comprehensive, up-to-date information from official documentation and reliable sources. This ensures accurate technical guidance and prevents outdated or incorrect implementation advice.
 
 ## EVERGREEN EXPERIMENT RULE
 
@@ -169,6 +178,9 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 - `--list-classifications` - List all killer/red herring classifications for case (GM reference only)
 - `--classification-stats` - Show classification statistics and expected probabilities
 - `--show-spoilers` - **TESTING ONLY**: Reveal actual classifications (never use during gameplay)
+- `--reveal-classification "{character_name}"` - **CRITICAL**: Reveal character classification at narrative climax points only
+- `--check-killer-status` - Check if true killer character has been generated yet (for case continuation logic)
+- `--remove-character "{character_name}"` - Remove character from classification system (for cleanup/testing)
 - **Case-Length Scaling**: Base killer probability decreases with case length (1-day: 50%, 2-day: 33%, 3-day: 25%)
 - **Role-Based Weighting**: Role types affect killer probability for narrative realism:
   - **High Authority (0.3x)**: detective, judge, police, client, prosecutor, doctor - Rare but shocking twists
@@ -185,6 +197,16 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 - **Purpose**: Prevents predictable patterns while creating appropriate narrative tension and surprise
 - **Usage**: Always provide role hints when generating characters to ensure proper weighting
 - **CRITICAL**: Never use `--show-spoilers` during actual gameplay - only for testing and debugging
+
+**Revelation Workflow (Improvisation-First with Pattern Prevention):**
+- **Pure Improvisation**: GM improvises freely without knowing character classifications
+- **Revelation Points**: Use `--reveal-classification` only at narrative climax moments when story demands definitive answer
+- **Critical Moments**: Cross-examination breakdown, overwhelming evidence confrontation, player accusation points
+- **Red Herring Response**: If revealed as red herring, GM improvises exoneration explanation ("I was protecting someone," "I was blackmailed," etc.)
+- **Case Continuation**: After red herring reveal, use `--check-killer-status` to determine if true killer exists
+- **Character Generation**: If no killer generated yet, create more characters to "flush out" the true perpetrator
+- **Narrative Timing**: Only reveal classifications when the story logic demands a definitive guilty/innocent answer
+- **No Spoilers**: System prevents GM from knowing classifications during normal gameplay, maintaining authentic mystery
 
 **Family Relationship Management:**
 - `--create-family {size} [--family-surname {surname}]` - Create entire family with shared surname
@@ -417,7 +439,7 @@ When playing games, you are the game master:
 - **evidence request** - If I simply type "evidence" list and describe the evidence I've gathered so far, courtroom mystery style
 - **profiles request** - If I simply type "profiles" list and describe the people I've met so far, courtroom mystery style
 - **save game request** - If I simply type "save game" create a manual save point using game state manager: `--save "manual_save_[timestamp]"` allowing me to close/reopen context window
-- **Option lists** - End every response with 3-5 available actions. Not too many (overwhelming) or too few (removes agency)
+- **Option lists** - End every response with 3-5 available actions as a numbered list. Not too many (overwhelming) or too few (removes agency)
 - **Cross-examination UI** - During cross-examination, suppress "Available Actions" menu. Instead show witness statements A-E and command reminders: `press [A-E]` | `present [A-E] "[evidence_name]"` | `check-victory` | `end-cross-examination`
 - **Uphill battle** - Characters should be hostile/uncooperative by default, requiring evidence presentation to make progress
 - **Evidence presentation gates** - Progression locked until player presents specific evidence to specific characters
@@ -489,6 +511,50 @@ python -m pytest tests/ -v
 
 **Test Suite Must Pass:** No commits allowed with failing tests
 
+### Test Case Isolation System
+
+**CRITICAL:** All testing must use the automated test case isolation system to prevent contamination of real gameplay cases.
+
+### Automated Test Case Creation:
+
+**Test Case Manager:** `scripts/test_case_manager.py`
+- **Purpose:** Creates isolated test cases by cloning real case structures
+- **Location:** All test cases created in `tests/test_case/`
+- **Isolation:** Guarantees no real cases are affected by testing
+- **Cleanup:** Automatic cleanup after each test run
+
+### Test Case Usage Rules:
+
+**MANDATORY for all AI development:**
+```python
+# Use automated test case fixtures
+from test_case_manager import TestCaseManager
+
+# In test setup
+test_manager = TestCaseManager()
+test_case_path = test_manager.create_test_case()
+```
+
+**PROHIBITED Actions:**
+- **Never test on real case directories** (e.g., `the_courthouse_murder`, `the_midnight_masquerade`)
+- **Never manually create test cases** without using TestCaseManager
+- **Never skip cleanup** of test cases after testing
+- **Never assume test case structure** - always use real case cloning
+
+### Test Case Manager Commands:
+
+**Create Test Case:**
+```bash
+python3 scripts/test_case_manager.py --create [--source case_name]
+```
+
+**Cleanup Test Case:**
+```bash
+python3 scripts/test_case_manager.py --cleanup
+```
+
+**Auto-Select Source:** If no source specified, manager auto-selects suitable real case
+
 ### Failure Response Protocol:
 
 **When Tests Fail:**
@@ -497,6 +563,11 @@ python -m pytest tests/ -v
 3. **Fix code or update tests** as appropriate
 4. **Verify fix** with multiple test runs
 5. **Add additional tests** if gap in coverage discovered
+
+**Test Case Isolation Failures:**
+- If TestCaseManager fails, tests will fall back to manual setup
+- Always verify test isolation with `manager.is_test_case_path()`
+- Never proceed with tests that might affect real cases
 
 ---
 

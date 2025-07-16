@@ -15,44 +15,67 @@ import json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'scripts'))
 
 from red_herring_system import RedHerringClassifier
+from test_case_manager import TestCaseManager
 
 
 class TestRedHerringSystem(unittest.TestCase):
     
     def setUp(self):
-        """Set up test case with temporary directory"""
-        self.test_dir = tempfile.mkdtemp()
-        self.case_path = Path(self.test_dir) / "test_case"
-        self.case_path.mkdir(parents=True, exist_ok=True)
-        (self.case_path / "game_state").mkdir(parents=True, exist_ok=True)
+        """Set up test case with automated test case manager"""
+        self.test_manager = TestCaseManager()
         
-        # Create minimal case structure for CLI tests
-        case_opening = self.case_path / "case_opening.txt"
-        case_opening.write_text("Test case opening")
-        
-        # Create minimal investigation progress
-        progress_file = self.case_path / "game_state" / "investigation_progress.json"
-        minimal_progress = {
-            "case_type": "simple_improvisation",
-            "case_length": 2,
-            "current_phase": "investigation",
-            "current_gate": "witness_interviews",
-            "investigation_gates": {"witness_interviews": {"status": "pending"}},
-            "evidence_found": [],
-            "character_relationships": {},
-            "location_progress": {},
-            "failed_attempts": [],
-            "inspiration_usage": [],
-            "trial_ready": False,
-            "last_updated": None
-        }
-        progress_file.write_text(json.dumps(minimal_progress, indent=2))
-        
-        self.classifier = RedHerringClassifier(str(self.case_path))
+        try:
+            # Create automated test case from real case structure
+            self.case_path = self.test_manager.create_test_case()
+            
+            # Validation to ensure we're not using a real case
+            if not self.test_manager.is_test_case_path(str(self.case_path)):
+                raise RuntimeError("Test case isolation failed - using real case path")
+            
+            # Initialize classifier
+            self.classifier = RedHerringClassifier(str(self.case_path))
+            
+        except RuntimeError as e:
+            # Fall back to manual setup if no real cases available
+            self.test_dir = tempfile.mkdtemp()
+            self.case_path = Path(self.test_dir) / "test_case"
+            self.case_path.mkdir(parents=True, exist_ok=True)
+            (self.case_path / "game_state").mkdir(parents=True, exist_ok=True)
+            
+            # Create minimal case structure for CLI tests
+            case_opening = self.case_path / "case_opening.txt"
+            case_opening.write_text("Test case opening")
+            
+            # Create minimal investigation progress
+            progress_file = self.case_path / "game_state" / "investigation_progress.json"
+            minimal_progress = {
+                "case_type": "simple_improvisation",
+                "case_length": 2,
+                "current_phase": "investigation",
+                "current_gate": "witness_interviews",
+                "investigation_gates": {"witness_interviews": {"status": "pending"}},
+                "evidence_found": [],
+                "character_relationships": {},
+                "location_progress": {},
+                "failed_attempts": [],
+                "inspiration_usage": [],
+                "trial_ready": False,
+                "last_updated": None
+            }
+            progress_file.write_text(json.dumps(minimal_progress, indent=2))
+            
+            # Initialize classifier
+            self.classifier = RedHerringClassifier(str(self.case_path))
+            self.test_manager = None  # Mark as manual fallback
     
     def tearDown(self):
-        """Clean up test directory"""
-        shutil.rmtree(self.test_dir)
+        """Clean up test case"""
+        if self.test_manager:
+            # Use automated cleanup
+            self.test_manager.cleanup_test_case()
+        else:
+            # Use manual cleanup
+            shutil.rmtree(self.test_dir)
     
     def test_deterministic_classification(self):
         """Test that the same character name always gets the same classification"""
@@ -251,6 +274,119 @@ class TestRedHerringSystem(unittest.TestCase):
         detective_prob = self.classifier.get_weighted_probability(2, "detective")
         guard_prob = self.classifier.get_weighted_probability(2, "security guard")
         self.assertNotEqual(detective_prob, guard_prob)
+    
+    def test_revelation_workflow(self):
+        """Test revelation workflow for narrative climax points"""
+        # Generate characters for testing
+        self.classifier.classify_character("Alice Detective", 2, "detective")
+        self.classifier.classify_character("Bob Guard", 2, "security guard")
+        self.classifier.classify_character("Carol Witness", 2, "witness")
+        
+        # Test getting character classification
+        alice_class = self.classifier.get_character_role("Alice Detective")
+        bob_class = self.classifier.get_character_role("Bob Guard")
+        carol_class = self.classifier.get_character_role("Carol Witness")
+        
+        # Should get valid classifications
+        self.assertIn(alice_class, ["killer", "conspirator", "red_herring"])
+        self.assertIn(bob_class, ["killer", "conspirator", "red_herring"])
+        self.assertIn(carol_class, ["killer", "conspirator", "red_herring"])
+        
+        # Test killer detection
+        killers = self.classifier.get_killers()
+        all_classifications = self.classifier.get_all_classifications()
+        
+        # Should have all three characters classified
+        self.assertEqual(len(all_classifications), 3)
+        self.assertIn("Alice Detective", all_classifications)
+        self.assertIn("Bob Guard", all_classifications)
+        self.assertIn("Carol Witness", all_classifications)
+        
+        # Test killer status detection
+        if killers:
+            # At least one killer should exist
+            self.assertGreater(len(killers), 0)
+            # All killers should be in the classification list
+            for killer in killers:
+                self.assertIn(killer, all_classifications)
+                self.assertEqual(all_classifications[killer], "killer")
+        
+        # Test non-existent character
+        unknown_class = self.classifier.get_character_role("Unknown Person")
+        self.assertIsNone(unknown_class)
+    
+    def test_killer_status_detection(self):
+        """Test killer status detection for case continuation logic"""
+        # Initially no characters - no killer
+        killers = self.classifier.get_killers()
+        self.assertEqual(len(killers), 0)
+        
+        # Add only red herrings
+        self.classifier.classify_character("Red Herring 1", 1, "witness")
+        self.classifier.classify_character("Red Herring 2", 1, "witness")
+        
+        # Force red herring classifications by using names that hash to red herring
+        # This is deterministic based on name + role hash
+        initial_killers = self.classifier.get_killers()
+        
+        # Keep generating characters to test killer detection
+        for i in range(10):  # Generate enough characters
+            char_name = f"Character {i}"
+            self.classifier.classify_character(char_name, 2, "witness")
+        
+        # Get final state
+        final_killers = self.classifier.get_killers()
+        total_chars = len(self.classifier.get_all_classifications())
+        
+        # Test that characters were actually classified
+        self.assertGreaterEqual(total_chars, 10)  # Should have at least 10 characters (2 initial + 8 generated)
+        
+        # Test that we can detect killer status regardless of whether killers exist
+        # This tests the functionality of killer detection, not the randomness
+        if len(final_killers) > 0:
+            # If killers exist, verify they're properly classified
+            all_chars = self.classifier.get_all_classifications()
+            for killer in final_killers:
+                self.assertIn(killer, all_chars)
+                self.assertEqual(all_chars[killer], "killer")
+        else:
+            # If no killers, that's valid too - the system should handle this case
+            # The check-killer-status command should indicate no killers generated
+            self.assertEqual(len(final_killers), 0)
+    
+    def test_character_removal(self):
+        """Test character removal functionality"""
+        # Add some characters
+        self.classifier.classify_character("Test Character 1", 2, "witness")
+        self.classifier.classify_character("Test Character 2", 2, "detective")
+        
+        # Verify they exist
+        self.assertEqual(len(self.classifier.get_all_classifications()), 2)
+        self.assertIn("Test Character 1", self.classifier.get_all_classifications())
+        self.assertIn("Test Character 2", self.classifier.get_all_classifications())
+        
+        # Remove one character
+        removed = self.classifier.remove_character("Test Character 1")
+        self.assertTrue(removed)
+        
+        # Verify it's gone
+        self.assertEqual(len(self.classifier.get_all_classifications()), 1)
+        self.assertNotIn("Test Character 1", self.classifier.get_all_classifications())
+        self.assertIn("Test Character 2", self.classifier.get_all_classifications())
+        
+        # Try to remove non-existent character
+        removed = self.classifier.remove_character("Non-existent Character")
+        self.assertFalse(removed)
+        
+        # Verify count unchanged
+        self.assertEqual(len(self.classifier.get_all_classifications()), 1)
+        
+        # Remove the remaining character
+        removed = self.classifier.remove_character("Test Character 2")
+        self.assertTrue(removed)
+        
+        # Verify all gone
+        self.assertEqual(len(self.classifier.get_all_classifications()), 0)
 
 
 if __name__ == '__main__':

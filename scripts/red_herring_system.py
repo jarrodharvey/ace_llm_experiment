@@ -334,6 +334,22 @@ class RedHerringClassifier:
         with open(self.classifications_file, 'w') as f:
             f.write(encoded_data)
     
+    def remove_character(self, character_name: str) -> bool:
+        """
+        Remove a character from the classification system.
+        
+        Args:
+            character_name: The character's full name to remove
+            
+        Returns:
+            True if character was found and removed, False otherwise
+        """
+        if character_name in self.classifications:
+            del self.classifications[character_name]
+            self._save_classifications()
+            return True
+        return False
+    
     def reset_classifications(self) -> None:
         """
         Clear all character classifications (for testing or case reset).

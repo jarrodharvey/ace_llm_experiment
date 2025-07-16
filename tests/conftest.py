@@ -11,6 +11,9 @@ import sys
 # Add scripts directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
+# Import test case manager
+from test_case_manager import TestCaseManager
+
 @pytest.fixture
 def temp_case_dir():
     """Create a temporary case directory for testing"""
@@ -99,3 +102,37 @@ def config_manager():
     """Create a mock configuration manager for testing"""
     from case_config import get_config_manager
     return get_config_manager()
+
+@pytest.fixture
+def automated_test_case():
+    """Create automated test case using real case structure"""
+    manager = TestCaseManager()
+    
+    try:
+        # Create test case from existing real case
+        test_case_path = manager.create_test_case()
+        yield test_case_path
+    except RuntimeError as e:
+        # Fall back to manual test case if no real cases available
+        pytest.skip(f"No suitable case found for automated testing: {e}")
+    finally:
+        # Always cleanup
+        manager.cleanup_test_case()
+
+@pytest.fixture
+def isolated_test_case():
+    """Create isolated test case that doesn't affect real cases"""
+    manager = TestCaseManager()
+    
+    try:
+        test_case_path = manager.create_test_case()
+        
+        # Validation to ensure we're not using a real case
+        if not manager.is_test_case_path(str(test_case_path)):
+            raise RuntimeError("Test case isolation failed - using real case path")
+        
+        yield test_case_path
+    except RuntimeError as e:
+        pytest.skip(f"Could not create isolated test case: {e}")
+    finally:
+        manager.cleanup_test_case()

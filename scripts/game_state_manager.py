@@ -2340,6 +2340,9 @@ def main():
     parser.add_argument('--generate-age', nargs='?', const='', help='Generate appropriate age for role (optional role hint)')
     parser.add_argument('--generate-occupation', nargs=2, metavar=('AGE', 'ROLE'), help='Generate occupation for given age and role')
     parser.add_argument('--show-spoilers', action='store_true', help='Show character classifications and killer identities (for testing/GM reference only)')
+    parser.add_argument('--reveal-classification', metavar='CHARACTER_NAME', help='Reveal character classification at narrative climax point')
+    parser.add_argument('--check-killer-status', action='store_true', help='Check if true killer character has been generated yet')
+    parser.add_argument('--remove-character', metavar='CHARACTER_NAME', help='Remove character from classification system')
     
     # Cross-examination commands
     parser.add_argument('--start-cross-examination', metavar='WITNESS_NAME', help='Start cross-examination of specified witness')
@@ -3127,6 +3130,58 @@ def main():
                 print(f"❌ Narrative save not found: {args.narrative_summary}")
             except Exception as e:
                 print(f"❌ Error generating summary: {e}")
+        
+        # New revelation commands
+        if args.reveal_classification:
+            character_name = args.reveal_classification
+            classification = manager.red_herring_classifier.get_character_role(character_name)
+            
+            if classification is None:
+                print(f"❌ Character '{character_name}' not found or not classified")
+            else:
+                print(f"🎭 REVELATION: {character_name}")
+                if classification == "killer":
+                    print(f"   💀 Classification: TRUE KILLER")
+                    print(f"   ⚖️  This character is the actual perpetrator")
+                    print(f"   🎯 Case can conclude with this revelation")
+                elif classification == "conspirator":
+                    print(f"   🤝 Classification: CONSPIRATOR")
+                    print(f"   ⚠️  This character is involved but not the main perpetrator")
+                    print(f"   🔍 Continue investigation to find the true killer")
+                else:
+                    print(f"   🎭 Classification: RED HERRING")
+                    print(f"   ❌ This character is NOT the true killer")
+                    print(f"   🔍 Continue investigation to find the real perpetrator")
+                    
+                    # Check if killer has been generated yet
+                    killers = manager.red_herring_classifier.get_killers()
+                    if not killers:
+                        print(f"   ⚠️  No true killer generated yet - use --check-killer-status")
+        
+        if args.check_killer_status:
+            killers = manager.red_herring_classifier.get_killers()
+            total_characters = len(manager.red_herring_classifier.get_all_classifications())
+            
+            if killers:
+                print(f"✅ KILLER STATUS: True killer has been generated")
+                print(f"   🎭 Total characters classified: {total_characters}")
+                print(f"   💀 Killer(s) in cast: {len(killers)}")
+                print(f"   🎯 Case is solvable - true killer exists in character roster")
+            else:
+                print(f"❌ KILLER STATUS: No true killer generated yet")
+                print(f"   🎭 Total characters classified: {total_characters}")
+                print(f"   ⚠️  All current characters are red herrings")
+                print(f"   🔧 Generate more characters to 'flush out' the true killer")
+                print(f"   💡 Use --generate-name-classified to add more suspects")
+        
+        if args.remove_character:
+            character_name = args.remove_character
+            removed = manager.red_herring_classifier.remove_character(character_name)
+            
+            if removed:
+                print(f"✅ Character '{character_name}' removed from classification system")
+            else:
+                print(f"❌ Character '{character_name}' not found in classification system")
         
     except Exception as e:
         print(f"❌ Error: {e}")
