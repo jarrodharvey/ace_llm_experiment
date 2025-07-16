@@ -1,0 +1,193 @@
+{
+  "case_type": "simple_improvisation",
+  "case_length": 1,
+  "current_phase": "trial",
+  "current_gate": "trial_opening",
+  "investigation_gates": {
+    "trial_opening": "completed"
+  },
+  "evidence_found": [],
+  "character_relationships": {},
+  "location_progress": {},
+  "failed_attempts": [],
+  "inspiration_usage": [],
+  "trial_ready": false,
+  "last_updated": null,
+  "inspiration_log": [
+    {
+      "word": "treasury",
+      "category": "pure_random",
+      "usage_context": "reviewing prosecution evidence file for attempted murder case",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "apse",
+      "category": "pure_random",
+      "usage_context": "examining physical evidence more closely for inconsistencies",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "play",
+      "category": "pure_random",
+      "usage_context": "asking client if they are left-handed to check evidence inconsistency",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "fanatical",
+      "category": "pure_random",
+      "usage_context": "apologizing to client and explaining importance of handedness evidence",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "fling",
+      "category": "pure_random",
+      "usage_context": "pressing client about relationship with Sandra and why she would accuse him",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "high-pitched",
+      "category": "pure_random",
+      "usage_context": "building client confidence before trial starts",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "drawer",
+      "category": "pure_random",
+      "usage_context": "reviewing trial strategy with collected evidence before entering courtroom",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "mosquito",
+      "category": "pure_random",
+      "usage_context": "challenging prosecution to explain evidence contradictions in opening statement",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "tramp",
+      "category": "pure_random",
+      "usage_context": "David's reaction to learning about evidence inconsistencies and right-handed implications",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "frosting",
+      "category": "pure_random",
+      "usage_context": "David Mcgrath anxious at defense table during trial, needs strategic consultation about next moves",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "exposition",
+      "category": "pure_random",
+      "usage_context": "investigating ornate masquerade mask fragment with gold and burgundy coloring, looking for clues about third party presence",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "familiarity",
+      "category": "pure_random",
+      "usage_context": "requesting court investigation into VM artisan records to identify custom mask maker and potential client who lost fragment",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "smile",
+      "category": "pure_random",
+      "usage_context": "presenting motion to dismiss charges against David based on mask evidence pointing to Margaret Silverton as real perpetrator",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "person",
+      "category": "pure_random",
+      "usage_context": "requesting to call Margaret Silverton as witness to confront her about custom mask and false statement about barely knowing victim",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "understand",
+      "category": "pure_random",
+      "usage_context": "requesting court summons for Margaret Silverton who conveniently became unavailable after mask evidence linked her to crime scene",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "inevitable",
+      "category": "pure_random",
+      "usage_context": "cross-examining Sandra Watts specifically about Margaret Silverton to establish stronger connection between mask owner and incident",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "architect",
+      "category": "pure_random",
+      "usage_context": "pressing Sandra about liquid spray hitting her left cheek from David's right hand at three feet away, analyzing trajectory implications",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "trite",
+      "category": "pure_random",
+      "usage_context": "aftermath of devastating cross-examination victory, prosecution's case crumbling, judge considering next steps",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "tin",
+      "category": "pure_random",
+      "usage_context": "requesting immediate dismissal of charges after devastating cross-examination victory, prosecution's case in ruins",
+      "gate": "unknown",
+      "location": "unknown"
+    },
+    {
+      "word": "brave",
+      "category": "pure_random",
+      "usage_context": "accepting partial victory on assault charges, acknowledging judge's ruling while preparing for remaining charges",
+      "gate": "unknown",
+      "location": "unknown"
+    }
+  ],
+  "evidence_collected": [
+    {
+      "name": "Prosecution Case File",
+      "description": "Official charges and evidence against T. Masquerade - burns, witnesses, 911 calls",
+      "discovered_at": "Gate: unknown"
+    },
+    {
+      "name": "Evidence Location Inconsistencies",
+      "description": "Spray bottle inside despite locked door, lighter outside building, burn patterns suggest different positioning",
+      "discovered_at": "Gate: unknown"
+    },
+    {
+      "name": "David's Right-Handedness",
+      "description": "Client confirmed right-handed, contradicts burn pattern evidence on victim's left side",
+      "discovered_at": "Gate: unknown"
+    },
+    {
+      "name": "David's Street Performer Background",
+      "description": "David was a traveling street performer before becoming security guard, giving him keen observational skills and expertise with fire/props",
+      "discovered_at": "Gate: unknown"
+    },
+    {
+      "name": "Artisan Maker's Mark",
+      "description": "Tiny embossed 'VM' symbol on mask fragment indicating professional theatrical mask maker, suggests expensive custom piece",
+      "discovered_at": "Gate: unknown"
+    },
+    {
+      "name": "Margaret Silverton's Custom Mask",
+      "description": "Burgundy and gold mask ordered from Victoria Masterson artisan, delivered 2 days before incident, client claimed to barely know victim",
+      "discovered_at": "Gate: unknown"
+    }
+  ],
+  "character_trust_levels": {
+    "David Mcgrath": 5
+  }
+}

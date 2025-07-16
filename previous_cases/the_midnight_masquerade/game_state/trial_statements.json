@@ -1,0 +1,68 @@
+{
+  "sandra_watts_cross_exam": {
+    "witness_name": "Sandra Watts",
+    "statements": [
+      {
+        "id": "A",
+        "text": "I heard someone break into my apartment around 8:45 AM",
+        "is_lie": false,
+        "press_response": "The sound was definitely forced entry, like someone kicked the door. It woke me up from sleep.",
+        "truth_level": "accurate"
+      },
+      {
+        "id": "B", 
+        "text": "David sprayed something on my face while standing directly in front of me",
+        "is_lie": true,
+        "contradicting_evidence": ["David's Right-Handedness", "Evidence Location Inconsistencies"],
+        "success_response": "OBJECTION! If David attacked you face-to-face with his right hand, the burns would be on the RIGHT side of your face, not the left!",
+        "failure_response": "That evidence doesn't contradict my testimony about the positioning of the attack.",
+        "press_response": "He was maybe three feet away, spraying from his right hand toward my face. The liquid hit my left cheek.",
+        "truth_level": "fabricated"
+      },
+      {
+        "id": "C",
+        "text": "He held the lighter in his right hand and tried to set my clothes on fire",
+        "is_lie": true,
+        "contradicting_evidence": ["Evidence Location Inconsistencies"],
+        "success_response": "OBJECTION! If David had the lighter during the attack, how did it end up outside the building instead of at the scene?",
+        "failure_response": "That evidence doesn't relate to what I witnessed during the attack.",
+        "press_response": "I clearly saw him flicking the lighter with his right hand, trying to ignite my petrol-soaked clothes.",
+        "truth_level": "fabricated"
+      },
+      {
+        "id": "D",
+        "text": "I managed to run outside and lock him inside the apartment",
+        "is_lie": true,
+        "contradicting_evidence": ["Evidence Location Inconsistencies"],
+        "success_response": "OBJECTION! The spray bottle was found INSIDE the apartment! If you locked David inside, how did his weapon get there?",
+        "failure_response": "I don't see how that contradicts my ability to escape and lock the door.",
+        "press_response": "I ran past him to the door, got outside, and immediately turned the deadbolt to trap him inside.",
+        "truth_level": "fabricated"
+      },
+      {
+        "id": "E",
+        "text": "I called 911 immediately after locking the door",
+        "is_lie": false,
+        "press_response": "I called as soon as I was sure he couldn't get out. My face was burning so badly I could barely speak.",
+        "truth_level": "accurate"
+      }
+    ],
+    "victory_condition": {
+      "required_contradictions": 2,
+      "critical_lies": ["B", "C", "D"],
+      "success_message": "Sandra's testimony has been thoroughly discredited! The jury can see the prosecution's case is built on impossibilities!"
+    },
+    "penalty_system": {
+      "enabled": true,
+      "max_wrong_presentations": 5,
+      "penalty_effects": {
+        "1-2": "The judge gives you a warning look",
+        "3-4": "The prosecutor objects to your tactics and the judge sustains",
+        "5+": "The judge threatens to hold you in contempt of court"
+      },
+      "failure_consequences": {
+        "max_penalties_reached": "GAME OVER: You have been held in contempt of court for repeatedly presenting irrelevant evidence!"
+      }
+    }
+  }
+}

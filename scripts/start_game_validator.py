@@ -72,7 +72,7 @@ class StartGameValidator:
         return result
     
     def _validate_case_structure(self) -> bool:
-        """Validate basic case directory structure"""
+        """Validate improvisation-first case directory structure"""
         try:
             if not self.case_path.exists():
                 self.errors.append(f"Case directory does not exist: {self.case_path}")
@@ -82,39 +82,16 @@ class StartGameValidator:
                 self.errors.append(f"Case path is not a directory: {self.case_path}")
                 return False
             
-            # Detect case type
-            case_type = self._detect_case_type()
-            
-            if case_type == "simple_improvisation":
-                return self._validate_simple_case_structure()
-            elif case_type == "complex":
-                return self._validate_complex_case_structure()
-            else:
-                self.errors.append(f"Unknown case type detected: {case_type}")
-                return False
+            # All cases use improvisation-first structure
+            return self._validate_improvisation_case_structure()
                 
         except Exception as e:
             self.errors.append(f"Structure validation failed: {str(e)}")
             return False
     
-    def _detect_case_type(self) -> str:
-        """Detect case type using file structure analysis"""
-        # Check for complex case structure
-        backbone_dir = self.case_path / "backbone"
-        if backbone_dir.exists() and (backbone_dir / "case_structure.json").exists():
-            return "complex"
-        
-        # Check for simple improvisation structure
-        real_life_file = self.case_path / "real_life_case_summary.txt"
-        opening_file = self.case_path / "case_opening.txt"
-        if real_life_file.exists() and opening_file.exists():
-            return "simple_improvisation"
-        
-        # Unknown structure
-        return "unknown"
     
-    def _validate_simple_case_structure(self) -> bool:
-        """Validate simple improvisation case structure"""
+    def _validate_improvisation_case_structure(self) -> bool:
+        """Validate improvisation-first case structure"""
         required_files = [
             "real_life_case_summary.txt",
             "case_opening.txt"
@@ -127,7 +104,7 @@ class StartGameValidator:
                 missing_files.append(file_name)
         
         if missing_files:
-            self.errors.append(f"Missing required files for simple improvisation case: {missing_files}")
+            self.errors.append(f"Missing required files for improvisation case: {missing_files}")
             return False
         
         # Check for game_state directory (can auto-create if missing)
@@ -143,61 +120,19 @@ class StartGameValidator:
         
         return True
     
-    def _validate_complex_case_structure(self) -> bool:
-        """Validate complex case structure"""
-        required_dirs = ["backbone", "game_state"]
-        required_backbone_files = [
-            "case_structure.json",
-            "character_facts.json", 
-            "evidence_chain.json",
-            "truth_timeline.json",
-            "witness_testimonies.json",
-            "trial_structure.json"
-        ]
-        
-        # Check directories
-        missing_dirs = []
-        for dir_name in required_dirs:
-            dir_path = self.case_path / dir_name
-            if not dir_path.exists():
-                missing_dirs.append(dir_name)
-        
-        if missing_dirs:
-            self.errors.append(f"Missing required directories: {missing_dirs}")
-            return False
-        
-        # Check backbone files
-        backbone_dir = self.case_path / "backbone"
-        missing_backbone_files = []
-        for file_name in required_backbone_files:
-            file_path = backbone_dir / file_name
-            if not file_path.exists():
-                missing_backbone_files.append(file_name)
-        
-        if missing_backbone_files:
-            self.errors.append(f"Missing backbone files: {missing_backbone_files}")
-            return False
-        
-        return True
     
     def _validate_file_integrity(self) -> bool:
         """Validate file contents and JSON integrity"""
         try:
-            case_type = self._detect_case_type()
-            
-            if case_type == "simple_improvisation":
-                return self._validate_simple_file_integrity()
-            elif case_type == "complex":
-                return self._validate_complex_file_integrity()
-            else:
-                return False
+            # All cases use improvisation-first structure
+            return self._validate_improvisation_file_integrity()
                 
         except Exception as e:
             self.errors.append(f"File integrity validation failed: {str(e)}")
             return False
     
-    def _validate_simple_file_integrity(self) -> bool:
-        """Validate simple case file contents"""
+    def _validate_improvisation_file_integrity(self) -> bool:
+        """Validate improvisation case file contents"""
         # Check real_life_case_summary.txt
         summary_file = self.case_path / "real_life_case_summary.txt"
         try:
@@ -222,31 +157,6 @@ class StartGameValidator:
         
         return True
     
-    def _validate_complex_file_integrity(self) -> bool:
-        """Validate complex case JSON file integrity"""
-        backbone_dir = self.case_path / "backbone"
-        json_files = [
-            "case_structure.json",
-            "character_facts.json",
-            "evidence_chain.json", 
-            "truth_timeline.json",
-            "witness_testimonies.json",
-            "trial_structure.json"
-        ]
-        
-        for file_name in json_files:
-            file_path = backbone_dir / file_name
-            try:
-                with open(file_path, 'r') as f:
-                    json.load(f)  # Validate JSON syntax
-            except json.JSONDecodeError as e:
-                self.errors.append(f"Invalid JSON in {file_name}: {str(e)}")
-                return False
-            except Exception as e:
-                self.errors.append(f"Cannot read {file_name}: {str(e)}")
-                return False
-        
-        return True
     
     def _validate_configuration_consistency(self) -> bool:
         """Validate configuration consistency"""
@@ -346,7 +256,7 @@ class StartGameValidator:
             next_steps.append("3. CRITICAL: Fix GameStateManager issues (see errors above)")
         
         if any("JSON" in error for error in self.errors):
-            next_steps.append("4. Fix JSON syntax errors in backbone files")
+            next_steps.append("4. Fix file content errors")
         
         next_steps.append("5. Re-run validation after fixes")
         next_steps.append("6. DO NOT proceed with manual workarounds")

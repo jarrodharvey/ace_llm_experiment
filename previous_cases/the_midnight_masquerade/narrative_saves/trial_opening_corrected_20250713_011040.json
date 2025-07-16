@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "gate_name": "trial_opening_corrected",
+    "timestamp": "2025-07-13T01:10:40.532565",
+    "case_directory": "the_midnight_masquerade"
+  },
+  "case_facts": {
+    "charges": {
+      "primary": "assault with intent to cause grievous bodily harm",
+      "related": [
+        "stalking",
+        "intimidation",
+        "property damage"
+      ],
+      "NOT_murder": true,
+      "details": "Throwing petrol on victim's face and attempting to ignite"
+    },
+    "victim": {
+      "name": "Sandra Watts",
+      "status": "survived with facial burns",
+      "relationship": "former romantic partner of defendant",
+      "testimony_role": "primary prosecution witness"
+    },
+    "defendant": {
+      "name": "David Mcgrath",
+      "occupation": "security guard",
+      "background": "former street performer with fire expertise",
+      "handedness": "right-handed",
+      "relationship": "accused of assaulting ex-girlfriend"
+    },
+    "incident": {
+      "summary": "David allegedly threw petrol on Sandra's face and tried to light it, causing burns to left side of her face",
+      "location": "Sandra's apartment",
+      "key_inconsistency": "Right-handed defendant could not create left-side burn pattern"
+    },
+    "stakes": "2-5 years prison sentence for aggravated assault"
+  },
+  "narrative_state": {
+    "case_summary": "Defense of David Mcgrath against assault charges. Key evidence shows physical impossibility - right-handed defendant cannot create left-side facial burns as alleged.",
+    "current_phase": "trial",
+    "key_revelations": [
+      "David is right-handed",
+      "Burn pattern on Sandra's left side",
+      "David has street performer background with fire expertise",
+      "Sandra showing anger rather than distress after incident"
+    ],
+    "unresolved_mysteries": [
+      "Who actually attacked Sandra if not David?",
+      "Why is Sandra accusing David specifically?",
+      "What was Sandra angry about after the incident?",
+      "Who else had access to create this burn pattern?"
+    ],
+    "plot_threads": []
+  },
+  "character_dynamics": {
+    "David Mcgrath": {
+      "role": "defendant",
+      "key_traits": "observant from street performer background, cooperative",
+      "secrets": "noticed Sandra's anger rather than distress that night",
+      "player_relationship": "trusting, relies on defense"
+    },
+    "Sandra Watts": {
+      "role": "victim/witness",
+      "key_traits": "burn victim, ex-girlfriend of defendant",
+      "secrets": "behavior inconsistent with genuine victim",
+      "player_relationship": "hostile, defensive under cross-examination"
+    }
+  },
+  "evidence_significance": [
+    {
+      "name": "Prosecution Case File",
+      "description": "Official charges and evidence against T. Masquerade - burns, witnesses, 911 calls",
+      "discovered_at": "Gate: unknown",
+      "significance": "Official charges and evidence against T. Masquerade - burns, witnesses, 911 calls",
+      "implications": [],
+      "trial_value": "Unknown"
+    },
+    {
+      "name": "Evidence Location Inconsistencies",
+      "description": "Spray bottle inside despite locked door, lighter outside building, burn patterns suggest different positioning",
+      "discovered_at": "Gate: unknown",
+      "significance": "Physical evidence doesn't match prosecution timeline",
+      "implications": [
+        "Scene was staged",
+        "Multiple perpetrators possible"
+      ],
+      "trial_value": "Prosecution theory has holes"
+    },
+    {
+      "name": "David's Right-Handedness",
+      "description": "Client confirmed right-handed, contradicts burn pattern evidence on victim's left side",
+      "discovered_at": "Gate: unknown",
+      "significance": "Creates physical impossibility of creating left-side burns",
+      "implications": [
+        "Someone else attacked Sandra",
+        "David is being framed"
+      ],
+      "trial_value": "Core defense argument - reasonable doubt"
+    },
+    {
+      "name": "David's Street Performer Background",
+      "description": "David was a traveling street performer before becoming security guard, giving him keen observational skills and expertise with fire/props",
+      "discovered_at": "Gate: unknown",
+      "significance": "Expert fire handling experience contradicts sloppy attack pattern",
+      "implications": [
+        "David would know proper technique",
+        "Attack shows amateur execution"
+      ],
+      "trial_value": "Character evidence of expertise vs. alleged clumsiness"
+    }
+  ],
+  "trial_context": {
+    "legal_strategy": "Prove physical impossibility of right-handed defendant creating left-side burns, expose Sandra's inconsistent behavior",
+    "key_arguments": [],
+    "evidence_presentation_plan": [],
+    "expected_objections": []
+  },
+  "emotional_stakes": {
+    "player_investment": "",
+    "dramatic_tension": "David faces years in prison for crime he physically could not have committed, while real attacker remains free",
+    "character_motivations": {}
+  },
+  "game_state_snapshot": {
+    "case_type": "simple_improvisation",
+    "case_length": 1,
+    "current_phase": "trial",
+    "current_gate": "trial_opening",
+    "investigation_gates": {},
+    "evidence_found": [],
+    "character_relationships": {},
+    "location_progress": {},
+    "failed_attempts": [],
+    "inspiration_usage": [],
+    "trial_ready": false,
+    "last_updated": null,
+    "inspiration_log": [
+      {
+        "word": "treasury",
+        "category": "pure_random",
+        "usage_context": "reviewing prosecution evidence file for attempted murder case",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "apse",
+        "category": "pure_random",
+        "usage_context": "examining physical evidence more closely for inconsistencies",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "play",
+        "category": "pure_random",
+        "usage_context": "asking client if they are left-handed to check evidence inconsistency",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "fanatical",
+        "category": "pure_random",
+        "usage_context": "apologizing to client and explaining importance of handedness evidence",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "fling",
+        "category": "pure_random",
+        "usage_context": "pressing client about relationship with Sandra and why she would accuse him",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "high-pitched",
+        "category": "pure_random",
+        "usage_context": "building client confidence before trial starts",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "drawer",
+        "category": "pure_random",
+        "usage_context": "reviewing trial strategy with collected evidence before entering courtroom",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "mosquito",
+        "category": "pure_random",
+        "usage_context": "challenging prosecution to explain evidence contradictions in opening statement",
+        "gate": "unknown",
+        "location": "unknown"
+      },
+      {
+        "word": "tramp",
+        "category": "pure_random",
+        "usage_context": "David's reaction to learning about evidence inconsistencies and right-handed implications",
+        "gate": "unknown",
+        "location": "unknown"
+      }
+    ],
+    "evidence_collected": [
+      {
+        "name": "Prosecution Case File",
+        "description": "Official charges and evidence against T. Masquerade - burns, witnesses, 911 calls",
+        "discovered_at": "Gate: unknown"
+      },
+      {
+        "name": "Evidence Location Inconsistencies",
+        "description": "Spray bottle inside despite locked door, lighter outside building, burn patterns suggest different positioning",
+        "discovered_at": "Gate: unknown"
+      },
+      {
+        "name": "David's Right-Handedness",
+        "description": "Client confirmed right-handed, contradicts burn pattern evidence on victim's left side",
+        "discovered_at": "Gate: unknown"
+      },
+      {
+        "name": "David's Street Performer Background",
+        "description": "David was a traveling street performer before becoming security guard, giving him keen observational skills and expertise with fire/props",
+        "discovered_at": "Gate: unknown"
+      }
+    ],
+    "character_trust_levels": {
+      "David Mcgrath": 5
+    }
+  }
+}

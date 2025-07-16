@@ -81,17 +81,17 @@ Cannot read character_facts.json: [Errno 2] No such file or directory
 
 **Solution:**
 ```bash
-# Validate JSON syntax
-python3 -c "import json; json.load(open('case_name/backbone/case_structure.json'))"
+# Check file contents are readable
+cat case_name/real_life_case_summary.txt
+cat case_name/case_opening.txt
 
-# If syntax error, fix manually or regenerate
-# For regeneration:
-python3 scripts/create_new_game_orchestrator.py --recovery fix-files --target-case {case_name}
+# If files are corrupted, regenerate case:
+python3 scripts/create_new_game_orchestrator.py
 ```
 
 **Prevention:**
-- Use proper JSON editors with syntax highlighting
-- Don't manually edit JSON unless necessary
+- Use the proper case creation workflow
+- Don't manually edit case files unless necessary
 - Use case creation tools instead of manual file creation
 
 ### 4. GameStateManager Initialization Failures

@@ -1,0 +1,106 @@
+[
+  {
+    "base_roll": 8,
+    "modifier": 0,
+    "total": 8,
+    "description": "reviewing prosecution evidence thoroughly",
+    "timestamp": "2025-07-12T21:03:44.404186",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 12,
+    "modifier": 1,
+    "total": 13,
+    "description": "detailed physical evidence examination",
+    "timestamp": "2025-07-12T21:26:02.963677",
+    "success_level": "success"
+  },
+  {
+    "base_roll": 2,
+    "modifier": 2,
+    "total": 4,
+    "description": "questioning client about handedness",
+    "timestamp": "2025-07-12T21:31:24.943116",
+    "success_level": "bad_failure"
+  },
+  {
+    "base_roll": 8,
+    "modifier": 2,
+    "total": 10,
+    "description": "sincere apology and evidence explanation",
+    "timestamp": "2025-07-12T21:32:45.787730",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 6,
+    "modifier": 3,
+    "total": 9,
+    "description": "asking about relationship with Sandra",
+    "timestamp": "2025-07-12T21:36:36.215116",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 10,
+    "modifier": 3,
+    "total": 13,
+    "description": "building client confidence for trial",
+    "timestamp": "2025-07-12T21:39:34.129046",
+    "success_level": "success"
+  },
+  {
+    "base_roll": 16,
+    "modifier": 4,
+    "total": 20,
+    "description": "delivering challenging opening statement",
+    "timestamp": "2025-07-12T21:47:14.914590",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 12,
+    "modifier": 1,
+    "total": 13,
+    "description": "Investigate mask fragment for identifying details",
+    "timestamp": "2025-07-13T01:28:04.291202",
+    "success_level": "success"
+  },
+  {
+    "base_roll": 19,
+    "modifier": 3,
+    "total": 20,
+    "description": "Request court investigation into VM artisan records",
+    "timestamp": "2025-07-13T01:32:51.623962",
+    "success_level": "critical_success"
+  },
+  {
+    "base_roll": 8,
+    "modifier": 5,
+    "total": 13,
+    "description": "Present motion to dismiss charges",
+    "timestamp": "2025-07-13T01:37:09.080974",
+    "success_level": "success"
+  },
+  {
+    "base_roll": 4,
+    "modifier": 4,
+    "total": 8,
+    "description": "Request to call Margaret Silverton as witness",
+    "timestamp": "2025-07-13T20:58:39.640745",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 5,
+    "modifier": 5,
+    "total": 10,
+    "description": "Request court summons for Margaret Silverton",
+    "timestamp": "2025-07-13T21:00:05.496337",
+    "success_level": "partial_success"
+  },
+  {
+    "base_roll": 6,
+    "modifier": 6,
+    "total": 12,
+    "description": "Request immediate dismissal of all charges",
+    "timestamp": "2025-07-13T21:37:31.763754",
+    "success_level": "success"
+  }
+]

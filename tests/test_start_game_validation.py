@@ -92,31 +92,21 @@ class TestStartGameValidator:
         
         return case_dir
     
-    def test_case_type_detection(self, simple_case, complex_case):
-        """Test automatic case type detection"""
-        # Test simple case detection
-        simple_validator = StartGameValidator(str(simple_case))
-        assert simple_validator._detect_case_type() == "simple_improvisation"
-        
-        # Test complex case detection
-        complex_validator = StartGameValidator(str(complex_case))
-        assert complex_validator._detect_case_type() == "complex"
+    def test_improvisation_case_validation(self, simple_case):
+        """Test improvisation case validation"""
+        # Test improvisation case validation
+        validator = StartGameValidator(str(simple_case))
+        assert validator._validate_case_structure() == True
+        assert len(validator.errors) == 0
     
-    def test_simple_case_structure_validation(self, simple_case):
-        """Test simple case structure validation"""
+    def test_improvisation_case_structure_validation(self, simple_case):
+        """Test improvisation case structure validation"""
         validator = StartGameValidator(str(simple_case))
         
         # Should pass structure validation
         assert validator._validate_case_structure() == True
         assert len(validator.errors) == 0
     
-    def test_complex_case_structure_validation(self, complex_case):
-        """Test complex case structure validation"""
-        validator = StartGameValidator(str(complex_case))
-        
-        # Should pass structure validation
-        assert validator._validate_case_structure() == True
-        assert len(validator.errors) == 0
     
     def test_missing_files_detection(self, temp_dir):
         """Test detection of missing required files"""
@@ -130,22 +120,28 @@ class TestStartGameValidator:
         
         validator = StartGameValidator(str(case_dir))
         
-        # Should fail structure validation due to unknown case type
+        # Should fail structure validation due to missing required files
         assert validator._validate_case_structure() == False
-        assert any("Unknown case type" in error for error in validator.errors)
+        assert any("Missing required files" in error for error in validator.errors)
     
-    def test_json_syntax_validation(self, complex_case):
-        """Test JSON syntax error detection"""
-        # Corrupt a JSON file
-        backbone_dir = complex_case / "backbone"
-        with open(backbone_dir / "case_structure.json", 'w') as f:
-            f.write('{"invalid": json syntax}')  # Invalid JSON
+    def test_file_content_validation(self, simple_case):
+        """Test file content validation"""
+        # Create case with empty files
+        empty_case = simple_case.parent / "empty_case"
+        empty_case.mkdir()
         
-        validator = StartGameValidator(str(complex_case))
+        # Create empty required files
+        with open(empty_case / "real_life_case_summary.txt", 'w') as f:
+            f.write("")
+        with open(empty_case / "case_opening.txt", 'w') as f:
+            f.write("")
         
-        # Should fail file integrity validation
-        assert validator._validate_file_integrity() == False
-        assert any("Invalid JSON" in error for error in validator.errors)
+        validator = StartGameValidator(str(empty_case))
+        
+        # Should pass structure but generate warnings for short files
+        assert validator._validate_case_structure() == True
+        # File integrity should still pass even with short files
+        assert validator._validate_file_integrity() == True
     
     def test_file_content_validation(self, simple_case):
         """Test file content validation"""
@@ -290,20 +286,6 @@ class TestValidationIntegration:
                 assert result["validations"]["structure"] == True
                 assert result["validations"]["files"] == True
     
-    def test_integration_with_complex_case(self):
-        """Test validation with actual complex case"""
-        case_path = Path.cwd() / "previous_cases" / "the_phantom_ledger"
-        if case_path.exists():
-            with patch.object(StartGameValidator, '_validate_virtual_environment', return_value=True):
-                validator = StartGameValidator(str(case_path))
-                result = validator.run_full_validation()
-                
-                # Should detect as complex case
-                assert validator._detect_case_type() == "complex"
-                
-                # Complex validations should pass
-                assert result["validations"]["structure"] == True
-                assert result["validations"]["files"] == True
 
 class TestValidationErrorRecovery:
     """Test error recovery and fix suggestions"""
