@@ -16,6 +16,128 @@ class SimpleCaseCreator:
     def __init__(self, base_path="."):
         self.base_path = Path(base_path)
         
+    def _derive_case_name(self, content):
+        """Derive case name from legal case content"""
+        content_lower = content.lower()
+        
+        # Look for key terms to build case name
+        crime_terms = {
+            'murder': 'murder',
+            'homicide': 'murder', 
+            'kill': 'murder',
+            'death': 'murder',
+            'fraud': 'fraud',
+            'theft': 'theft',
+            'robbery': 'robbery',
+            'burglary': 'burglary',
+            'assault': 'assault',
+            'conspiracy': 'conspiracy',
+            'import': 'smuggling',
+            'drug': 'drug',
+            'ecstasy': 'drug',
+            'trafficking': 'trafficking',
+            'blackmail': 'blackmail',
+            'extortion': 'extortion',
+            'kidnap': 'kidnapping',
+            'arson': 'arson',
+            'embezzlement': 'embezzlement'
+        }
+        
+        location_terms = {
+            'court': 'courthouse',
+            'gallery': 'gallery',
+            'museum': 'museum',
+            'office': 'office',
+            'building': 'tower',
+            'hotel': 'hotel',
+            'restaurant': 'restaurant',
+            'club': 'club',
+            'warehouse': 'warehouse',
+            'airport': 'airport',
+            'hospital': 'hospital',
+            'school': 'academy',
+            'university': 'academy',
+            'bank': 'bank',
+            'shop': 'shop',
+            'store': 'shop',
+            'mall': 'mall',
+            'theater': 'theater',
+            'theatre': 'theater'
+        }
+        
+        # Find crime type
+        crime_type = 'mystery'
+        for term, crime in crime_terms.items():
+            if term in content_lower:
+                crime_type = crime
+                break
+        
+        # Find location or use generic terms
+        location = 'midnight'
+        for term, loc in location_terms.items():
+            if term in content_lower:
+                location = loc
+                break
+        
+        # Create case name
+        case_name = f"the_{location}_{crime_type}"
+        return case_name
+    
+    def _create_case_summary(self, content):
+        """Create a concise case summary from full legal content"""
+        # Extract key sections and limit length
+        lines = content.split('\n')
+        
+        # Look for key legal sections
+        summary_lines = []
+        case_name = ""
+        charges = ""
+        facts = ""
+        
+        # Extract case name
+        for line in lines[:50]:  # Check first 50 lines
+            if ' v ' in line and len(line.split()) < 10:
+                case_name = line.strip()
+                break
+        
+        # Extract charges/offences
+        for i, line in enumerate(lines):
+            if any(term in line.lower() for term in ['charge', 'offence', 'count', 'conviction']):
+                charges += line.strip() + " "
+                # Get next few lines for context
+                for j in range(1, 3):
+                    if i + j < len(lines):
+                        charges += lines[i + j].strip() + " "
+                break
+        
+        # Extract basic facts (look for common legal section headers)
+        in_facts = False
+        fact_lines = 0
+        for line in lines:
+            if any(term in line.lower() for term in ['background', 'facts', 'evidence', 'circumstances']):
+                in_facts = True
+                continue
+            if in_facts and fact_lines < 20:  # Limit facts to 20 lines
+                facts += line.strip() + " "
+                fact_lines += 1
+        
+        # Build summary
+        summary = f"Case: {case_name}\n\n"
+        if charges:
+            summary += f"Charges: {charges[:500]}...\n\n"
+        if facts:
+            summary += f"Key Facts: {facts[:1000]}...\n\n"
+        
+        # Add first 2000 chars of original content as fallback
+        if len(summary) < 500:
+            summary += content[:2000] + "..."
+        
+        # Ensure reasonable length (max 3000 chars)
+        if len(summary) > 3000:
+            summary = summary[:3000] + "..."
+            
+        return summary
+        
     def create_case(self):
         """Complete simplified case creation workflow"""
         print("🎲 SIMPLIFIED CASE CREATION - IMPROVISATION FIRST")
@@ -42,17 +164,22 @@ class SimpleCaseCreator:
             print(f"❌ Error generating inspiration: {e}")
             return False
         
-        # Step 2: Get case name from user
-        print("\n📋 CASE NAME DERIVATION:")
-        print("Analyze the legal case content below and derive an appropriate case name.")
-        print("Format: 'The [Theme/Location] [Crime/Legal Term]' (e.g., 'The Gallery Gambit')")
-        print("Use lowercase_with_underscores for directory name (e.g., 'the_gallery_gambit')")
-        print("\n📄 INSPIRATION CONTENT:")
-        print("=" * 60)
-        print(inspiration_content)
-        print("=" * 60)
+        # Step 2: Claude analyzes inspiration and derives case name + summary
+        print("\n📋 CLAUDE ANALYSIS:")
+        print("Claude analyzing inspiration content and creating case summary...")
         
-        case_name = input("\n🎯 Enter case name (lowercase_with_underscores): ").strip()
+        # Auto-derive case name from content
+        case_name = self._derive_case_name(inspiration_content)
+        print(f"🎯 Derived case name: {case_name}")
+        
+        # Create case summary for ChatGPT (this is where Claude analysis would go)
+        # For now, truncate to manageable size and extract key elements
+        case_summary = self._create_case_summary(inspiration_content)
+        print(f"📝 Case summary created ({len(case_summary)} characters)")
+        print("\n📄 CASE SUMMARY FOR CHATGPT:")
+        print("=" * 60)
+        print(case_summary)
+        print("=" * 60)
         
         if not case_name or not case_name.replace('_', '').replace('-', '').islower():
             print("❌ Invalid case name format")
@@ -83,10 +210,10 @@ class SimpleCaseCreator:
         print("\n🤖 CHATGPT OPENING SCENE GENERATION:")
         print("Using the summary to generate dramatic opening scene...")
         
-        # Prepare ChatGPT prompt
+        # Prepare ChatGPT prompt with case summary (not raw content)
         chatgpt_prompt = f"""below is a summary of a real life legal case selected completely at random from the state records of the new south wales court of appeals. it will be used to inspire a game that is in turn inspired by the Ace Attorney games. the ace attorney games usually begin with a dramatic scene showing a murder. In the Ace Attorney style, write a dramatic opening inspired by these details.
 
-{inspiration_content}"""
+{case_summary}"""
         
         print("📝 ChatGPT Prompt prepared:")
         print(f"   Length: {len(chatgpt_prompt)} characters")

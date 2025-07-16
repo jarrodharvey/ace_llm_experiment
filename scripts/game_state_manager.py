@@ -14,6 +14,159 @@ from character_name_generator import CharacterNameGenerator
 from enhanced_save_system import NarrativeSaveSystem
 from red_herring_system import RedHerringClassifier
 
+class ContextValidator:
+    """Validates AI actions against current game state to prevent interpretation errors"""
+    
+    def __init__(self, game_state_manager):
+        self.gsm = game_state_manager
+        
+    def validate_action_request(self, action: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate if requested action is appropriate for current state"""
+        
+        current_phase = context['case_info']['current_phase']
+        trial_status = context.get('trial_progress', {}).get('status', 'not_started')
+        
+        # Action compatibility matrix
+        action_rules = {
+            'start_trial': {
+                'valid_when': trial_status == 'not_started',
+                'invalid_reason': 'Trial already in progress',
+                'alternative': 'continue_trial_proceedings'
+            },
+            'start_cross_examination': {
+                'valid_when': trial_status == 'in_progress',
+                'invalid_reason': 'Trial not active',
+                'alternative': 'start_trial'
+            },
+            'opening_statement': {
+                'valid_when': trial_status == 'not_started',
+                'invalid_reason': 'Trial already in progress',
+                'alternative': 'continue_trial_proceedings'
+            },
+            'gather_evidence': {
+                'valid_when': current_phase == 'investigation',
+                'invalid_reason': 'Not in investigation phase',
+                'alternative': 'continue_current_phase'
+            }
+        }
+        
+        rule = action_rules.get(action, {})
+        valid_condition = rule.get('valid_when', True)
+        
+        # Evaluate condition if it's a string
+        if isinstance(valid_condition, str):
+            try:
+                valid_condition = eval(valid_condition)
+            except:
+                valid_condition = True
+        
+        if not valid_condition:
+            return {
+                'valid': False,
+                'reason': rule.get('invalid_reason', 'Action not valid for current state'),
+                'alternative': rule.get('alternative', 'check_status'),
+                'current_state': current_phase,
+                'trial_status': trial_status
+            }
+        
+        return {'valid': True}
+    
+    def generate_context_summary(self, context: Dict[str, Any]) -> str:
+        """Generate mandatory context summary for AI interpretation"""
+        
+        phase = context['case_info']['current_phase']
+        trial_status = context.get('trial_progress', {}).get('status', 'not_started')
+        
+        # Determine current situation
+        if trial_status == 'in_progress':
+            current_witness = context.get('trial_progress', {}).get('current_witness')
+            current_exam = context.get('trial_progress', {}).get('current_cross_exam')
+            
+            if current_exam and current_exam.get('witness'):
+                situation = f"Cross-examining {current_exam['witness']}"
+            elif current_witness:
+                situation = f"Trial with {current_witness} active"
+            else:
+                situation = "Trial proceedings in progress"
+        else:
+            situation = f"In {phase} phase"
+        
+        # Get last significant event
+        last_event = self._get_last_event(context)
+        
+        # Get valid actions
+        valid_actions = self.get_valid_actions(context)
+        
+        return f"""
+**MANDATORY CONTEXT INTERPRETATION:**
+• Current Phase: {phase}
+• Trial Status: {trial_status}
+• Current Situation: {situation}
+• Last Event: {last_event}
+• Valid Actions: {', '.join(valid_actions)}
+
+**BEFORE ANY ACTION - VALIDATE:**
+✓ Current phase matches your understanding
+✓ Requested action is valid for current state  
+✓ Action advances narrative appropriately
+✓ No contradictions with loaded context
+"""
+    
+    def _get_last_event(self, context: Dict[str, Any]) -> str:
+        """Determine last significant event from context"""
+        
+        trial_progress = context.get('trial_progress', {})
+        trial_status = trial_progress.get('status', 'not_started')
+        
+        if trial_status == 'in_progress':
+            current_exam = trial_progress.get('current_cross_exam')
+            if current_exam:
+                return f"Cross-examination of {current_exam['witness']} started"
+            else:
+                return "Trial proceedings began"
+        
+        # Check recent progress
+        recent_progress = context.get('recent_progress', {})
+        last_gate = recent_progress.get('last_completed_gate')
+        if last_gate:
+            return f"Completed {last_gate.replace('_', ' ').title()}"
+        
+        return "Game state loaded"
+    
+    def get_valid_actions(self, context: Dict[str, Any]) -> List[str]:
+        """Get list of valid actions for current state"""
+        
+        current_phase = context['case_info']['current_phase']
+        trial_status = context.get('trial_progress', {}).get('status', 'not_started')
+        
+        if trial_status == 'in_progress':
+            current_exam = context.get('trial_progress', {}).get('current_cross_exam')
+            if current_exam:
+                return ['press_statement', 'present_evidence', 'end_cross_examination']
+            else:
+                return ['start_cross_examination', 'call_witness', 'present_evidence']
+        elif current_phase == 'investigation':
+            return ['gather_evidence', 'interview_witness', 'start_trial']
+        else:
+            return ['start_trial', 'continue_proceedings']
+    
+    def check_context_violations(self, context: Dict[str, Any]) -> List[str]:
+        """Check for common context interpretation violations"""
+        
+        violations = []
+        trial_status = context.get('trial_progress', {}).get('status', 'not_started')
+        current_phase = context['case_info']['current_phase']
+        
+        # Common violation patterns
+        if trial_status == 'in_progress' and current_phase != 'trial':
+            violations.append("Trial status and phase mismatch")
+        
+        current_exam = context.get('trial_progress', {}).get('current_cross_exam')
+        if current_exam and not current_exam.get('witness'):
+            violations.append("Cross-examination active but no witness specified")
+        
+        return violations
+
 class GameStateManager:
     def __init__(self, case_path: str):
         self.case_path = Path(case_path)
@@ -53,6 +206,9 @@ class GameStateManager:
         
         # Initialize enhanced narrative save system
         self.narrative_save_system = NarrativeSaveSystem(str(self.case_path))
+        
+        # Initialize context validator
+        self.context_validator = ContextValidator(self)
         
         # Load client name for dialogue substitution
         self.client_name = self.load_client_name()
@@ -172,7 +328,9 @@ class GameStateManager:
             "current_gate": first_gate,
             "investigation_gates": investigation_gates,
             "evidence_found": [],
-            "character_relationships": {},
+            "character_trust_levels": {},
+            "witnesses_interviewed": [],
+            "character_facts": {},
             "location_progress": {},
             "failed_attempts": [],
             "inspiration_usage": [],
@@ -182,7 +340,35 @@ class GameStateManager:
         
         # Save the state file
         self.save_current_state(state)
+        
+        # Initialize character tracking files
+        self._initialize_character_tracking_files()
+        
         return state
+    
+    def _initialize_character_tracking_files(self):
+        """Initialize character tracking files for proper character continuity"""
+        # Ensure game_state directory exists
+        game_state_dir = self.case_path / "game_state"
+        game_state_dir.mkdir(exist_ok=True)
+        
+        # Initialize character families file if it doesn't exist
+        families_file = game_state_dir / "character_families.json"
+        if not families_file.exists():
+            with open(families_file, 'w') as f:
+                json.dump({}, f)
+        
+        # Initialize used character names file if it doesn't exist
+        names_file = game_state_dir / "used_character_names.json"
+        if not names_file.exists():
+            with open(names_file, 'w') as f:
+                json.dump([], f)
+        
+        # Initialize dice rolls file if it doesn't exist
+        dice_file = game_state_dir / "dice_rolls.json"
+        if not dice_file.exists():
+            with open(dice_file, 'w') as f:
+                json.dump([], f)
     
     def create_simple_trial_state(self) -> Dict[str, Any]:
         """Create initial trial state for simple improvisation cases"""
@@ -1012,23 +1198,123 @@ class GameStateManager:
         return key_chars
     
     def generate_resume_summary(self) -> str:
-        """Generate a natural language summary for resuming gameplay"""
+        """Generate comprehensive resume context from all available sources (evergreen)"""
+        return self.generate_comprehensive_context()
+    
+    def generate_comprehensive_context(self) -> str:
+        """Evergreen comprehensive context generation - reads all files + most recent saves"""
+        summary = ""
+        
+        # 0. Context Validation (NEW)
+        try:
+            context = self.get_resume_context()
+            validation_summary = self.context_validator.generate_context_summary(context)
+            summary += validation_summary + "\n\n"
+        except Exception as e:
+            summary += f"⚠️ Could not load context validation: {e}\n\n"
+        
+        # 1. Case Foundation Context
+        try:
+            foundation_context = self.get_case_foundation_context()
+            summary += foundation_context + "\n\n"
+        except Exception as e:
+            summary += f"⚠️ Could not load case foundation: {e}\n\n"
+        
+        # 2. Narrative Context (most recent narrative save)
+        try:
+            narrative_context = self.get_narrative_context()
+            if narrative_context:
+                summary += narrative_context + "\n\n"
+        except Exception as e:
+            summary += f"⚠️ Could not load narrative context: {e}\n\n"
+        
+        # 3. Current Mechanical State
+        try:
+            mechanical_context = self.get_mechanical_context()
+            summary += mechanical_context + "\n\n"
+        except Exception as e:
+            summary += f"⚠️ Could not load mechanical context: {e}\n\n"
+        
+        # 4. All Additional Files Context
+        try:
+            additional_context = self.get_all_additional_files_context()
+            if additional_context:
+                summary += additional_context + "\n\n"
+        except Exception as e:
+            summary += f"⚠️ Could not load additional files: {e}\n\n"
+        
+        # 5. Save Context (for GM awareness)
+        try:
+            save_context = self.get_save_context()
+            if save_context:
+                summary += save_context + "\n\n"
+        except Exception as e:
+            summary += f"⚠️ Could not load save context: {e}\n\n"
+        
+        # 6. Available Actions (current state)
+        try:
+            actions_context = self.get_available_actions_context()
+            summary += actions_context
+        except Exception as e:
+            summary += f"⚠️ Could not load available actions: {e}\n"
+        
+        return summary.strip()
+    
+    def get_case_foundation_context(self) -> str:
+        """Get case foundation context from core files"""
+        context = ""
+        
+        # Real life case inspiration
+        real_life_file = self.case_path / "real_life_case_summary.txt"
+        if real_life_file.exists():
+            with open(real_life_file, 'r', encoding='utf-8') as f:
+                real_life_content = f.read().strip()
+            context += f"**=== CASE FOUNDATION ===**\n{real_life_content}\n"
+        
+        # Case opening
+        opening_file = self.case_path / "case_opening.txt"
+        if opening_file.exists():
+            with open(opening_file, 'r', encoding='utf-8') as f:
+                opening_content = f.read().strip()
+            context += f"**=== ORIGINAL OPENING ===**\n{opening_content}\n"
+        
+        return context
+    
+    def get_narrative_context(self) -> str:
+        """Get narrative context from most recent narrative save"""
+        try:
+            narrative_saves = self.narrative_save_system.list_narrative_saves()
+            if not narrative_saves:
+                return ""
+            
+            # Get most recent narrative save
+            latest_save = narrative_saves[0]  # Already sorted by timestamp desc
+            narrative_data = self.narrative_save_system.restore_narrative_context(latest_save['filename'])
+            summary = self.narrative_save_system.generate_context_summary(narrative_data)
+            
+            return f"**=== NARRATIVE CONTEXT (from {latest_save['gate_name']}) ===**\n{summary}\n"
+        except Exception:
+            return ""
+    
+    def get_mechanical_context(self) -> str:
+        """Get current mechanical state context"""
         context = self.get_resume_context()
         
-        # Build summary
-        summary = f"**{context['case_info']['name']}** ({context['case_info']['length']}-day case)\n\n"
+        # Build mechanical summary
+        summary = f"**=== CURRENT MECHANICAL STATE ===**\n"
+        summary += f"**{context['case_info']['name']}** ({context['case_info']['length']}-day case)\n"
         
         # Progress
         progress = context['case_info']['progress']
         phase = context['case_info']['current_phase']
-        summary += f"**Current Status:** {progress:.1f}% complete, {phase} phase\n"
+        summary += f"**Status:** {progress:.1f}% complete, {phase} phase\n"
         
         # Location and timing
         location = context['current_situation']['location']
         day = context['current_situation']['day']
         time_left = context['current_situation']['time_until_trial']
         summary += f"**Location:** {location.replace('_', ' ').title()}\n"
-        summary += f"**Day {day}** - {time_left} until trial\n\n"
+        summary += f"**Day {day}** - {time_left} until trial\n"
         
         # Trial-specific progress if in trial
         trial_progress = context.get('trial_progress', {})
@@ -1050,8 +1336,6 @@ class GameStateManager:
             if cross_exam_history:
                 total_victories = sum(1 for exam in cross_exam_history if exam.get('victory_achieved', False))
                 summary += f"**Cross-Examination Victories:** {total_victories}\n"
-            
-            summary += "\n"
         else:
             # Investigation progress
             last_gate = context['recent_progress']['last_completed_gate']
@@ -1059,28 +1343,133 @@ class GameStateManager:
             if last_gate:
                 summary += f"**Last Completed:** {last_gate.replace('_', ' ').title()}\n"
             if current_gate:
-                summary += f"**Current Focus:** {current_gate.replace('_', ' ').title()}\n\n"
+                summary += f"**Current Focus:** {current_gate.replace('_', ' ').title()}\n"
         
         # Recent evidence
         recent_evidence = context['recent_progress']['recent_evidence']
         if recent_evidence:
             summary += "**Recent Evidence:**\n"
-            for evidence in recent_evidence[-2:]:  # Show last 2
+            for evidence in recent_evidence[-3:]:  # Show last 3
                 summary += f"  - {evidence['name']}: {evidence['description']}\n"
-            summary += "\n"
         
         # Trial status
         if context['current_status']['trial_ready'] and trial_progress.get('status') != 'in_progress':
-            summary += "**🚨 TRIAL READY!** You have enough evidence to proceed to trial.\n\n"
-        
-        # Available actions
-        actions = context['current_status']['available_actions']
-        if actions:
-            summary += "**Available Actions:**\n"
-            for action in actions[:3]:  # Show top 3
-                summary += f"  - {action}\n"
+            summary += "**🚨 TRIAL READY!** You have enough evidence to proceed to trial.\n"
         
         return summary
+    
+    def get_all_additional_files_context(self) -> str:
+        """Get context from all additional files (evergreen discovery)"""
+        context = ""
+        additional_files = []
+        
+        # Scan all files except saves directories and core files already processed
+        for file_path in self.case_path.rglob('*'):
+            if file_path.is_file():
+                # Skip save directories
+                if '/saves/' in str(file_path) or '/narrative_saves/' in str(file_path):
+                    continue
+                
+                # Skip core files already processed
+                if file_path.name in ['real_life_case_summary.txt', 'case_opening.txt', 
+                                    'investigation_progress.json', 'trial_progress.json']:
+                    continue
+                
+                # Skip binary files
+                if file_path.suffix in ['.b64', '.pyc', '.DS_Store']:
+                    continue
+                
+                additional_files.append(file_path)
+        
+        if not additional_files:
+            return ""
+        
+        context += "**=== ADDITIONAL FILES CONTEXT ===**\n"
+        
+        for file_path in sorted(additional_files):
+            try:
+                relative_path = file_path.relative_to(self.case_path)
+                
+                # Handle JSON files
+                if file_path.suffix == '.json':
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    context += f"**{relative_path}:**\n"
+                    context += f"  {self.format_json_summary(data)}\n"
+                
+                # Handle text files
+                elif file_path.suffix in ['.txt', '.md']:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read().strip()
+                    if content:
+                        context += f"**{relative_path}:**\n"
+                        # Truncate long content
+                        if len(content) > 500:
+                            content = content[:500] + "..."
+                        context += f"  {content}\n"
+                
+            except Exception as e:
+                context += f"**{relative_path}:** (Error reading: {e})\n"
+        
+        return context
+    
+    def format_json_summary(self, data: Dict[str, Any]) -> str:
+        """Format JSON data for summary display"""
+        if isinstance(data, dict):
+            if len(data) <= 3:
+                return str(data)
+            else:
+                keys = list(data.keys())[:3]
+                return f"Dict with keys: {keys}... ({len(data)} total)"
+        elif isinstance(data, list):
+            return f"List with {len(data)} items"
+        else:
+            return str(data)
+    
+    def get_save_context(self) -> str:
+        """Get save context for GM awareness"""
+        context = ""
+        
+        # List manual saves
+        saves = self.list_save_points()
+        if saves:
+            context += "**=== SAVE POINTS (for GM awareness) ===**\n"
+            context += f"**Available save points:** {len(saves)}\n"
+            
+            # Show most recent save
+            latest_save = saves[0]
+            context += f"**Most recent save:** {latest_save['name']} "
+            context += f"({latest_save['timestamp']})\n"
+            
+            # Show all save names
+            save_names = [save['name'] for save in saves[:5]]  # Show first 5
+            context += f"**Recent saves:** {', '.join(save_names)}\n"
+        
+        # Show narrative saves
+        try:
+            narrative_saves = self.narrative_save_system.list_narrative_saves()
+            if narrative_saves:
+                context += f"**Narrative saves:** {len(narrative_saves)} available\n"
+                latest_narrative = narrative_saves[0]
+                context += f"**Latest narrative save:** {latest_narrative['gate_name']} "
+                context += f"({latest_narrative['timestamp']})\n"
+        except Exception:
+            pass
+        
+        return context
+    
+    def get_available_actions_context(self) -> str:
+        """Get current available actions"""
+        context = self.get_resume_context()
+        actions = context['current_status']['available_actions']
+        
+        if actions:
+            summary = "**=== AVAILABLE ACTIONS ===**\n"
+            for action in actions[:5]:  # Show top 5
+                summary += f"  - {action}\n"
+            return summary
+        else:
+            return "**=== AVAILABLE ACTIONS ===**\n  - Use game state manager to see current options\n"
     
     def calculate_progress_from_state(self, state: Dict[str, Any]) -> float:
         """Calculate progress percentage from a state dict"""
@@ -2478,6 +2867,10 @@ def main():
     parser.add_argument('--start-gate', help='Start specified gate')
     parser.add_argument('--add-evidence', nargs=2, metavar=('NAME', 'DESCRIPTION'), help='Add evidence')
     parser.add_argument('--summary', action='store_true', help='Show detailed investigation summary')
+    parser.add_argument('--show-evidence', action='store_true', help='Show all collected evidence with descriptions')
+    parser.add_argument('--show-characters', action='store_true', help='Show all characters with trust levels and roles')
+    parser.add_argument('--show-witnesses', action='store_true', help='Show all interviewed witnesses')
+    parser.add_argument('--check-role', help='Check if specific role already exists (e.g., prosecutor, judge)')
     parser.add_argument('--validate', action='store_true', help='Validate case consistency')
     parser.add_argument('--actions', action='store_true', help='Show available actions')
     parser.add_argument('--start-trial', action='store_true', help='Start trial phase')
@@ -2546,6 +2939,10 @@ def main():
     parser.add_argument('--restore-narrative', help='Restore narrative context from save file')
     parser.add_argument('--list-narrative-saves', action='store_true', help='List all narrative saves')
     parser.add_argument('--narrative-summary', help='Generate context summary from narrative save')
+    
+    # Context validation commands
+    parser.add_argument('--validate-action', help='Validate if action is appropriate for current state')
+    parser.add_argument('--context-violation', action='store_true', help='Handle context violation')
     
     args = parser.parse_args()
     
@@ -2633,7 +3030,163 @@ def main():
                 print(f"  😊 Friendly: {', '.join(chars['friendly'])}")
             
             trial_pred = summary['trial_prediction']
-            print(f"\nTrial Status: {trial_pred['message']}")
+        
+        if args.show_evidence:
+            evidence_list = manager.current_state.get("evidence_collected", [])
+            print(f"\n=== Evidence Collected ===")
+            if not evidence_list:
+                print("No evidence collected yet.")
+            else:
+                for i, evidence in enumerate(evidence_list, 1):
+                    print(f"{i}. {evidence['name']}")
+                    print(f"   Description: {evidence['description']}")
+                    print(f"   Discovered at: {evidence.get('discovered_at', 'Unknown location')}")
+                    print()
+        
+        if args.show_characters:
+            trust_levels = manager.current_state.get("character_trust_levels", {})
+            character_facts = manager.current_state.get("character_facts", {})
+            witnesses = manager.current_state.get("witnesses_interviewed", [])
+            
+            # Get character names from the name generator system
+            used_names_file = manager.case_path / "game_state" / "used_character_names.json"
+            used_names = {}
+            if used_names_file.exists():
+                with open(used_names_file, 'r') as f:
+                    data = json.load(f)
+                    # Handle case where file contains list instead of dict
+                    used_names = data if isinstance(data, dict) else {}
+            
+            all_characters = set()
+            all_characters.update(trust_levels.keys())
+            all_characters.update(character_facts.keys())
+            all_characters.update(witnesses)
+            all_characters.update(used_names.keys())
+            
+            print(f"\n=== Characters in Case ===")
+            if not all_characters:
+                print("No characters introduced yet.")
+            else:
+                for i, character in enumerate(sorted(all_characters), 1):
+                    print(f"{i}. {character}")
+                    
+                    # Show comprehensive character information from character_facts
+                    if character in character_facts:
+                        facts = character_facts[character]
+                        if isinstance(facts, dict):
+                            # Display structured character information
+                            if 'age' in facts:
+                                print(f"   📅 Age: {facts['age']}")
+                            if 'occupation' in facts:
+                                print(f"   💼 Occupation: {facts['occupation']}")
+                            if 'personality' in facts:
+                                print(f"   🎭 Personality: {facts['personality']}")
+                            if 'role_hint' in facts and facts['role_hint']:
+                                print(f"   🎪 Role: {facts['role_hint']}")
+                            
+                            # Show any other character details
+                            for key, value in facts.items():
+                                if key not in ['age', 'occupation', 'personality', 'role_hint', 'generated_at']:
+                                    print(f"   {key.title()}: {value}")
+                        else:
+                            print(f"   Details: {facts}")
+                    
+                    # Show trust level if available
+                    if character in trust_levels:
+                        trust = trust_levels[character]
+                        trust_emoji = "😊" if trust > 0 else "😐" if trust == 0 else "😠"
+                        print(f"   💝 Trust Level: {trust} {trust_emoji}")
+                    
+                    # Show if interviewed
+                    if character in witnesses:
+                        print(f"   📝 Status: ✅ Interviewed")
+                    else:
+                        print(f"   📝 Status: Not interviewed")
+                    
+                    # Show character generation info from used_names if not in character_facts
+                    if character not in character_facts and character in used_names:
+                        name_info = used_names[character]
+                        if isinstance(name_info, dict):
+                            if 'role' in name_info:
+                                print(f"   🎪 Role: {name_info['role']}")
+                            if 'age' in name_info:
+                                print(f"   📅 Age: {name_info['age']}")
+                            if 'occupation' in name_info:
+                                print(f"   💼 Occupation: {name_info['occupation']}")
+                            if 'personality' in name_info:
+                                print(f"   🎭 Personality: {name_info['personality']}")
+                    
+                    print()
+        
+        if args.show_witnesses:
+            witnesses = manager.current_state.get("witnesses_interviewed", [])
+            trust_levels = manager.current_state.get("character_trust_levels", {})
+            
+            print(f"\n=== Interviewed Witnesses ===")
+            if not witnesses:
+                print("No witnesses interviewed yet.")
+            else:
+                for i, witness in enumerate(witnesses, 1):
+                    print(f"{i}. {witness}")
+                    if witness in trust_levels:
+                        trust = trust_levels[witness]
+                        trust_emoji = "😊" if trust > 0 else "😐" if trust == 0 else "😠"
+                        print(f"   Trust Level: {trust} {trust_emoji}")
+                    print()
+        
+        if args.check_role:
+            role_to_check = args.check_role.lower()
+            character_facts = manager.current_state.get("character_facts", {})
+            
+            print(f"\n=== Role Check: {args.check_role} ===")
+            
+            matching_characters = []
+            
+            # Check character_facts for role matches
+            for character, facts in character_facts.items():
+                if isinstance(facts, dict):
+                    # Check occupation field
+                    if 'occupation' in facts and facts['occupation']:
+                        if role_to_check in facts['occupation'].lower():
+                            matching_characters.append((character, facts, 'occupation'))
+                    
+                    # Check role_hint field
+                    if 'role_hint' in facts and facts['role_hint']:
+                        if role_to_check in facts['role_hint'].lower():
+                            matching_characters.append((character, facts, 'role_hint'))
+            
+            # Also check used_names file as fallback
+            used_names_file = manager.case_path / "game_state" / "used_character_names.json"
+            if used_names_file.exists():
+                with open(used_names_file, 'r') as f:
+                    data = json.load(f)
+                    # Handle case where file contains list instead of dict
+                    used_names = data if isinstance(data, dict) else {}
+                
+                for character, info in used_names.items():
+                    if isinstance(info, dict) and 'role' in info:
+                        if role_to_check in info['role'].lower():
+                            matching_characters.append((character, info, 'role'))
+            
+            if matching_characters:
+                print(f"⚠️  Found existing {args.check_role}(s):")
+                for character, info, source_field in matching_characters:
+                    if source_field == 'occupation':
+                        print(f"   • {character} (Occupation: {info.get('occupation', 'Unknown')})")
+                    elif source_field == 'role_hint':
+                        print(f"   • {character} (Role: {info.get('role_hint', 'Unknown')})")
+                    else:
+                        print(f"   • {character} (Role: {info.get('role', 'Unknown')})")
+                    
+                    # Show additional details
+                    if 'age' in info:
+                        print(f"     Age: {info['age']}")
+                    if 'personality' in info:
+                        print(f"     Personality: {info['personality']}")
+                
+                print(f"\n💡 Consider using existing character(s) instead of creating new {args.check_role}")
+            else:
+                print(f"✅ No existing {args.check_role} found. Safe to create new character with this role.")
         
         if args.validate:
             validation = manager.validate_case_consistency()
@@ -3268,6 +3821,19 @@ def main():
                 print(f"   ✅ Classification recorded (use --show-spoilers to reveal)")
                 weighted_prob = manager.red_herring_classifier.get_weighted_probability(manager.case_length, role_hint)
                 print(f"   📊 Role-weighted killer probability: {weighted_prob*100:.1f}%")
+                
+                # Store comprehensive character information
+                if "character_facts" not in manager.current_state:
+                    manager.current_state["character_facts"] = {}
+                
+                manager.current_state["character_facts"][name] = {
+                    "age": age,
+                    "occupation": occupation,
+                    "personality": personality,
+                    "role_hint": role_hint,
+                    "generated_at": "case_start"
+                }
+                manager.save_current_state_to_file()
         
         if args.generate_age is not None:
             role_hint = args.generate_age if args.generate_age else None
@@ -3328,6 +3894,38 @@ def main():
                 print(f"❌ Narrative save not found: {args.narrative_summary}")
             except Exception as e:
                 print(f"❌ Error generating summary: {e}")
+        
+        # Context validation commands
+        if args.validate_action:
+            context = manager.get_resume_context()
+            validation = manager.context_validator.validate_action_request(args.validate_action, context)
+            
+            if validation['valid']:
+                print(f"✅ Action '{args.validate_action}' is valid for current state")
+            else:
+                print(f"❌ Action '{args.validate_action}' is invalid")
+                print(f"Reason: {validation['reason']}")
+                print(f"Alternative: {validation['alternative']}")
+                print(f"Current state: {validation['current_state']}")
+                print(f"Trial status: {validation['trial_status']}")
+        
+        if args.context_violation:
+            print("🚨 CONTEXT VIOLATION DETECTED")
+            print("AI must re-read comprehensive context and validate action compatibility")
+            print("Required steps:")
+            print("1. Re-run --resume to get current context")
+            print("2. Identify current phase and last event")
+            print("3. Validate requested action appropriateness")
+            print("4. Provide corrected response based on actual game state")
+            print()
+            print("Context violations detected:")
+            context = manager.get_resume_context()
+            violations = manager.context_validator.check_context_violations(context)
+            if violations:
+                for violation in violations:
+                    print(f"  - {violation}")
+            else:
+                print("  - No automatic violations detected - check manual interpretation")
         
         # New revelation commands
         if args.reveal_classification:

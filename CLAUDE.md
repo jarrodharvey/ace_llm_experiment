@@ -121,6 +121,10 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 **Status and Progress:**
 - `--status` - Show current case progress and next actions
 - `--summary` - Detailed investigation summary with character relationships
+- `--show-evidence` - Display all collected evidence with descriptions (MANDATORY for evidence retrieval)
+- `--show-characters` - Display all characters with trust levels, roles, and interview status (MANDATORY for character checking)
+- `--show-witnesses` - Display all interviewed witnesses with trust levels
+- `--check-role {role}` - Check if specific role exists to prevent duplicates (e.g., prosecutor, judge)
 - `--resume` - Generate natural language resume context for continuing gameplay
 - `--validate` - Check case consistency and detect issues
 
@@ -268,6 +272,50 @@ When case creation errors occur, you MUST identify and fix the root cause rather
 # MANDATORY: Activate virtual environment for ALL gameplay
 source venv/bin/activate
 ```
+
+## CONTINUE GAME INTERPRETATION PROTOCOL (MANDATORY)
+
+**BEFORE ANY ACTION - AI MUST:**
+
+### **1. STATE VALIDATION (REQUIRED)**
+Before taking any action, AI must explicitly state:
+```
+Current Phase: [investigation/trial/cross-examination]
+Last Event: [What just happened according to comprehensive context]
+Character Status: [Who was last introduced/active]
+Action Validity: [Is requested action appropriate for current state?]
+```
+
+### **2. CONTRADICTION CHECKS (REQUIRED)**
+AI must validate against these common contradictions:
+- **If trial_in_progress**: Cannot start_trial → Use continue_trial instead
+- **If character_introduced**: Cannot introduce_again → Continue with character
+- **If cross_examination_ready**: Cannot start_investigation → Proceed with cross-examination
+- **If evidence_presented**: Cannot present_again → Reference previous presentation
+- **If witness_active**: Cannot introduce_new_witness → Continue with current witness
+
+### **3. FORCED CONTEXT SUMMARY (REQUIRED)**
+Before any action, AI must write:
+```
+"Based on comprehensive context: [current situation], [last event], [next logical action]"
+```
+
+### **4. CONTEXT VIOLATION RESPONSE**
+If AI attempts action contradicting loaded context, user should immediately respond with:
+```
+! context violation
+```
+This triggers mandatory re-reading of comprehensive context and corrected response.
+
+### **5. ACTION COMPATIBILITY MATRIX**
+```
+investigation_phase → [gather_evidence, interview_witness, start_trial]
+trial_opening → [opening_statement, call_witness] 
+cross_examination → [press_statement, present_evidence, end_examination]
+trial_in_progress → [continue_trial, cross_examine, present_evidence]
+```
+
+**ENFORCEMENT:** Any action contradicting comprehensive context is invalid and must be corrected immediately.
 
 **EVERY SINGLE GAMEPLAY RESPONSE MUST BE EITHER:**
 
@@ -448,8 +496,12 @@ When playing games, you are the game master:
 
 - **Always avoid spoilers** - Never reveal information the player hasn't discovered
 - **"?" prompts** - If I begin with "?" I want a brief reminder (less than two sentences). Example: "? victim" returns the victim's name only
-- **evidence request** - If I simply type "evidence" list and describe the evidence I've gathered so far, courtroom mystery style
-- **profiles request** - If I simply type "profiles" list and describe the people I've met so far, courtroom mystery style
+- **evidence request** - If I simply type "evidence" use `--show-evidence` command to display all collected evidence with descriptions
+- **MANDATORY EVIDENCE RETRIEVAL** - ALWAYS use `--show-evidence` command when evidence needs to be known during gameplay. NEVER improvise or guess evidence details.
+- **profiles request** - If I simply type "profiles" use `--show-characters` command to display all characters with details
+- **MANDATORY CHARACTER CHECKING** - BEFORE introducing new characters, ALWAYS use `--show-characters` to check existing characters. NEVER create duplicate prosecutors, judges, or key roles.
+- **MANDATORY ROLE VALIDATION** - Before creating characters with specific roles (prosecutor, judge, detective), use `--check-role {role}` to prevent duplicates.
+- **MANDATORY CHARACTER CONSISTENCY** - NEVER change established character details. If a character is a doctor, they remain a doctor. If they are 45 years old, they remain 45. Use `--show-characters` to verify existing details before writing dialogue or descriptions.
 - **save game request** - If I simply type "save game" create a manual save point using game state manager: `--save "manual_save_[timestamp]"` allowing me to close/reopen context window
 - **Option lists** - End every response with 3-5 available actions as a numbered list. Not too many (overwhelming) or too few (removes agency)
 - **Cross-examination UI** - During cross-examination, suppress "Available Actions" menu. Instead show witness statements A-E and command reminders: `press [A-E]` | `present [A-E] "[evidence_name]"` | `check-victory` | `end-cross-examination`
