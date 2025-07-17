@@ -1,5 +1,12 @@
-wonderwords>=2.2.0
+# Core dependencies for CourtRoom CLI
+wonderwords>=2.2.0    # Random word generation for forcing functions
+requests>=2.28.0      # HTTP requests for AI APIs
+beautifulsoup4>=4.11.0  # HTML parsing if needed
+
+# Testing framework
 pytest>=7.0.0
 pytest-mock>=3.10.0
-requests>=2.28.0
-beautifulsoup4>=4.11.0
+
+# Optional AI integrations (to be implemented)
+# openai>=1.0.0       # ChatGPT integration
+# anthropic>=0.3.0    # Claude API integration

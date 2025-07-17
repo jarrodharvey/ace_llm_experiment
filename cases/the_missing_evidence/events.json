@@ -1,0 +1,59 @@
+{
+  "version": "2.0",
+  "created": "2025-07-17T01:19:36.443984+00:00",
+  "event_count": 2,
+  "events": [
+    {
+      "id": "e2cfe793-a0e0-4a89-ade5-c52becc41d72",
+      "timestamp": "2025-07-17T01:19:36.443200+00:00",
+      "type": "case_created",
+      "data": {
+        "case_name": "The Missing Evidence",
+        "case_id": "the_missing_evidence",
+        "test_mode": false,
+        "created_by": "courtroom_cli",
+        "game_version": "2.0"
+      }
+    },
+    {
+      "id": "150db3d9-519c-424d-87f1-4203c2a8c401",
+      "timestamp": "2025-07-17T01:19:36.443807+00:00",
+      "type": "case_initialized",
+      "data": {
+        "phase": "investigation",
+        "status": "ready_to_play",
+        "gates": [
+          {
+            "id": "initial_investigation",
+            "name": "Initial Investigation",
+            "type": "investigation",
+            "status": "pending",
+            "description": "Gather basic facts and evidence about the case"
+          },
+          {
+            "id": "witness_interviews",
+            "name": "Witness Interviews",
+            "type": "investigation",
+            "status": "pending",
+            "description": "Interview key witnesses and gather testimonies"
+          },
+          {
+            "id": "evidence_analysis",
+            "name": "Evidence Analysis",
+            "type": "investigation",
+            "status": "pending",
+            "description": "Analyze collected evidence for trial preparation"
+          },
+          {
+            "id": "trial_preparation",
+            "name": "Trial Preparation",
+            "type": "trial_prep",
+            "status": "pending",
+            "description": "Prepare legal strategy and evidence presentation"
+          }
+        ],
+        "current_location": "law_office"
+      }
+    }
+  ]
+}

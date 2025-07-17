@@ -1,0 +1,19 @@
+{
+  "version": "2.0",
+  "created": "2025-07-17T01:19:36.443456+00:00",
+  "event_count": 1,
+  "events": [
+    {
+      "id": "e2cfe793-a0e0-4a89-ade5-c52becc41d72",
+      "timestamp": "2025-07-17T01:19:36.443200+00:00",
+      "type": "case_created",
+      "data": {
+        "case_name": "The Missing Evidence",
+        "case_id": "the_missing_evidence",
+        "test_mode": false,
+        "created_by": "courtroom_cli",
+        "game_version": "2.0"
+      }
+    }
+  ]
+}

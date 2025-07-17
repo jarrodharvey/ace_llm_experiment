@@ -1,0 +1,19 @@
+{
+  "version": "2.0",
+  "created": "2025-07-17T01:18:31.936572+00:00",
+  "event_count": 1,
+  "events": [
+    {
+      "id": "7a1a3aec-d3fb-4944-bf98-b3ceeb7ab9c9",
+      "timestamp": "2025-07-17T01:18:31.936310+00:00",
+      "type": "case_created",
+      "data": {
+        "case_name": "Test Case",
+        "case_id": "test_case",
+        "test_mode": true,
+        "created_by": "courtroom_cli",
+        "game_version": "2.0"
+      }
+    }
+  ]
+}

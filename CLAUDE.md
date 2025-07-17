@@ -63,52 +63,58 @@ When requests involve:
 
 **ENFORCEMENT:** Any AI suggestion of backward compatibility should be immediately rejected in favor of clean, modern implementation.
 
-## COMMANDS - GLOBAL
+## COMMANDS - COURTROOM CLI
 
-**create new game**: Create a new case using the improvisation-first workflow
-- **Command**: `python3 scripts/create_new_game_orchestrator.py`
-- **Process**: Streamlined inspiration → opening → ready for improvisation
-- **Step 1**: Real-world legal case inspiration fetched automatically
-- **Step 2**: Claude analyzes inspiration and derives case name
-- **Step 3**: ChatGPT generates dramatic opening scene from case summary
-- **Step 4**: Case ready for improvised gameplay with full state management
-- **Result**: Case directory with `real_life_case_summary.txt` + `case_opening.txt` + `game_state/`
+**CourtRoom CLI v2.0** - Unified interface replacing all legacy scripts
 
-**CRITICAL ERROR HANDLING REQUIREMENT:**
-When case creation errors occur, you MUST identify and fix the root cause rather than pursuing manual workarounds:
-- **Step 1**: Analyze the specific error message and trace to its source code location
-- **Step 2**: Fix the underlying issue in the appropriate script or configuration
-- **Step 3**: Test the fix to ensure it resolves the problem completely
-- **Step 4**: Update documentation or tests if the fix reveals a systemic issue
-- **NEVER**: Skip error analysis in favor of manual case creation or workarounds
-- **NEVER**: Ignore broken scripts and proceed with partial implementations
+### Essential Commands
 
-**start game {DIRECTORY_NAME}**: Start playing a fresh improvisation-first game at DIRECTORY_NAME
-- **MANDATORY VALIDATION FIRST**: Run comprehensive pre-game validation with root cause analysis
-- **Validation Command**: `python3 scripts/start_game_validator.py {DIRECTORY_NAME}`
-- **ZERO TOLERANCE RULE**: If validation fails, you MUST investigate and fix root causes before proceeding
-- **NO WORKAROUNDS**: Never attempt manual fixes, partial starts, or validation bypasses
-- **Opening Display Logic**: 
-  - Read and display the contents of `{DIRECTORY_NAME}/case_opening.txt`
-  - End with "Type 'next' to continue"
-  - Wait for user to type "next" before proceeding
-  - After "next", use `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --resume` to begin gameplay
-- **Game Flow**: Validation → opening text → user types "next" → state manager takes over
-- **Full improvisation**: Use state management, random inspiration, dice rolls
-- **Gate system**: Investigation gates → automatic trial trigger → courtroom battles
-- Must create save point before beginning: `--save "game_start"`
+**courtroom create "Case Name"**: Create a new mystery case
+- **Process**: Real-world inspiration → opening scene → ready for gameplay
+- **Result**: Event-sourced case with complete state management
+- **Options**: `--test-mode` for isolated testing
+- **Location**: `cases/case_name/` with events.json, opening.txt, inspiration.txt
 
-**continue game {DIRECTORY_NAME}**: Continue playing an in-progress game at DIRECTORY_NAME  
-- **MANDATORY**: First activate virtual environment: `source venv/bin/activate`
-- Automatically runs: `python3 scripts/game_state_manager.py {DIRECTORY_NAME} --resume`
-- Shows current context and available actions for seamless continuation
+**courtroom play case_name**: Start playing a case from the beginning  
+- **Flow**: Opening text → user types "next" → interactive gameplay begins
+- **Features**: AI-driven investigation, evidence collection, character interaction
+- **Built-in**: Forcing functions, dice rolling, save system
 
-**admin mode**: Enter strategic partnership mode for project planning and development
+**courtroom continue case_name**: Resume an in-progress case
+- **Context**: Automatic context restoration from event log
+- **Seamless**: Picks up exactly where you left off
+- **AI Integration**: Full improvisation with forcing functions
 
-**run tests**: Execute the test suite to verify system integrity
-- **Command**: `source venv/bin/activate && python -m pytest tests/ -v`
-- **Required**: Before any commits or major changes
-- **Coverage**: Core business logic, configuration system, integration points
+**courtroom list**: Show all available cases with status
+
+**courtroom archive case_name**: Archive a completed case
+
+**courtroom doctor**: Run comprehensive system health check
+- Virtual environment validation
+- Dependency verification  
+- Directory structure check
+
+### Interactive Gameplay Commands
+
+**During gameplay, you can use:**
+- `evidence list` - Show all collected evidence
+- `evidence add "name" "description"` - Add new evidence
+- `character list` - Show all characters with trust levels
+- `character meet "name" "role"` - Introduce new character
+- `dice roll "action"` - Roll for action with automatic difficulty
+- `save "name"` - Create save point
+- `status` - Show current case status
+- `help` - Show available commands
+- `quit` - Exit and save progress
+
+### Legacy System Migration
+
+**DEPRECATED** - These legacy commands are no longer supported:
+- ~~`python3 scripts/create_new_game_orchestrator.py`~~ → `courtroom create`
+- ~~`python3 scripts/start_game_validator.py`~~ → `courtroom play` (validation built-in)
+- ~~`python3 scripts/game_state_manager.py`~~ → `courtroom continue` (integrated)
+
+**Migration Complete**: All functionality now available through unified CLI
 
 ## GAME STATE MANAGEMENT
 

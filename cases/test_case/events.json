@@ -1,0 +1,59 @@
+{
+  "version": "2.0",
+  "created": "2025-07-17T01:18:31.937505+00:00",
+  "event_count": 2,
+  "events": [
+    {
+      "id": "7a1a3aec-d3fb-4944-bf98-b3ceeb7ab9c9",
+      "timestamp": "2025-07-17T01:18:31.936310+00:00",
+      "type": "case_created",
+      "data": {
+        "case_name": "Test Case",
+        "case_id": "test_case",
+        "test_mode": true,
+        "created_by": "courtroom_cli",
+        "game_version": "2.0"
+      }
+    },
+    {
+      "id": "e820a9e7-4fbb-4d64-b0eb-f03bf24c0750",
+      "timestamp": "2025-07-17T01:18:31.937078+00:00",
+      "type": "case_initialized",
+      "data": {
+        "phase": "investigation",
+        "status": "ready_to_play",
+        "gates": [
+          {
+            "id": "initial_investigation",
+            "name": "Initial Investigation",
+            "type": "investigation",
+            "status": "pending",
+            "description": "Gather basic facts and evidence about the case"
+          },
+          {
+            "id": "witness_interviews",
+            "name": "Witness Interviews",
+            "type": "investigation",
+            "status": "pending",
+            "description": "Interview key witnesses and gather testimonies"
+          },
+          {
+            "id": "evidence_analysis",
+            "name": "Evidence Analysis",
+            "type": "investigation",
+            "status": "pending",
+            "description": "Analyze collected evidence for trial preparation"
+          },
+          {
+            "id": "trial_preparation",
+            "name": "Trial Preparation",
+            "type": "trial_prep",
+            "status": "pending",
+            "description": "Prepare legal strategy and evidence presentation"
+          }
+        ],
+        "current_location": "law_office"
+      }
+    }
+  ]
+}
